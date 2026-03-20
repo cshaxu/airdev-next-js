@@ -1,0 +1,17 @@
+name: UserMemory
+api:
+  methods:
+    getOneSafe:
+    createOne:
+    deleteOne:
+types:
+  - name: UserMemoryType
+    enum:
+      - TEST
+      - FIRST_TIME_VISITED
+fields:
+  - id: 1
+    name: type
+    type: UserMemoryType
+    strategy: primitive
+    cast: enum

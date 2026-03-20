@@ -1,0 +1,26 @@
+import {
+  DispatcherOptions,
+  commonDispatcherConfig,
+} from '@/framework/callbacks';
+import { Context } from '@/framework/context';
+import { DispatcherConfig, dispatchWith } from '@airent/api';
+import { handleWith } from '@airent/api-next';
+import { edgeHandlerConfig } from './framework';
+
+export const handleEdgeWith = <PARSED, RESULT, ERROR>(
+  config: Pick<
+    DispatcherConfig<
+      DispatcherOptions,
+      Context,
+      Request,
+      PARSED,
+      RESULT,
+      ERROR
+    >,
+    'parser' | 'executor' | 'executorWrapper' | 'options'
+  >
+) =>
+  handleWith(
+    dispatchWith({ ...commonDispatcherConfig, ...config }),
+    edgeHandlerConfig
+  );

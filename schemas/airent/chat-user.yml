@@ -1,0 +1,4 @@
+name: ChatUser
+api:
+  methods:
+    getMany:

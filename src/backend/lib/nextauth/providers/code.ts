@@ -1,0 +1,42 @@
+import { mockContext } from '@/backend/lib/framework';
+import { buildAdapterUser } from '@/backend/lib/nextauth/adapter';
+import NextauthVerificationTokenService from '@/backend/services/data/nextauth-verification-token';
+import UserService from '@/backend/services/data/user';
+import { GetOneNextauthVerificationTokenParams } from '@/common/types/data/nextauth-verification-token';
+import CredentialsProvider from 'next-auth/providers/credentials';
+
+// Note:
+// Official Guide: https://next-auth.js.org/configuration/providers/credentials
+// Workaround to overcome the tech-religious limitation imposed by NextAuth team:
+// https://github.com/nextauthjs/next-auth/discussions/4394
+// https://nneko.branche.online/next-auth-credentials-provider-with-the-database-session-strategy/
+// We DID NOT follow the official guide or the outdated workaround.
+// See callbacks.ts and jwt.ts for our approach.
+export const codeProvider = CredentialsProvider({
+  name: 'Code',
+  credentials: {
+    email: { label: 'Email', type: 'text', placeholder: 'your@email.com' },
+    code: { label: 'Code', type: 'text', placeholder: '12345' },
+  },
+  async authorize(
+    credentials: Record<string | number | symbol, string> | undefined
+  ) {
+    if (credentials === undefined) {
+      return null;
+    }
+    const context = await mockContext();
+    const nextauthVerificationToken =
+      await NextauthVerificationTokenService.deleteOneSafe(
+        credentials as GetOneNextauthVerificationTokenParams,
+        context
+      );
+    if (nextauthVerificationToken === null) {
+      return null;
+    }
+    const { identifier: email } = nextauthVerificationToken;
+    const user = await UserService.findOrCreateOne(email, context);
+    user.emailVerified = context.time;
+    await user.save();
+    return buildAdapterUser(user, 'email');
+  },
+});

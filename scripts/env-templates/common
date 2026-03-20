@@ -1,0 +1,14 @@
+# internal - explicit
+
+BAREBONE_NEXT_DATABAG_PASSWORD=op://DevEnv/common/ZIPLOC_SECRET
+BAREBONE_NEXT_INTERNAL_SECRET=internal_secret
+NEXT_PUBLIC_BAREBONE_NEXT_SERVICE_ENVIRONMENT=local
+
+# nextauth - implicit
+NEXTAUTH_URL=http://localhost:3000
+
+# inngest - implicit
+INNGEST_EVENT_KEY=local
+
+# openai - explicit
+BAREBONE_NEXT_OPENAI_API_KEY=op://DevEnv/common/OPENAI_API_KEY
