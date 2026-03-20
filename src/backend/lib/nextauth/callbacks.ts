@@ -1,14 +1,10 @@
-import { NEXTAUTH_SESSION_MAX_AGE } from '@/backend/config';
-import { NextauthAccountEntity } from '@/backend/entities/nextauth-account';
-import { UserEntity } from '@/backend/entities/user';
 import { mockContext } from '@/backend/lib/framework';
-import UserService from '@/backend/services/data/user';
 import { SERVICE_ROOT_DOMAIN } from '@/common/config';
-import { purify } from '@airent/api';
+import { getNextAuthBackendIntegration } from '@/integration/backend/auth';
 import { addSeconds } from 'date-fns';
 import { Account, CallbacksOptions, Profile, User } from 'next-auth';
+import { AdapterAccount } from 'next-auth/adapters';
 import { GoogleProfile } from 'next-auth/providers/google';
-import { adapter } from './adapter';
 
 type SignInParams = {
   account: Account | null;
@@ -19,6 +15,7 @@ type SignInParams = {
 
 const signIn = async (params: SignInParams) => {
   const context = await mockContext();
+  const integration = getNextAuthBackendIntegration();
   const {
     account: nextauthAccount,
     user: nextauthUser,
@@ -26,15 +23,15 @@ const signIn = async (params: SignInParams) => {
   } = params;
 
   // Check if this is being called in the code auth flow.
-  // If so, use the next-auth adapter to create a session entry in the database
+  // If so, create a session entry through the configured session adapter
   // (signIn is called after authorize so we can safely assume the user is valid
   // and already authenticated).
   const isCode = 'source' in nextauthUser && nextauthUser.source === 'email';
   if (isCode) {
     const sessionToken = crypto.randomUUID();
-    const expires = addSeconds(context.time, NEXTAUTH_SESSION_MAX_AGE);
+    const expires = addSeconds(context.time, integration.sessionMaxAge);
 
-    await adapter.createSession!({
+    await integration.sessions.create({
       sessionToken,
       userId: nextauthUser.id,
       expires,
@@ -60,10 +57,7 @@ const signIn = async (params: SignInParams) => {
     return true;
   }
 
-  const existingUser = await UserEntity.findUnique(
-    { where: { email } },
-    context
-  );
+  const existingUser = await integration.users.findByEmail(email);
 
   // Check if this is being called in the Google auth flow.
   // If so, update the user's name and image if they are null.
@@ -89,35 +83,31 @@ const signIn = async (params: SignInParams) => {
 
   // Automatically create user when signing in with Google
   const user =
-    existingUser ?? (await UserService.findOrCreateOne(email, context));
-  const data = purify({
-    ...(user.emailVerified === null &&
-      email_verified && { emailVerified: context.time }),
-    ...(user.name === null && { name }),
-    ...(user.imageUrl === null && { imageUrl }),
-  });
-  if (Object.keys(data).length > 0) {
-    user.fromModel(data);
-    await user.save();
+    existingUser ?? (await integration.users.findOrCreateByEmail(email));
+  const data: Partial<typeof user> & { id: string } = { id: user.id };
+  if ((user.emailVerified ?? null) === null && email_verified) {
+    data.emailVerified = context.time;
+  }
+  if ((user.name ?? null) === null && name) {
+    data.name = name;
+  }
+  if ((user.imageUrl ?? null) === null && imageUrl) {
+    data.imageUrl = imageUrl;
+  }
+  if (Object.keys(data).length > 1) {
+    await integration.users.update(data);
   }
 
   // Find and update account
-  if (nextauthAccount !== null) {
-    const account = await NextauthAccountEntity.findUnique(
-      {
-        where: {
-          provider_providerAccountId: {
-            provider: nextauthAccount.provider,
-            providerAccountId: nextauthAccount.providerAccountId,
-          },
-        },
-      },
-      context
-    );
-    if (account !== null) {
-      account.fromModel(nextauthAccount);
-      await account.save();
-    }
+  if (nextauthAccount !== null && integration.accounts.upsert) {
+    const account: AdapterAccount = {
+      ...nextauthAccount,
+      userId: nextauthAccount.userId ?? user.id,
+      type: nextauthAccount.type,
+      provider: nextauthAccount.provider,
+      providerAccountId: nextauthAccount.providerAccountId,
+    };
+    await integration.accounts.upsert(account);
   }
 
   return true;

@@ -1,9 +1,9 @@
 import { withError } from '@/frontend/utils/page';
+import { getAdminFrontendIntegration } from '@/integration/frontend/admin';
 
-import AirentApiNextStudio from '@/generated/airent-api-next-studio';
-
-async function Page() {
-  return <AirentApiNextStudio />;
+function Page() {
+  const { StudioComponent } = getAdminFrontendIntegration();
+  return <StudioComponent />;
 }
 
 const SafePage = withError(Page);

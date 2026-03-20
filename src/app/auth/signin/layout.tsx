@@ -1,4 +1,4 @@
-import { APP_NAME } from '@/common/config';
+import { getAuthFrontendIntegration } from '@/integration/frontend/auth';
 import { Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import { ReactNode } from 'react';
@@ -8,6 +8,10 @@ export default function AuthSignInLayout({
 }: {
   children: ReactNode;
 }) {
+  const { branding } = getAuthFrontendIntegration();
+  const heroLogoSrc = '/clipboard.svg';
+  const heroDecorationSrc = '/math-symbols.svg';
+
   return (
     <div className="grid h-screen w-full grid-cols-2 gap-4 overflow-hidden p-4 lg:p-6 [@media(orientation:portrait)]:grid-cols-1 [@media(orientation:portrait)]:overflow-y-auto [@media(orientation:portrait)]:p-3 sm:[@media(orientation:portrait)]:p-4">
       <div
@@ -18,32 +22,40 @@ export default function AuthSignInLayout({
       >
         <div className="flex w-full max-w-md flex-col gap-y-4">
           <div className="flex w-full justify-start">
-            <Image
-              src="/clipboard.svg"
-              alt="clipboard"
-              width={72}
-              height={72}
-              className="h-16 w-16 sm:h-[88px] sm:w-[88px] lg:h-[100px] lg:w-[100px]"
-            />
+            {heroLogoSrc ? (
+              <Image
+                src={heroLogoSrc}
+                alt="clipboard"
+                width={72}
+                height={72}
+                className="h-16 w-16 sm:h-[88px] sm:w-[88px] lg:h-[100px] lg:w-[100px]"
+              />
+            ) : (
+              <div className="h-16 w-16 sm:h-[88px] sm:w-[88px] lg:h-[100px] lg:w-[100px]" />
+            )}
           </div>
           <div className="flex w-full justify-end">
             <Sparkles className="size-6 text-white" />
           </div>
           <h1 className="text-2xl font-medium text-white sm:text-3xl">
-            Welcome to {APP_NAME}
+            Welcome to {branding.appName}
           </h1>
           <p className="text-sm leading-6 text-white sm:text-base">
-            Your sample app
+            {branding.heroDescription}
           </p>
         </div>
         <div className="mt-6 flex w-full justify-start lg:mt-10">
-          <Image
-            src="/math-symbols.svg"
-            alt="math-symbols"
-            width={209}
-            height={209}
-            className="h-24 w-24 sm:h-36 sm:w-36 lg:h-[209px] lg:w-[209px]"
-          />
+          {heroDecorationSrc ? (
+            <Image
+              src={heroDecorationSrc}
+              alt="hero-decoration"
+              width={209}
+              height={209}
+              className="h-24 w-24 sm:h-36 sm:w-36 lg:h-[209px] lg:w-[209px]"
+            />
+          ) : (
+            <div className="h-24 w-24 sm:h-36 sm:w-36 lg:h-[209px] lg:w-[209px]" />
+          )}
         </div>
       </div>
 

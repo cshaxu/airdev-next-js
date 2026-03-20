@@ -22,13 +22,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/frontend/components/ui/DropdownMenu';
-import { useCurrentUserRequired } from '@/frontend/hooks/data/user';
 import { cn } from '@/frontend/lib/cn';
-import { becomeUser } from '@/frontend/sdks/auth-client';
 import {
   useBecameUser,
   useSetBecameUser,
 } from '@/frontend/stores/becameUserStore';
+import { getShellFrontendIntegration } from '@/integration/frontend/shell';
 import {
   ChevronRightIcon,
   Cog6ToothIcon,
@@ -36,7 +35,6 @@ import {
 } from '@heroicons/react/24/outline';
 import { useQueryClient } from '@tanstack/react-query';
 import { LogOut, Wrench } from 'lucide-react';
-import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import {
   ReactNode,
@@ -57,10 +55,13 @@ type BottomNavProps = {
 type Props = SidebarProps | BottomNavProps;
 
 function useUserInitials() {
+  const { useCurrentUserRequired } = getShellFrontendIntegration();
   const { data: user } = useCurrentUserRequired();
-  const [firstName, lastName] = user.name.split(' ') ?? [];
+  const [firstName, lastName] = user.name?.split(' ') ?? [];
   const initials =
-    firstName && lastName ? `${firstName[0]}${lastName[0]}` : 'A';
+    firstName && lastName
+      ? `${firstName[0]}${lastName[0]}`
+      : (user.email?.[0]?.toUpperCase() ?? 'A');
 
   return { user, initials };
 }
@@ -169,6 +170,7 @@ function AccountActionRow({
 }
 
 export default function UserButton(props: Props) {
+  const shellIntegration = getShellFrontendIntegration();
   const { user, initials } = useUserInitials();
   const queryClient = useQueryClient();
   const became = useBecameUser();
@@ -186,11 +188,11 @@ export default function UserButton(props: Props) {
 
   const handleSignOut = async () => {
     queryClient.clear();
-    await signOut({ callbackUrl: '/' });
+    await shellIntegration.signOut(shellIntegration.logoutCallbackUrl);
   };
 
   const handleRevertSelf = async () => {
-    await becomeUser(null);
+    await shellIntegration.becomeUser(null);
     setBecameUser(null);
     window.location.reload();
   };
@@ -385,12 +387,12 @@ export default function UserButton(props: Props) {
   };
 
   const mobileActions: AccountAction[] = [
-    ...(user.isAdmin
+    ...(user.isAdmin && shellIntegration.adminHref
       ? [
           {
             key: 'admin',
             label: 'Admin',
-            href: '/admin',
+            href: shellIntegration.adminHref,
             icon: <Wrench className="size-5" />,
           },
         ]
@@ -398,7 +400,7 @@ export default function UserButton(props: Props) {
     {
       key: 'settings',
       label: 'Settings',
-      href: '/settings',
+      href: shellIntegration.settingsHref,
       icon: <Cog6ToothIcon className="size-5" />,
     },
     became
@@ -521,30 +523,30 @@ export default function UserButton(props: Props) {
       >
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {user.isAdmin && (
+        {user.isAdmin && shellIntegration.adminHref && (
           <DropdownMenuItem asChild>
-            <Link href="/admin">
+            <Link href={shellIntegration.adminHref}>
               <Wrench className="mr-2 size-4" />
               <span>Admin</span>
             </Link>
           </DropdownMenuItem>
         )}
         <DropdownMenuItem asChild>
-          <Link href="/settings">
+          <Link href={shellIntegration.settingsHref}>
             <Cog6ToothIcon className="mr-2 size-4" />
             <span>Settings</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         {became ? (
-          <button className="w-full" onClick={handleRevertSelf}>
+          <button className="w-full" onClick={() => void handleRevertSelf()}>
             <DropdownMenuItem className="w-full cursor-pointer">
               <LogOut className="mr-2 size-4" />
               <span>Revert to self</span>
             </DropdownMenuItem>
           </button>
         ) : (
-          <button className="w-full" onClick={handleSignOut}>
+          <button className="w-full" onClick={() => void handleSignOut()}>
             <DropdownMenuItem className="w-full cursor-pointer">
               <LogOut className="mr-2 size-4" />
               <span>Log out</span>

@@ -1,6 +1,6 @@
-import LandingPageView from '@/app/components/LandingPageView';
 import { currentUserServerQueryOptions } from '@/frontend/hooks/data/user-server';
 import { withError } from '@/frontend/utils/page';
+import { getRootFrontendIntegration } from '@/integration/frontend/root';
 import { QueryClient } from '@tanstack/react-query';
 import { redirect } from 'next/navigation';
 
@@ -11,11 +11,14 @@ async function Page() {
   const currentUser = await queryClient.fetchQuery(
     currentUserServerQueryOptions
   );
+  const rootIntegration = getRootFrontendIntegration();
+
   if (currentUser !== null) {
-    redirect('/dashboard');
+    redirect(rootIntegration.defaultLoggedInRoute);
   }
 
-  return <LandingPageView />;
+  const LandingComponent = rootIntegration.LandingComponent;
+  return <LandingComponent />;
 }
 
 const SafePage = withError(Page);

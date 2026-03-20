@@ -1,10 +1,10 @@
-import { SearchSelectedUserResponse } from '@/generated/tanstack-hooks/user-types';
+import type { CurrentUser } from '@/common/types/context';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface BecameUserState {
-  user: SearchSelectedUserResponse | null;
-  setUser: (user: SearchSelectedUserResponse | null) => void;
+  setUser: (user: CurrentUser | null) => void;
+  user: CurrentUser | null;
 }
 
 const useBecameUserStore = create<BecameUserState>()(

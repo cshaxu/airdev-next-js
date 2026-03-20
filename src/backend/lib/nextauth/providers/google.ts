@@ -1,9 +1,17 @@
-import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '@/backend/config';
+import { getNextAuthBackendIntegration } from '@/integration/backend/auth';
 import GoogleProvider from 'next-auth/providers/google';
 
-export const googleProvider = GoogleProvider({
-  clientId: GOOGLE_CLIENT_ID,
-  clientSecret: GOOGLE_CLIENT_SECRET,
-  allowDangerousEmailAccountLinking: true,
-  authorization: { params: { include_granted_scopes: true } },
-});
+export function getGoogleProvider() {
+  const google = getNextAuthBackendIntegration().google;
+  if (!google) {
+    return null;
+  }
+
+  return GoogleProvider({
+    allowDangerousEmailAccountLinking:
+      google.allowDangerousEmailAccountLinking ?? true,
+    authorization: { params: { include_granted_scopes: true } },
+    clientId: google.clientId,
+    clientSecret: google.clientSecret,
+  });
+}

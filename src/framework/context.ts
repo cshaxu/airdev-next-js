@@ -1,16 +1,14 @@
-import { SelectedUserResponse } from '@/generated/types/user';
 import { buildInvalidErrorMessage } from '@airent/api';
 import createHttpError from 'http-errors';
 
-export const ContextUserFieldRequest = {
-  id: true,
-  email: true,
-  name: true,
-  isAdmin: true,
-  createdAt: true,
+export type ContextUser = {
+  id: string;
+  email: string;
+  name: string;
+  imageUrl: string | null;
+  isAdmin: boolean;
+  createdAt: Date;
 };
-
-export type ContextUser = SelectedUserResponse<typeof ContextUserFieldRequest>;
 
 export type Context = {
   time: Date;

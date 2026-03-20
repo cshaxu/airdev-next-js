@@ -1,8 +1,3 @@
-import { DB_DELAY_SECONDS } from '@/backend/config';
-import { authOptions } from '@/backend/lib/nextauth';
-import SystemRequestCacheService from '@/backend/services/data/system-request-cache';
-import UserService from '@/backend/services/data/user';
-import { HEADER_CURRENT_USER_ID_KEY, IS_SERVICE_LOCAL } from '@/common/config';
 import {
   DispatcherOptions,
   commonDispatcherConfig,
@@ -10,11 +5,10 @@ import {
 } from '@/framework/callbacks';
 import { Context, ContextUser } from '@/framework/context';
 import { logError } from '@/framework/logging';
+import { getFrameworkIntegration } from '@/integration/backend/framework';
 import { DispatcherConfig, Executor, wait } from '@airent/api';
 import { HandlerConfig } from '@airent/api-next';
 import createHttpError from 'http-errors';
-import { pick } from 'lodash-es';
-import { getServerSession } from 'next-auth';
 import { headers as getHeaders } from 'next/headers';
 
 export async function mockContext(
@@ -48,6 +42,8 @@ async function authenticator(request: Request): Promise<Context> {
 }
 
 async function getCurrentUser(headers: Headers): Promise<ContextUser | null> {
+  const frameworkIntegration = getFrameworkIntegration();
+
   // load actual current user
   const realCurrentUserPromise = getRealCurrentUser();
   // load became user
@@ -56,36 +52,32 @@ async function getCurrentUser(headers: Headers): Promise<ContextUser | null> {
     realCurrentUserPromise,
     becameUserPromise,
   ]);
-  if (IS_SERVICE_LOCAL || realCurrentUser?.isAdmin) {
+
+  const shouldHonorBecameUser = frameworkIntegration.shouldHonorBecameUser
+    ? frameworkIntegration.shouldHonorBecameUser(realCurrentUser)
+    : frameworkIntegration.isServiceLocal || realCurrentUser?.isAdmin;
+
+  if (shouldHonorBecameUser) {
     return becameUser ?? realCurrentUser;
   }
   return realCurrentUser;
 }
 
 export async function getRealCurrentUser(): Promise<ContextUser | null> {
-  const session = await getServerSession(authOptions);
-  const { email } = session?.user ?? {};
+  const email = await getFrameworkIntegration().getSessionEmail();
   // load actual current user
   return email ? await getNullableUserSafe(email) : null;
 }
 
 async function getBecameUser(headers: Headers): Promise<ContextUser | null> {
-  const userId = getCookieHeaderKey(headers, HEADER_CURRENT_USER_ID_KEY);
+  const { headerCurrentUserIdKey } = getFrameworkIntegration();
+  const userId = getCookieHeaderKey(headers, headerCurrentUserIdKey);
   return userId === null ? null : await getNullableUserSafe(userId);
 }
 
 async function getNullableUserSafe(id: string): Promise<ContextUser | null> {
   try {
-    const context = await mockContext();
-    const entity = await UserService.getOneSafe({ id }, context);
-    if (entity === null) {
-      return null;
-    }
-    const isAdmin = entity.getIsAdmin();
-    return {
-      ...pick(entity, ['id', 'email', 'name', 'imageUrl', 'createdAt']),
-      isAdmin,
-    };
+    return await getFrameworkIntegration().getNullableUserSafe(id);
   } catch (error) {
     logError(error, { id });
     return null;
@@ -93,7 +85,7 @@ async function getNullableUserSafe(id: string): Promise<ContextUser | null> {
 }
 
 function getCookieHeaderKey(headers: Headers, key: string): string | null {
-  const cookierUserId =
+  const cookieUserId =
     (headers.get('cookie') ?? '')
       .split(';')
       .map((s) => s.trim().split('='))
@@ -101,7 +93,7 @@ function getCookieHeaderKey(headers: Headers, key: string): string | null {
       .map(([_k, v]) => v)
       .at(0) ?? null;
   const headerUserId = headers.get(key);
-  return cookierUserId ?? headerUserId;
+  return cookieUserId ?? headerUserId;
 }
 
 const CACHED_REQUEST_PATHS = [
@@ -115,43 +107,45 @@ function executorWrapper<PARSED, RESULT>(
   options?: DispatcherOptions
 ): Executor<PARSED, Context, RESULT> {
   return async (parsed: PARSED, context: Context) => {
+    const frameworkIntegration = getFrameworkIntegration();
+    const requestCacheIntegration = frameworkIntegration.requestCache;
     const { url } = context;
     const requireRequestCache =
       options?.cacheRequest !== undefined
         ? options.cacheRequest
         : CACHED_REQUEST_PATHS.some((path) => url.includes(path));
-    if (requireRequestCache) {
-      const requestCache = await SystemRequestCacheService.createOneSafe(
+
+    if (requireRequestCache && requestCacheIntegration) {
+      const requestCache = await requestCacheIntegration.createOneSafe(
         parsed,
         context
       );
       if (requestCache === null) {
-        // key conflict
         let delay = 1000;
+        const maxDelay =
+          (frameworkIntegration.requestCacheDelaySeconds ?? 5) * 1000;
         do {
           const { completedAt, response } =
-            await SystemRequestCacheService.getOne(parsed, context);
+            await requestCacheIntegration.getOne(parsed, context);
           if (completedAt === null) {
-            // exponential backoff
             await wait(delay);
             delay *= 2;
           } else {
             return response as RESULT;
           }
-        } while (delay < DB_DELAY_SECONDS * 1000);
+        } while (delay < maxDelay);
         throw createHttpError.RequestTimeout();
       } else {
-        // key acquired
         const result = await executor(parsed, context);
-        await SystemRequestCacheService.updateOneSafe(
+        await requestCacheIntegration.updateOneSafe(
           requestCache,
           result,
           context
         );
         return result;
       }
-    } else {
-      return await executor(parsed, context);
     }
+
+    return await executor(parsed, context);
   };
 }

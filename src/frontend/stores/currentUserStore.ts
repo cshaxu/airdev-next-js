@@ -1,10 +1,10 @@
-import { CurrentUser } from '@/common/types/context';
+import type { CurrentUser } from '@/common/types/context';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface CurrentUserState {
-  user: CurrentUser | undefined;
   setUser: (user: CurrentUser) => void;
+  user: CurrentUser | undefined;
 }
 
 const useCurrentUserStore = create<CurrentUserState>()(
@@ -15,5 +15,4 @@ const useCurrentUserStore = create<CurrentUserState>()(
 );
 
 export const useCurrentUser = () => useCurrentUserStore((state) => state.user);
-
 export const useSetUser = () => useCurrentUserStore((state) => state.setUser);

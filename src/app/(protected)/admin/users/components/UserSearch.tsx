@@ -1,35 +1,32 @@
 'use client';
 
+import type { CurrentUser } from '@/common/types/context';
 import { Button } from '@/frontend/components/ui/Button';
 import { Input } from '@/frontend/components/ui/Input';
-import { becomeUser } from '@/frontend/sdks/auth-client';
 import {
   useBecameUser,
   useSetBecameUser,
 } from '@/frontend/stores/becameUserStore';
-import {
-  UserQueries,
-  useUpdateOneUser,
-} from '@/generated/tanstack-hooks/user-client';
-import { GetManySelectedUserResponse } from '@/generated/tanstack-hooks/user-types';
-import { useQuery } from '@tanstack/react-query';
+import { getAdminFrontendIntegration } from '@/integration/frontend/admin';
+import { getShellFrontendIntegration } from '@/integration/frontend/shell';
 import { Drama, Smile, User, UserKey } from 'lucide-react';
 import { useState } from 'react';
 
 export default function UserSearch() {
+  const adminIntegration = getAdminFrontendIntegration();
+  const shellIntegration = getShellFrontendIntegration();
   const [inputQ, setInputQ] = useState('');
   const [searchQ, setSearchQ] = useState('');
-  const [adminTargetUserId, _setAdminTargetUserId] = useState<string | null>(
+  const [adminTargetUserId, setAdminTargetUserId] = useState<string | null>(
     null
   );
   const became = useBecameUser();
   const setBecameUser = useSetBecameUser();
-  const { mutateAsync: _updateUser, isPending: isUpdatingUser } =
-    useUpdateOneUser();
+  const { mutateAsync: updateUser, isPending: isUpdatingUser } =
+    adminIntegration.useUpdateUser();
 
-  const { data: users = [], isFetching } = useQuery(
-    UserQueries.getMany({ q: searchQ })
-  );
+  const { data: users = [], isFetching } =
+    adminIntegration.useSearchUsers(searchQ);
 
   function handleSearch() {
     setSearchQ(inputQ.trim());
@@ -41,29 +38,39 @@ export default function UserSearch() {
     }
   }
 
-  async function handleBecome(user: GetManySelectedUserResponse) {
-    await becomeUser(user.id);
-    setBecameUser(user);
+  async function handleBecome(user: (typeof users)[number]) {
+    await shellIntegration.becomeUser(user.id);
+    const becameUser: CurrentUser = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      imageUrl: user.imageUrl,
+      isAdmin: user.isAdmin,
+      createdAt:
+        'createdAt' in user && user.createdAt instanceof Date
+          ? user.createdAt
+          : new Date(0),
+    };
+    setBecameUser(becameUser);
     window.location.reload();
   }
 
   async function handleRevertSelf() {
-    await becomeUser(null);
+    await shellIntegration.becomeUser(null);
     setBecameUser(null);
     window.location.reload();
   }
 
-  async function handleToggleAdmin(_user: GetManySelectedUserResponse) {
-    // TODO: not supported yet
-    // setAdminTargetUserId(user.id);
-    // try {
-    //   await updateUser({
-    //     params: { id: user.id },
-    //     body: { setAdmin: !user.isAdmin },
-    //   });
-    // } finally {
-    //   setAdminTargetUserId(null);
-    // }
+  async function handleToggleAdmin(user: (typeof users)[number]) {
+    setAdminTargetUserId(user.id);
+    try {
+      await updateUser({
+        params: { id: user.id },
+        body: { setAdmin: !user.isAdmin },
+      });
+    } finally {
+      setAdminTargetUserId(null);
+    }
   }
 
   return (
@@ -74,12 +81,14 @@ export default function UserSearch() {
             {became.imageUrl ? (
               <img
                 src={became.imageUrl}
-                alt={became.name}
+                alt={became.name ?? became.id}
                 className="size-full object-cover"
               />
             ) : (
               <div className="bg-primary text-primary-foreground flex size-full items-center justify-center text-sm font-bold">
-                {became.name.charAt(0)?.toUpperCase() ?? '?'}
+                {(became.name ?? became.email ?? '?')
+                  .charAt(0)
+                  ?.toUpperCase() ?? '?'}
               </div>
             )}
           </div>
@@ -88,7 +97,11 @@ export default function UserSearch() {
               Impersonating: {became.name ?? became.id}
             </p>
           </div>
-          <Button size="sm" variant="outline" onClick={handleRevertSelf}>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => void handleRevertSelf()}
+          >
             Revert Self
           </Button>
         </div>
@@ -122,12 +135,13 @@ export default function UserSearch() {
                 {user.imageUrl ? (
                   <img
                     src={user.imageUrl}
-                    alt={user.name}
+                    alt={user.name ?? user.email ?? user.id}
                     className="size-full object-cover"
                   />
                 ) : (
                   <div className="bg-muted flex size-full items-center justify-center text-xs font-bold">
-                    {user.name.charAt(0).toUpperCase() || '?'}
+                    {(user.name ?? user.email ?? '?').charAt(0).toUpperCase() ||
+                      '?'}
                   </div>
                 )}
               </div>
@@ -138,7 +152,7 @@ export default function UserSearch() {
               <Button
                 size="sm"
                 variant={became?.id === user.id ? 'default' : 'outline'}
-                onClick={() => handleBecome(user)}
+                onClick={() => void handleBecome(user)}
                 disabled={became?.id === user.id}
                 title={became?.id === user.id ? 'Active' : 'Become'}
               >

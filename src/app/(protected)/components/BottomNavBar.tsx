@@ -2,17 +2,38 @@
 
 import { useCurrentUserRequired } from '@/frontend/hooks/data/user';
 import { cn } from '@/frontend/lib/cn';
+import { getShellFrontendIntegration } from '@/integration/frontend/shell';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { MAIN_NAV_ITEMS } from './NavConfig';
+import type { NavItem } from './NavConfig';
 import UserButton from './UserButton';
+
+function toNavItem(item: {
+  href: string;
+  key: string;
+  label: string;
+  match?: (pathname: string) => boolean;
+  renderIcon: (className: string) => React.ReactNode;
+}): NavItem {
+  return {
+    key: item.key,
+    label: item.label,
+    to: item.href,
+    isActive:
+      item.match ??
+      ((pathname) =>
+        pathname === item.href || pathname.startsWith(`${item.href}/`)),
+    renderIcon: item.renderIcon,
+  };
+}
 
 export default function BottomNavBar() {
   const pathname = usePathname();
   useCurrentUserRequired();
   const navItemsRef = useRef<HTMLDivElement>(null);
   const [showLabels, setShowLabels] = useState(true);
+  const navItems = getShellFrontendIntegration().primaryItems.map(toNavItem);
 
   useEffect(() => {
     const element = navItemsRef.current;
@@ -22,7 +43,7 @@ export default function BottomNavBar() {
 
     const updateLabelVisibility = () => {
       const minTabWidthForLabel = 74;
-      const tabCount = MAIN_NAV_ITEMS.length + 1;
+      const tabCount = navItems.length + 1;
       const shouldShow = element.clientWidth >= tabCount * minTabWidthForLabel;
       setShowLabels(shouldShow);
     };
@@ -31,7 +52,7 @@ export default function BottomNavBar() {
     const observer = new ResizeObserver(updateLabelVisibility);
     observer.observe(element);
     return () => observer.disconnect();
-  }, []);
+  }, [navItems.length]);
 
   return (
     <nav
@@ -45,7 +66,7 @@ export default function BottomNavBar() {
         ref={navItemsRef}
         className="mx-auto flex h-16 max-w-xl items-center px-2"
       >
-        {MAIN_NAV_ITEMS.map((tab) => {
+        {navItems.map((tab) => {
           const active = tab.isActive(pathname);
           return (
             <Link

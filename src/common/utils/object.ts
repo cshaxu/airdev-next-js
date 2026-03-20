@@ -1,4 +1,7 @@
-import { isNil } from 'lodash-es';
+import { intersectionWith, isEqual, isNil } from 'lodash-es';
+
+export const intersect = <T>(a: T[], b: T[]) =>
+  intersectionWith(a, b, isEqual).length > 0;
 
 export type DeepNonNullable<T> = {
   [K in keyof T]: T[K] extends object

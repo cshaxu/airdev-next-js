@@ -11,73 +11,36 @@ import { Button } from '@/frontend/components/ui/Button';
 import { Input } from '@/frontend/components/ui/Input';
 import {
   useCurrentUserRequired,
+  useDeleteCurrentUser,
   useUpdateCurrentUser,
 } from '@/frontend/hooks/data/user';
 import { cn } from '@/frontend/lib/cn';
-import { useDeleteOneUser } from '@/generated/tanstack-hooks/user-client';
+import { getSettingsFrontendIntegration } from '@/integration/frontend/settings';
+import { getShellFrontendIntegration } from '@/integration/frontend/shell';
 import { useQueryClient } from '@tanstack/react-query';
 import { Home, Trash2 } from 'lucide-react';
-import { signOut } from 'next-auth/react';
-import { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { KeyboardEvent, ReactNode, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
-type ActionTileProps = {
-  icon: React.ReactNode;
-  iconBg: string;
-  label: string;
-  description: string;
-  disabled?: boolean;
-  onClick: () => void;
-};
-
-function ActionTile({
-  icon,
-  iconBg,
-  label,
-  description,
-  disabled = false,
-  onClick,
-}: ActionTileProps) {
-  return (
-    <button
-      className={cn(
-        'flex items-center gap-4 rounded-xl border p-5 text-left shadow-sm transition-colors',
-        disabled
-          ? 'cursor-not-allowed opacity-60'
-          : 'hover:bg-muted/40 cursor-pointer'
-      )}
-      onClick={onClick}
-      disabled={disabled}
-    >
-      <div
-        className={cn(
-          'flex size-12 shrink-0 items-center justify-center rounded-lg',
-          iconBg
-        )}
-      >
-        {icon}
-      </div>
-      <div>
-        <p className="text-xl font-bold">{label}</p>
-        <p className="text-muted-foreground text-sm">{description}</p>
-      </div>
-    </button>
-  );
-}
-
-export default function Settings() {
+export default function Settings({ children }: { children?: ReactNode }) {
   const { data: currentUser } = useCurrentUserRequired();
   const queryClient = useQueryClient();
+  const settingsIntegration = getSettingsFrontendIntegration();
+  const shellIntegration = getShellFrontendIntegration();
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [isEditingName, setIsEditingName] = useState(false);
   const [draftName, setDraftName] = useState(currentUser.name ?? '');
   const nameInputRef = useRef<HTMLInputElement | null>(null);
-  const { mutate: deleteUser, isPending: isDeleting } = useDeleteOneUser();
+  const { mutate: deleteUser, isPending: isDeleting } = useDeleteCurrentUser();
   const { mutate: updateCurrentUser, isPending: isUpdatingUser } =
     useUpdateCurrentUser();
 
   const breadcrumbs: HeaderBarItem[] = [
-    { label: '', href: '/dashboard', icon: <Home className="size-4" /> },
+    {
+      label: '',
+      href: settingsIntegration.dashboardHref,
+      icon: <Home className="size-4" />,
+    },
     { label: 'Settings' },
   ];
 
@@ -101,7 +64,7 @@ export default function Settings() {
         onSuccess: async () => {
           queryClient.clear();
           toast.success('Account deleted');
-          await signOut({ callbackUrl: '/' });
+          await shellIntegration.signOut(shellIntegration.logoutCallbackUrl);
         },
       }
     );
@@ -214,39 +177,37 @@ export default function Settings() {
                     )}
                   </div>
                 </div>
-                <Button
-                  variant={isEditingName ? 'ghost' : 'outline'}
-                  onClick={
-                    isEditingName
-                      ? handleCancelEditingName
-                      : handleStartEditingName
-                  }
-                  disabled={isUpdatingUser}
-                >
-                  {isEditingName ? 'Cancel' : 'Edit'}
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant={isEditingName ? 'ghost' : 'outline'}
+                    onClick={
+                      isEditingName
+                        ? handleCancelEditingName
+                        : handleStartEditingName
+                    }
+                    disabled={isUpdatingUser}
+                  >
+                    {isEditingName ? 'Cancel' : 'Edit'}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => setDeleteOpen(true)}
+                    disabled={isDeleting}
+                    className="text-red-700"
+                  >
+                    <Trash2
+                      className={cn(
+                        'mr-2 size-4',
+                        isDeleting && 'animate-pulse'
+                      )}
+                    />
+                    Delete
+                  </Button>
+                </div>
               </div>
             </section>
 
-            <div className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-4">
-              <ActionTile
-                icon={
-                  <Trash2
-                    className={cn(
-                      'size-6',
-                      isDeleting
-                        ? 'text-muted-foreground animate-pulse'
-                        : 'text-red-600'
-                    )}
-                  />
-                }
-                iconBg="bg-red-100"
-                label="Delete Account"
-                description="Permanently delete your account and all data."
-                disabled={isDeleting}
-                onClick={() => setDeleteOpen(true)}
-              />
-            </div>
+            {children}
           </div>
         </div>
       </div>

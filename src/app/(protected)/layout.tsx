@@ -8,7 +8,6 @@ import {
 import BottomNavBar from './components/BottomNavBar';
 import SideNavBar from './components/SideNavBar';
 
-// 强制 protected 目录下的所有页面都使用动态渲染
 export const dynamic = 'force-dynamic';
 
 export default async function ProtectedLayout({ children }: ReactNodeProps) {

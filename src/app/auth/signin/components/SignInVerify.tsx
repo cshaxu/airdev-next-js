@@ -13,9 +13,8 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from '@/frontend/components/ui/InputOTP';
-import { useCreateOneNextauthVerificationToken } from '@/generated/tanstack-hooks/nextauth-verification-token-client';
+import { getAuthFrontendIntegration } from '@/integration/frontend/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn } from 'next-auth/react';
 import { parseAsString, useQueryState } from 'nuqs';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -23,19 +22,19 @@ import { z } from 'zod';
 
 type Props = { email: string };
 
+const verificationCodeLength = 5;
 const formSchema = z.object({
-  code: z.string().length(5, { message: 'Please enter a valid code' }),
+  code: z.string().length(verificationCodeLength, {
+    message: 'Please enter a valid code',
+  }),
 });
 type FormSchema = z.infer<typeof formSchema>;
 
 export default function SignInVerify({ email }: Props) {
+  const authIntegration = getAuthFrontendIntegration();
   const [next] = useQueryState('next', parseAsString);
   const [isSigningIn, setIsSigningIn] = useState(false);
-  const {
-    mutate: createVerificationToken,
-    isPending: isCreatingVerificationToken,
-  } = useCreateOneNextauthVerificationToken();
-
+  const [isResendingCode, setIsResendingCode] = useState(false);
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: { code: '' },
@@ -49,35 +48,39 @@ export default function SignInVerify({ email }: Props) {
       setIsSigningIn(true);
       const { code } = values;
 
-      await signIn('credentials', { email, code, callbackUrl: next || '/' })
-        .catch(() => {
-          form.setError('code', { message: 'Invalid code' });
-        })
-        .finally(() => setIsSigningIn(false));
+      const result = await authIntegration.verifyEmailCode({
+        callbackUrl: next || '/',
+        code,
+        email,
+      });
+
+      if (!result.ok) {
+        form.setError('code', {
+          message: result.errorMessage ?? 'Invalid code',
+        });
+      }
+
+      setIsSigningIn(false);
     },
-    [email, next, isSigningIn, form]
+    [authIntegration, email, next, isSigningIn, form]
   );
 
   const handleComplete = useCallback(
     (value: string) => {
       form.setValue('code', value);
-      form.handleSubmit(onSubmit)();
+      void form.handleSubmit(onSubmit)();
     },
     [form, onSubmit]
   );
 
-  const resendCode = () => {
-    if (isCreatingVerificationToken) {
+  const resendCode = async () => {
+    if (isResendingCode) {
       return;
     }
-    createVerificationToken(
-      { email },
-      {
-        onSuccess: () => {
-          form.reset({ code: undefined });
-        },
-      }
-    );
+    setIsResendingCode(true);
+    await authIntegration.requestEmailCode(email);
+    form.reset({ code: '' });
+    setIsResendingCode(false);
   };
 
   return (
@@ -88,7 +91,9 @@ export default function SignInVerify({ email }: Props) {
       <Form {...form}>
         <form
           className="flex flex-col gap-y-4"
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={(event) => {
+            void form.handleSubmit(onSubmit)(event);
+          }}
         >
           <FormField
             control={form.control}
@@ -97,12 +102,14 @@ export default function SignInVerify({ email }: Props) {
               <FormItem className="mb-4 flex flex-col items-center">
                 <FormControl>
                   <InputOTP
-                    maxLength={5}
+                    maxLength={authIntegration.verificationCodeLength}
                     {...field}
                     className="mx-auto w-full justify-center"
                     onComplete={handleComplete}
                   >
-                    {Array.from(Array(5).keys()).map((i) => (
+                    {Array.from(
+                      Array(authIntegration.verificationCodeLength).keys()
+                    ).map((i) => (
                       <InputOTPGroup key={i}>
                         <InputOTPSlot
                           index={i}
@@ -129,10 +136,8 @@ export default function SignInVerify({ email }: Props) {
             type="button"
             variant="link"
             size="xl"
-            disabled={
-              isCreatingVerificationToken || form.formState.isSubmitting
-            }
-            onClick={resendCode}
+            disabled={isResendingCode || form.formState.isSubmitting}
+            onClick={() => void resendCode()}
           >
             Resend code
           </Button>

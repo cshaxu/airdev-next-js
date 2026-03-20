@@ -1,9 +1,10 @@
-import { DEFAULT_DB_BATCH_SIZE } from '@/backend/config';
 import { DEFAULT_API_BATCH_SIZE } from '@/common/config';
 import { Context } from '@/framework/context';
 import { CommonResponse, buildInvalidErrorMessage, logInfo } from '@airent/api';
 import { Awaitable, sequential } from 'airent';
 import createHttpError from 'http-errors';
+
+const DEFAULT_DB_BATCH_SIZE = 1000;
 
 export async function batchExecuteByPageParam<ENTITY, RESULT, PAGE_PARAM>(
   loader: (

@@ -1,18 +1,18 @@
 'use client';
 
-import { APP_NAME } from '@/common/config';
 import { buttonVariants } from '@/frontend/components/ui/Button';
 import { PixelResizablePanel } from '@/frontend/components/ui/PixelResizable';
 import { cn } from '@/frontend/lib/cn';
+import { getShellFrontendIntegration } from '@/integration/frontend/shell';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { MAIN_NAV_ITEMS } from './NavConfig';
+import type { NavItem } from './NavConfig';
 import UserButton from './UserButton';
 
-const chatsRegex = /^\/chats\/[^/]+(?:\/.*)?$/;
-const adminRegex = /^\/admin(?:\/.*)?$/;
+const defaultCollapseMatcher = (pathname: string) =>
+  pathname.startsWith('/admin');
 
 type SideNavLinkProps = {
   label: string;
@@ -43,30 +43,46 @@ function SideNavLink({ label, icon, to, isFull, isActive }: SideNavLinkProps) {
   );
 }
 
+function toNavItem(item: {
+  href: string;
+  key: string;
+  label: string;
+  match?: (pathname: string) => boolean;
+  renderIcon: (className: string) => React.ReactNode;
+}): NavItem {
+  return {
+    key: item.key,
+    label: item.label,
+    to: item.href,
+    isActive:
+      item.match ??
+      ((pathname) =>
+        pathname === item.href || pathname.startsWith(`${item.href}/`)),
+    renderIcon: item.renderIcon,
+  };
+}
+
 export default function SideNavBar() {
   const pathname = usePathname();
   const lastPathRef = useRef(pathname);
+  const shellIntegration = getShellFrontendIntegration();
+  const navItems = shellIntegration.primaryItems.map(toNavItem);
+  const shouldAutoCollapse =
+    shellIntegration.shouldAutoCollapse ?? defaultCollapseMatcher;
 
-  const shouldCollapse = Boolean(
-    pathname.match(chatsRegex) || pathname.match(adminRegex)
-  );
+  const shouldCollapse = shouldAutoCollapse(pathname);
   const [isCollapsed, setIsCollapsed] = useState(shouldCollapse);
 
   useEffect(() => {
-    const wasCollapsePage = Boolean(
-      lastPathRef.current.match(chatsRegex) ||
-      lastPathRef.current.match(adminRegex)
-    );
-    const isCollapsePage = Boolean(
-      pathname.match(chatsRegex) || pathname.match(adminRegex)
-    );
+    const wasCollapsePage = shouldAutoCollapse(lastPathRef.current);
+    const isCollapsePage = shouldAutoCollapse(pathname);
 
     if (wasCollapsePage !== isCollapsePage) {
       setIsCollapsed(isCollapsePage);
     }
 
     lastPathRef.current = pathname;
-  }, [pathname]);
+  }, [pathname, shouldAutoCollapse]);
 
   return (
     <PixelResizablePanel
@@ -85,21 +101,23 @@ export default function SideNavBar() {
           )}
         >
           <Image
-            src="/logo.png"
-            alt="Logo"
+            src={shellIntegration.logoSrc}
+            alt={shellIntegration.logoAlt}
             width={40}
             height={40}
             className="size-10"
           />
           {!isCollapsed && (
-            <span className="nav-icon text-xl font-bold">{APP_NAME}</span>
+            <span className="nav-icon text-xl font-bold">
+              {shellIntegration.appName}
+            </span>
           )}
         </div>
 
         <div className="nav-separator mx-4 h-px" />
 
         <nav className="flex flex-col gap-1">
-          {MAIN_NAV_ITEMS.map((item) => (
+          {navItems.map((item) => (
             <SideNavLink
               key={item.to}
               label={item.label}

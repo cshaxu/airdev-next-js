@@ -1,5 +1,5 @@
 import { IS_SERVICE_PRODUCTION } from '@/common/config';
-import { CRON_SECRET, INTERNAL_SECRET } from '@/edge/config';
+import { getFrameworkIntegration } from '@/integration/backend/framework';
 import {
   CommonResponse,
   DispatcherConfig,
@@ -41,10 +41,13 @@ function requestParser(request: Request): Request {
 }
 
 function authorizer(context: Context, options?: DispatcherOptions): void {
+  const frameworkIntegration = getFrameworkIntegration();
+
   // require cron
   if (options?.requireCron === true) {
     if (
-      context.headers.get(HEADER_AUTHORIZATION_KEY) === `Bearer ${CRON_SECRET}`
+      context.headers.get(HEADER_AUTHORIZATION_KEY) ===
+      `Bearer ${frameworkIntegration.cronSecret ?? ''}`
     ) {
       return;
     }
@@ -53,7 +56,10 @@ function authorizer(context: Context, options?: DispatcherOptions): void {
 
   // require internal
   if (options?.requireInternal === true) {
-    if (context.headers.get(HEADER_INTERNAL_SECRET_KEY) === INTERNAL_SECRET) {
+    if (
+      context.headers.get(HEADER_INTERNAL_SECRET_KEY) ===
+      (frameworkIntegration.internalSecret ?? '')
+    ) {
       return;
     }
     throw createHttpError.Unauthorized(buildInvalidErrorMessage('access'));

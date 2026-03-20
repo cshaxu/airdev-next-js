@@ -1,6 +1,7 @@
-import { fetchCurrentUser } from '@/frontend/sdks/auth-server';
+import { getFrameworkIntegration } from '@/integration/backend/framework';
 
 export const currentUserServerQueryOptions = {
   queryKey: ['currentUser'],
-  queryFn: fetchCurrentUser,
+  queryFn: () =>
+    getFrameworkIntegration().currentUserServerQueryOptions.queryFn(),
 };

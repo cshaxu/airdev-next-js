@@ -1,8 +1,9 @@
 import { mockContext } from '@/backend/lib/framework';
-import { buildAdapterUser } from '@/backend/lib/nextauth/adapter';
-import NextauthVerificationTokenService from '@/backend/services/data/nextauth-verification-token';
-import UserService from '@/backend/services/data/user';
-import { GetOneNextauthVerificationTokenParams } from '@/common/types/data/nextauth-verification-token';
+import {
+  getNextAuthBackendIntegration,
+  type AuthAppUser,
+} from '@/integration/backend/auth';
+import type { AdapterUser } from 'next-auth/adapters';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 // Note:
@@ -21,22 +22,40 @@ export const codeProvider = CredentialsProvider({
   async authorize(
     credentials: Record<string | number | symbol, string> | undefined
   ) {
-    if (credentials === undefined) {
+    if (credentials === undefined || !credentials.email || !credentials.code) {
       return null;
     }
     const context = await mockContext();
-    const nextauthVerificationToken =
-      await NextauthVerificationTokenService.deleteOneSafe(
-        credentials as GetOneNextauthVerificationTokenParams,
-        context
-      );
+    const integration = getNextAuthBackendIntegration();
+    const nextauthVerificationToken = await integration.verificationTokens.use(
+      credentials.email,
+      credentials.code
+    );
     if (nextauthVerificationToken === null) {
       return null;
     }
     const { identifier: email } = nextauthVerificationToken;
-    const user = await UserService.findOrCreateOne(email, context);
-    user.emailVerified = context.time;
-    await user.save();
+    const user = await integration.users.createFromEmailCode(
+      email,
+      context.time
+    );
     return buildAdapterUser(user, 'email');
   },
 });
+
+export const buildAdapterUser = (
+  user: AuthAppUser,
+  source: 'google' | 'email'
+): AdapterUser => {
+  const integration = getNextAuthBackendIntegration();
+  return integration.mapAuthUserToAdapterUser
+    ? (integration.mapAuthUserToAdapterUser(user, source) as AdapterUser)
+    : ({
+        id: user.id,
+        email: user.email ?? 'account@example.com',
+        emailVerified: user.emailVerified ?? null,
+        image: user.imageUrl ?? null,
+        name: user.name ?? null,
+        source,
+      } as AdapterUser);
+};
