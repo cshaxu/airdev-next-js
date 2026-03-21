@@ -1,3 +1,4 @@
+import { shellAdapter } from '@/adapter';
 import { currentUserServerQueryOptions } from '@/frontend/hooks/data/user-server';
 import { withError } from '@/frontend/utils/page';
 import { QueryClient } from '@tanstack/react-query';
@@ -22,7 +23,7 @@ async function Page({ searchParams }: SignInPageProps) {
   );
 
   if (!!currentUser) {
-    redirect(next || '/');
+    redirect(next || shellAdapter.navigation.homeHref);
   }
 
   return <SignInSteps />;

@@ -1,14 +1,14 @@
 'use client';
 
+import { shellAdapter } from '@/adapter/frontend/shell';
 import HeaderBar from '@/frontend/components/HeaderBar';
 import { cn } from '@/frontend/lib/cn';
-import { getAdminFrontendIntegration } from '@/integration/frontend/admin';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 export default function AdminNav() {
   const pathname = usePathname();
-  const { tabs } = getAdminFrontendIntegration();
+  const { adminTabItems: tabs } = shellAdapter.navigation;
 
   return (
     <HeaderBar>

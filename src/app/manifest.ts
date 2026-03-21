@@ -1,11 +1,13 @@
-import { APP_DESCRIPTION, APP_NAME } from '@/common/config';
+import { publicConfig } from '@/common/config';
 import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
+  const { name, description } = publicConfig.app;
+
   return {
-    name: APP_NAME,
-    short_name: APP_NAME,
-    description: APP_DESCRIPTION,
+    name,
+    short_name: name,
+    description,
     id: '/',
     scope: '/',
     start_url: '/',
@@ -14,16 +16,8 @@ export default function manifest(): MetadataRoute.Manifest {
     related_applications: [],
     prefer_related_applications: false,
     display_override: ['window-controls-overlay'],
-    launch_handler: {
-      client_mode: 'focus-existing',
-    },
-    icons: [
-      {
-        src: '/favicon.ico',
-        sizes: 'any',
-        type: 'image/x-icon',
-      },
-    ],
+    launch_handler: { client_mode: 'focus-existing' },
+    icons: [{ src: '/favicon.ico', sizes: 'any', type: 'image/x-icon' }],
     theme_color: '#fff',
     background_color: '#fff',
     // "features": ["Cross Platform", "fast", "simple"],

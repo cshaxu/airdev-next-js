@@ -1,39 +1,19 @@
 'use client';
 
-import { useCurrentUserRequired } from '@/frontend/hooks/data/user';
+import { shellAdapter } from '@/adapter/frontend/shell';
+import { useRequiredCurrentUser } from '@/frontend/hooks/data/user';
 import { cn } from '@/frontend/lib/cn';
-import { getShellFrontendIntegration } from '@/integration/frontend/shell';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import type { NavItem } from './NavConfig';
 import UserButton from './UserButton';
-
-function toNavItem(item: {
-  href: string;
-  key: string;
-  label: string;
-  match?: (pathname: string) => boolean;
-  renderIcon: (className: string) => React.ReactNode;
-}): NavItem {
-  return {
-    key: item.key,
-    label: item.label,
-    to: item.href,
-    isActive:
-      item.match ??
-      ((pathname) =>
-        pathname === item.href || pathname.startsWith(`${item.href}/`)),
-    renderIcon: item.renderIcon,
-  };
-}
 
 export default function BottomNavBar() {
   const pathname = usePathname();
-  useCurrentUserRequired();
+  useRequiredCurrentUser();
   const navItemsRef = useRef<HTMLDivElement>(null);
   const [showLabels, setShowLabels] = useState(true);
-  const navItems = getShellFrontendIntegration().primaryItems.map(toNavItem);
+  const navItems = shellAdapter.navigation.primaryItems;
 
   useEffect(() => {
     const element = navItemsRef.current;
@@ -66,20 +46,22 @@ export default function BottomNavBar() {
         ref={navItemsRef}
         className="mx-auto flex h-16 max-w-xl items-center px-2"
       >
-        {navItems.map((tab) => {
-          const active = tab.isActive(pathname);
+        {navItems.map((item) => {
+          const isActive = item.match
+            ? item.match(pathname)
+            : pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
             <Link
-              key={tab.to}
-              href={tab.to}
+              key={item.href}
+              href={item.href}
               className={cn(
                 'flex flex-1 flex-col items-center gap-1 rounded-lg py-1 text-[11px] transition-colors',
-                active ? 'text-foreground' : 'text-muted-foreground'
+                isActive ? 'text-foreground' : 'text-muted-foreground'
               )}
             >
-              {tab.renderIcon('size-5')}
+              {item.renderIcon('size-5')}
               {showLabels && (
-                <span className="whitespace-nowrap">{tab.label}</span>
+                <span className="whitespace-nowrap">{item.label}</span>
               )}
             </Link>
           );

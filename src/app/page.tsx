@@ -1,6 +1,6 @@
+import { shellAdapter } from '@/adapter/frontend/shell';
 import { currentUserServerQueryOptions } from '@/frontend/hooks/data/user-server';
 import { withError } from '@/frontend/utils/page';
-import { getRootFrontendIntegration } from '@/integration/frontend/root';
 import { QueryClient } from '@tanstack/react-query';
 import { redirect } from 'next/navigation';
 
@@ -11,13 +11,11 @@ async function Page() {
   const currentUser = await queryClient.fetchQuery(
     currentUserServerQueryOptions
   );
-  const rootIntegration = getRootFrontendIntegration();
-
   if (currentUser !== null) {
-    redirect(rootIntegration.defaultLoggedInRoute);
+    redirect(shellAdapter.navigation.homeHref);
   }
 
-  const LandingComponent = rootIntegration.LandingComponent;
+  const LandingComponent = shellAdapter.component.LandingComponent;
   return <LandingComponent />;
 }
 

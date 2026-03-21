@@ -1,15 +1,20 @@
+import { databaseAdapter } from '@/adapter/backend/data';
+import { frameworkAdapter } from '@/adapter/backend/framework';
+import { privateConfig } from '@/backend/config';
+import { HEADER_CURRENT_USER_ID_KEY, publicConfig } from '@/common/config';
 import {
   DispatcherOptions,
   commonDispatcherConfig,
   commonHandlerConfig,
 } from '@/framework/callbacks';
 import { Context, ContextUser } from '@/framework/context';
-import { logError } from '@/framework/logging';
-import { getFrameworkIntegration } from '@/integration/backend/framework';
 import { DispatcherConfig, Executor, wait } from '@airent/api';
 import { HandlerConfig } from '@airent/api-next';
 import createHttpError from 'http-errors';
+import { pick } from 'lodash-es';
+import { getServerSession } from 'next-auth';
 import { headers as getHeaders } from 'next/headers';
+import { authOptions } from './nextauth';
 
 export async function mockContext(
   context?: Partial<Context>
@@ -42,8 +47,6 @@ async function authenticator(request: Request): Promise<Context> {
 }
 
 async function getCurrentUser(headers: Headers): Promise<ContextUser | null> {
-  const frameworkIntegration = getFrameworkIntegration();
-
   // load actual current user
   const realCurrentUserPromise = getRealCurrentUser();
   // load became user
@@ -53,33 +56,44 @@ async function getCurrentUser(headers: Headers): Promise<ContextUser | null> {
     becameUserPromise,
   ]);
 
-  const shouldHonorBecameUser = frameworkIntegration.shouldHonorBecameUser
-    ? frameworkIntegration.shouldHonorBecameUser(realCurrentUser)
-    : frameworkIntegration.isServiceLocal || realCurrentUser?.isAdmin;
-
-  if (shouldHonorBecameUser) {
+  if (
+    publicConfig.service.environment === 'local' ||
+    realCurrentUser?.isAdmin
+  ) {
     return becameUser ?? realCurrentUser;
   }
   return realCurrentUser;
 }
 
 export async function getRealCurrentUser(): Promise<ContextUser | null> {
-  const email = await getFrameworkIntegration().getSessionEmail();
+  const session = await getServerSession(authOptions);
+  const email = session?.user?.email ?? null;
   // load actual current user
   return email ? await getNullableUserSafe(email) : null;
 }
 
 async function getBecameUser(headers: Headers): Promise<ContextUser | null> {
-  const { headerCurrentUserIdKey } = getFrameworkIntegration();
-  const userId = getCookieHeaderKey(headers, headerCurrentUserIdKey);
+  const userId = getCookieHeaderKey(headers, HEADER_CURRENT_USER_ID_KEY);
   return userId === null ? null : await getNullableUserSafe(userId);
 }
 
 async function getNullableUserSafe(id: string): Promise<ContextUser | null> {
   try {
-    return await getFrameworkIntegration().getNullableUserSafe(id);
+    const context = await mockContext();
+    const user = await databaseAdapter.getOneUserSafe({ id }, context);
+    if (user === null) {
+      return null;
+    }
+    return pick(user, [
+      'id',
+      'email',
+      'name',
+      'imageUrl',
+      'isAdmin',
+      'createdAt',
+    ]);
   } catch (error) {
-    logError(error, { id });
+    frameworkAdapter.logError(error, { id });
     return null;
   }
 }
@@ -96,38 +110,33 @@ function getCookieHeaderKey(headers: Headers, key: string): string | null {
   return cookieUserId ?? headerUserId;
 }
 
-const CACHED_REQUEST_PATHS = [
-  '/data/create-one-',
-  '/data/update-one-',
-  '/data/delete-one-',
-];
-
 function executorWrapper<PARSED, RESULT>(
   executor: Executor<PARSED, Context, RESULT>,
   options?: DispatcherOptions
 ): Executor<PARSED, Context, RESULT> {
   return async (parsed: PARSED, context: Context) => {
-    const frameworkIntegration = getFrameworkIntegration();
-    const requestCacheIntegration = frameworkIntegration.requestCache;
     const { url } = context;
     const requireRequestCache =
       options?.cacheRequest !== undefined
         ? options.cacheRequest
-        : CACHED_REQUEST_PATHS.some((path) => url.includes(path));
+        : privateConfig.cacheRequestPathPrefixes.some((path) =>
+            url.includes(path)
+          );
 
-    if (requireRequestCache && requestCacheIntegration) {
-      const requestCache = await requestCacheIntegration.createOneSafe(
+    if (requireRequestCache) {
+      const requestCache = await databaseAdapter.createOneRequestCacheSafe(
         parsed,
         context
       );
       if (requestCache === null) {
+        // key conflict
         let delay = 1000;
-        const maxDelay =
-          (frameworkIntegration.requestCacheDelaySeconds ?? 5) * 1000;
+        const maxDelay = 5 * 1000;
         do {
           const { completedAt, response } =
-            await requestCacheIntegration.getOne(parsed, context);
+            await databaseAdapter.getOneRequestCache(parsed, context);
           if (completedAt === null) {
+            // exponential backoff
             await wait(delay);
             delay *= 2;
           } else {
@@ -136,8 +145,9 @@ function executorWrapper<PARSED, RESULT>(
         } while (delay < maxDelay);
         throw createHttpError.RequestTimeout();
       } else {
+        // key acquired
         const result = await executor(parsed, context);
-        await requestCacheIntegration.updateOneSafe(
+        await databaseAdapter.updateOneRequestCacheSafe(
           requestCache,
           result,
           context

@@ -1,14 +1,14 @@
 'use client';
 
+import { shellAdapter } from '@/adapter/frontend/shell';
+import { publicConfig } from '@/common/config';
 import { buttonVariants } from '@/frontend/components/ui/Button';
 import { PixelResizablePanel } from '@/frontend/components/ui/PixelResizable';
 import { cn } from '@/frontend/lib/cn';
-import { getShellFrontendIntegration } from '@/integration/frontend/shell';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import type { NavItem } from './NavConfig';
 import UserButton from './UserButton';
 
 const defaultCollapseMatcher = (pathname: string) =>
@@ -43,32 +43,12 @@ function SideNavLink({ label, icon, to, isFull, isActive }: SideNavLinkProps) {
   );
 }
 
-function toNavItem(item: {
-  href: string;
-  key: string;
-  label: string;
-  match?: (pathname: string) => boolean;
-  renderIcon: (className: string) => React.ReactNode;
-}): NavItem {
-  return {
-    key: item.key,
-    label: item.label,
-    to: item.href,
-    isActive:
-      item.match ??
-      ((pathname) =>
-        pathname === item.href || pathname.startsWith(`${item.href}/`)),
-    renderIcon: item.renderIcon,
-  };
-}
-
 export default function SideNavBar() {
   const pathname = usePathname();
   const lastPathRef = useRef(pathname);
-  const shellIntegration = getShellFrontendIntegration();
-  const navItems = shellIntegration.primaryItems.map(toNavItem);
+  const navItems = shellAdapter.navigation.primaryItems;
   const shouldAutoCollapse =
-    shellIntegration.shouldAutoCollapse ?? defaultCollapseMatcher;
+    shellAdapter.navigation.shouldAutoCollapse ?? defaultCollapseMatcher;
 
   const shouldCollapse = shouldAutoCollapse(pathname);
   const [isCollapsed, setIsCollapsed] = useState(shouldCollapse);
@@ -101,15 +81,15 @@ export default function SideNavBar() {
           )}
         >
           <Image
-            src={shellIntegration.logoSrc}
-            alt={shellIntegration.logoAlt}
+            src={shellAdapter.component.logoSrc}
+            alt="Logo"
             width={40}
             height={40}
             className="size-10"
           />
           {!isCollapsed && (
             <span className="nav-icon text-xl font-bold">
-              {shellIntegration.appName}
+              {publicConfig.app.name}
             </span>
           )}
         </div>
@@ -117,16 +97,21 @@ export default function SideNavBar() {
         <div className="nav-separator mx-4 h-px" />
 
         <nav className="flex flex-col gap-1">
-          {navItems.map((item) => (
-            <SideNavLink
-              key={item.to}
-              label={item.label}
-              to={item.to}
-              icon={item.renderIcon('nav-icon size-4')}
-              isFull={!isCollapsed}
-              isActive={item.isActive(pathname)}
-            />
-          ))}
+          {navItems.map((item) => {
+            const isActive = item.match
+              ? item.match(pathname)
+              : pathname === item.href || pathname.startsWith(`${item.href}/`);
+            return (
+              <SideNavLink
+                key={item.href}
+                label={item.label}
+                to={item.href}
+                icon={item.renderIcon('nav-icon size-4')}
+                isFull={!isCollapsed}
+                isActive={isActive}
+              />
+            );
+          })}
         </nav>
 
         <div className="flex-1" />

@@ -1,10 +1,6 @@
 'use client';
 
-import {
-  IS_SERVICE_PRODUCTION,
-  POSTHOG_API_HOST,
-  POSTHOG_API_TOKEN,
-} from '@/common/config';
+import { publicConfig } from '@/common/config';
 import { parseAsBoolean, useQueryState } from 'nuqs';
 import posthog from 'posthog-js';
 import { useEffect } from 'react';
@@ -12,17 +8,21 @@ import { useEffect } from 'react';
 let initialized = false;
 
 export default function PosthogInit() {
+  const { apiHost, apiToken } = publicConfig.posthog;
   const [forcePosthog] = useQueryState('forcePosthog', parseAsBoolean);
   useEffect(() => {
-    if (initialized || (!IS_SERVICE_PRODUCTION && !forcePosthog)) {
+    if (
+      initialized ||
+      (publicConfig.service.environment !== 'production' && !forcePosthog)
+    ) {
       return;
     }
-    posthog.init(POSTHOG_API_TOKEN, {
-      api_host: POSTHOG_API_HOST,
+    posthog.init(apiToken, {
+      api_host: apiHost,
       capture_pageview: false, // Disable automatic pageview capture, as we capture manually
       capture_pageleave: true, // Enable pageleave capture
     });
     initialized = true;
-  }, [forcePosthog]);
+  }, [forcePosthog, apiToken, apiHost]);
   return null;
 }

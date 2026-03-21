@@ -1,5 +1,6 @@
-import { IS_SERVICE_PRODUCTION } from '@/common/config';
-import { getFrameworkIntegration } from '@/integration/backend/framework';
+import { frameworkAdapter } from '@/adapter/backend/framework';
+import { privateConfig } from '@/backend/config';
+import { HEADER_INTERNAL_SECRET_KEY, publicConfig } from '@/common/config';
 import {
   CommonResponse,
   DispatcherConfig,
@@ -7,15 +8,11 @@ import {
   NormalizedError,
   Parser,
   buildInvalidErrorMessage,
-  logError,
 } from '@airent/api';
 import { HandlerConfig } from '@airent/api-next';
 import createHttpError from 'http-errors';
 import { ZodError } from 'zod';
 import { Context } from './context';
-import { normalizeError } from './logging';
-
-const HEADER_INTERNAL_SECRET_KEY = 'X-INTERNAL-SECRET';
 const HEADER_AUTHORIZATION_KEY = 'authorization';
 
 export type DispatcherOptions = {
@@ -41,13 +38,11 @@ function requestParser(request: Request): Request {
 }
 
 function authorizer(context: Context, options?: DispatcherOptions): void {
-  const frameworkIntegration = getFrameworkIntegration();
-
   // require cron
   if (options?.requireCron === true) {
     if (
       context.headers.get(HEADER_AUTHORIZATION_KEY) ===
-      `Bearer ${frameworkIntegration.cronSecret ?? ''}`
+      `Bearer ${privateConfig.cronSecret ?? ''}`
     ) {
       return;
     }
@@ -58,7 +53,7 @@ function authorizer(context: Context, options?: DispatcherOptions): void {
   if (options?.requireInternal === true) {
     if (
       context.headers.get(HEADER_INTERNAL_SECRET_KEY) ===
-      (frameworkIntegration.internalSecret ?? '')
+      (privateConfig.internalSecret ?? '')
     ) {
       return;
     }
@@ -113,9 +108,9 @@ function errorHandler<DATA, PARSED, RESULT>(
     ...dcRest,
     redactedHeaders: redactHeaders(headers),
   };
-  const normalizedError = normalizeError(error);
-  logError(normalizedError, redactedDc);
-  if (IS_SERVICE_PRODUCTION) {
+  const normalizedError = frameworkAdapter.normalizeError(error);
+  frameworkAdapter.logError(normalizedError, redactedDc);
+  if (publicConfig.service.environment === 'production') {
     delete normalizedError['original'];
     delete normalizedError['stack'];
   }

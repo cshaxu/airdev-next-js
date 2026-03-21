@@ -1,5 +1,8 @@
 'use client';
 
+import { clientQueryAdapter } from '@/adapter/frontend/query';
+import { shellAdapter } from '@/adapter/frontend/shell';
+import { publicConfig } from '@/common/config';
 import GoogleLogo from '@/frontend/components/logos/GoogleLogo';
 import { Button } from '@/frontend/components/ui/Button';
 import {
@@ -10,8 +13,8 @@ import {
   FormMessage,
 } from '@/frontend/components/ui/Form';
 import { Input } from '@/frontend/components/ui/Input';
-import { getAuthFrontendIntegration } from '@/integration/frontend/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { parseAsString, useQueryState } from 'nuqs';
 import { useForm } from 'react-hook-form';
@@ -23,32 +26,42 @@ const formSchema = z.object({ email: z.string().email() });
 type FormSchema = z.infer<typeof formSchema>;
 
 export default function SignInStart({ setEmail }: Props) {
-  const authIntegration = getAuthFrontendIntegration();
-  const [, setStep] = useQueryState('step');
+  const [_, setStep] = useQueryState('step');
   const [next] = useQueryState('next', parseAsString);
+  const { mutate: createVerificationToken, isPending } =
+    clientQueryAdapter.useCreateOneNextauthVerificationToken();
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: { email: '' },
   });
-  const isPending = form.formState.isSubmitting;
 
-  async function onSubmit(data: FormSchema) {
+  function onSubmit(data: FormSchema) {
     const { email } = data;
     setEmail(email);
-    await authIntegration.requestEmailCode(email);
-    await setStep('2');
+    createVerificationToken(
+      { email },
+      {
+        onSuccess: () => {
+          void setStep('2');
+        },
+      }
+    );
   }
 
   return (
     <div className="flex flex-col gap-5 sm:gap-6">
       <h3 className="text-center text-xl font-bold text-[var(--blue-dark-75)] sm:text-2xl">
-        Welcome to {authIntegration.branding.appName}
+        Welcome to {publicConfig.app.name}
       </h3>
       <Button
         variant="outline"
         size="lg"
         className="flex h-12 w-full items-center gap-2 rounded-[12px] px-4 sm:h-11 [&_svg]:size-5"
-        onClick={() => void authIntegration.signInWithGoogle(next || '/')}
+        onClick={() =>
+          void signIn('google', {
+            callbackUrl: next || shellAdapter.navigation.homeHref,
+          })
+        }
         type="button"
       >
         <GoogleLogo />
@@ -68,9 +81,7 @@ export default function SignInStart({ setEmail }: Props) {
 
       <Form {...form}>
         <form
-          onSubmit={(event) => {
-            void form.handleSubmit(onSubmit)(event);
-          }}
+          onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-6"
         >
           <FormField
@@ -101,10 +112,10 @@ export default function SignInStart({ setEmail }: Props) {
             Continue with Email
           </Button>
           <small className="text-muted-foreground mx-auto block w-full max-w-sm text-center text-xs leading-5">
-            Powered by {authIntegration.branding.appOwnerShort}. By signing up,
-            you agree to the{' '}
+            Powered by {publicConfig.app.ownerShort}. By signing up, you agree
+            to the{' '}
             <Link
-              href={authIntegration.termsHref}
+              href={shellAdapter.navigation.termsHref}
               prefetch={false}
               className="underline"
             >
@@ -112,7 +123,7 @@ export default function SignInStart({ setEmail }: Props) {
             </Link>{' '}
             and{' '}
             <Link
-              href={authIntegration.privacyHref}
+              href={shellAdapter.navigation.privacyHref}
               prefetch={false}
               className="underline"
             >

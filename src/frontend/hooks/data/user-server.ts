@@ -1,7 +1,6 @@
-import { getFrameworkIntegration } from '@/integration/backend/framework';
+import { serverApiClientAdapter } from '@/adapter/frontend/server-api-client';
 
 export const currentUserServerQueryOptions = {
   queryKey: ['currentUser'],
-  queryFn: () =>
-    getFrameworkIntegration().currentUserServerQueryOptions.queryFn(),
+  queryFn: serverApiClientAdapter.fetchCurrentUser,
 };

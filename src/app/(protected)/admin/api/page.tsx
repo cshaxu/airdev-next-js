@@ -1,9 +1,9 @@
+import { shellAdapter } from '@/adapter/frontend/shell';
 import { withError } from '@/frontend/utils/page';
-import { getAdminFrontendIntegration } from '@/integration/frontend/admin';
 
 function Page() {
-  const { StudioComponent } = getAdminFrontendIntegration();
-  return <StudioComponent />;
+  const { AirentApiNextStudioComponent } = shellAdapter.component;
+  return <AirentApiNextStudioComponent />;
 }
 
 const SafePage = withError(Page);

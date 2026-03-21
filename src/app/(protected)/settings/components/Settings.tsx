@@ -1,5 +1,7 @@
 'use client';
 
+import { clientQueryAdapter } from '@/adapter';
+import { shellAdapter } from '@/adapter/frontend/shell';
 import DeleteDialog from '@/frontend/components/DeleteDialog';
 import HeaderBar, { HeaderBarItem } from '@/frontend/components/HeaderBar';
 import {
@@ -9,36 +11,30 @@ import {
 } from '@/frontend/components/ui/Avatar';
 import { Button } from '@/frontend/components/ui/Button';
 import { Input } from '@/frontend/components/ui/Input';
-import {
-  useCurrentUserRequired,
-  useDeleteCurrentUser,
-  useUpdateCurrentUser,
-} from '@/frontend/hooks/data/user';
+import { useRequiredCurrentUser } from '@/frontend/hooks/data/user';
 import { cn } from '@/frontend/lib/cn';
-import { getSettingsFrontendIntegration } from '@/integration/frontend/settings';
-import { getShellFrontendIntegration } from '@/integration/frontend/shell';
 import { useQueryClient } from '@tanstack/react-query';
 import { Home, Trash2 } from 'lucide-react';
+import { signOut } from 'next-auth/react';
 import { KeyboardEvent, ReactNode, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
 export default function Settings({ children }: { children?: ReactNode }) {
-  const { data: currentUser } = useCurrentUserRequired();
+  const { data: currentUser } = useRequiredCurrentUser();
   const queryClient = useQueryClient();
-  const settingsIntegration = getSettingsFrontendIntegration();
-  const shellIntegration = getShellFrontendIntegration();
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [isEditingName, setIsEditingName] = useState(false);
   const [draftName, setDraftName] = useState(currentUser.name ?? '');
   const nameInputRef = useRef<HTMLInputElement | null>(null);
-  const { mutate: deleteUser, isPending: isDeleting } = useDeleteCurrentUser();
-  const { mutate: updateCurrentUser, isPending: isUpdatingUser } =
-    useUpdateCurrentUser();
+  const { mutate: deleteUser, isPending: isDeleting } =
+    clientQueryAdapter.useDeleteOneUser();
+  const { mutate: updateUser, isPending: isUpdatingUser } =
+    clientQueryAdapter.useUpdateOneUser();
 
   const breadcrumbs: HeaderBarItem[] = [
     {
       label: '',
-      href: settingsIntegration.dashboardHref,
+      href: shellAdapter.navigation.homeHref,
       icon: <Home className="size-4" />,
     },
     { label: 'Settings' },
@@ -64,7 +60,9 @@ export default function Settings({ children }: { children?: ReactNode }) {
         onSuccess: async () => {
           queryClient.clear();
           toast.success('Account deleted');
-          await shellIntegration.signOut(shellIntegration.logoutCallbackUrl);
+          await signOut({
+            callbackUrl: shellAdapter.navigation.logoutCallbackUrl,
+          });
         },
       }
     );
@@ -93,11 +91,8 @@ export default function Settings({ children }: { children?: ReactNode }) {
       return;
     }
 
-    updateCurrentUser(
-      {
-        params: { id: currentUser.id },
-        body: { name: nextName },
-      },
+    updateUser(
+      { params: { id: currentUser.id }, body: { name: nextName } },
       {
         onSuccess: (updatedUser) => {
           queryClient.setQueryData(['currentUser'], updatedUser);
@@ -124,7 +119,7 @@ export default function Settings({ children }: { children?: ReactNode }) {
     }
   };
 
-  const displayName = currentUser.name?.trim() || currentUser.email || 'User';
+  const displayName = currentUser.name.trim() || currentUser.email || 'User';
   const nameInitials =
     displayName
       .split(' ')

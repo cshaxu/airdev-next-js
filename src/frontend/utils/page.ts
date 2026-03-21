@@ -1,9 +1,5 @@
-import {
-  APP_NAME,
-  IS_SERVICE_PRODUCTION,
-  SERVICE_TITLE_PREFIX,
-} from '@/common/config';
-import { logError } from '@/framework/logging';
+import { frameworkAdapter } from '@/adapter/backend/framework';
+import { publicConfig } from '@/common/config';
 import { NextPageResponse } from '@/frontend/types/props';
 import { NextSearchParams } from '@airent/api-next';
 import { Awaitable } from 'airent';
@@ -13,7 +9,7 @@ import { notFound } from 'next/navigation';
 export async function generatePageMetadata(
   _path: string,
   _searchParams: NextSearchParams = {},
-  defaultTitle: string = APP_NAME
+  defaultTitle: string = publicConfig.app.name
 ): Promise<Metadata> {
   return generateDefaultMetadata(defaultTitle);
 }
@@ -23,8 +19,9 @@ function generateDefaultMetadata(defaultTitle: string): Metadata {
 }
 
 export function pageTitle(title?: string, showProduction?: boolean): string {
-  const prefix = `${!IS_SERVICE_PRODUCTION || showProduction ? `[${SERVICE_TITLE_PREFIX}] ` : ''}`;
-  const name = title?.length ? `${title} | ${APP_NAME}` : APP_NAME;
+  const { app, service } = publicConfig;
+  const prefix = `${service.environment !== 'production' || showProduction ? `[${service.titlePrefix}] ` : ''}`;
+  const name = title?.length ? `${title} | ${app.name}` : app.name;
   return `${prefix}${name}`;
 }
 
@@ -38,7 +35,7 @@ export function withError<
       if (error.message === 'NEXT_REDIRECT') {
         throw error;
       }
-      logError(error);
+      frameworkAdapter.logError(error);
       if (onError) {
         return onError(error);
       } else if (error.status === 404) {

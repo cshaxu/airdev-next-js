@@ -1,12 +1,11 @@
-import { getNextAuthBackendIntegration } from '@/integration/backend/auth';
+import { nextauthAdapter } from '@/adapter/backend/nextauth';
 import GoogleProvider from 'next-auth/providers/google';
 
 export function getGoogleProvider() {
-  const google = getNextAuthBackendIntegration().google;
-  if (!google) {
+  const google = nextauthAdapter.google;
+  if (google === undefined) {
     return null;
   }
-
   return GoogleProvider({
     allowDangerousEmailAccountLinking:
       google.allowDangerousEmailAccountLinking ?? true,

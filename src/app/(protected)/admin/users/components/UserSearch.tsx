@@ -1,20 +1,19 @@
 'use client';
 
-import type { CurrentUser } from '@/common/types/context';
+import { apiClientAdapter } from '@/adapter/frontend/api-client';
+import { clientQueryAdapter } from '@/adapter/frontend/query';
+import { CurrentUser } from '@/common/types/context';
 import { Button } from '@/frontend/components/ui/Button';
 import { Input } from '@/frontend/components/ui/Input';
 import {
   useBecameUser,
   useSetBecameUser,
 } from '@/frontend/stores/becameUserStore';
-import { getAdminFrontendIntegration } from '@/integration/frontend/admin';
-import { getShellFrontendIntegration } from '@/integration/frontend/shell';
+import { useQuery } from '@tanstack/react-query';
 import { Drama, Smile, User, UserKey } from 'lucide-react';
 import { useState } from 'react';
 
 export default function UserSearch() {
-  const adminIntegration = getAdminFrontendIntegration();
-  const shellIntegration = getShellFrontendIntegration();
   const [inputQ, setInputQ] = useState('');
   const [searchQ, setSearchQ] = useState('');
   const [adminTargetUserId, setAdminTargetUserId] = useState<string | null>(
@@ -23,10 +22,11 @@ export default function UserSearch() {
   const became = useBecameUser();
   const setBecameUser = useSetBecameUser();
   const { mutateAsync: updateUser, isPending: isUpdatingUser } =
-    adminIntegration.useUpdateUser();
+    clientQueryAdapter.useUpdateOneUser();
 
-  const { data: users = [], isFetching } =
-    adminIntegration.useSearchUsers(searchQ);
+  const { data: users = [], isFetching } = useQuery(
+    clientQueryAdapter.getManyUsersQueryOptions({ q: searchQ })
+  );
 
   function handleSearch() {
     setSearchQ(inputQ.trim());
@@ -38,30 +38,19 @@ export default function UserSearch() {
     }
   }
 
-  async function handleBecome(user: (typeof users)[number]) {
-    await shellIntegration.becomeUser(user.id);
-    const becameUser: CurrentUser = {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      imageUrl: user.imageUrl,
-      isAdmin: user.isAdmin,
-      createdAt:
-        'createdAt' in user && user.createdAt instanceof Date
-          ? user.createdAt
-          : new Date(0),
-    };
-    setBecameUser(becameUser);
+  async function handleBecome(user: CurrentUser) {
+    await apiClientAdapter.becomeUser(user.id);
+    setBecameUser(user);
     window.location.reload();
   }
 
   async function handleRevertSelf() {
-    await shellIntegration.becomeUser(null);
+    await apiClientAdapter.becomeUser(null);
     setBecameUser(null);
     window.location.reload();
   }
 
-  async function handleToggleAdmin(user: (typeof users)[number]) {
+  async function handleToggleAdmin(user: CurrentUser) {
     setAdminTargetUserId(user.id);
     try {
       await updateUser({
@@ -81,21 +70,17 @@ export default function UserSearch() {
             {became.imageUrl ? (
               <img
                 src={became.imageUrl}
-                alt={became.name ?? became.id}
+                alt={became.name}
                 className="size-full object-cover"
               />
             ) : (
               <div className="bg-primary text-primary-foreground flex size-full items-center justify-center text-sm font-bold">
-                {(became.name ?? became.email ?? '?')
-                  .charAt(0)
-                  ?.toUpperCase() ?? '?'}
+                {(became.name || '?').charAt(0).toUpperCase()}
               </div>
             )}
           </div>
           <div className="flex-1">
-            <p className="text-sm font-medium">
-              Impersonating: {became.name ?? became.id}
-            </p>
+            <p className="text-sm font-medium">Impersonating: {became.name}</p>
           </div>
           <Button
             size="sm"
@@ -135,18 +120,17 @@ export default function UserSearch() {
                 {user.imageUrl ? (
                   <img
                     src={user.imageUrl}
-                    alt={user.name ?? user.email ?? user.id}
+                    alt={user.name}
                     className="size-full object-cover"
                   />
                 ) : (
                   <div className="bg-muted flex size-full items-center justify-center text-xs font-bold">
-                    {(user.name ?? user.email ?? '?').charAt(0).toUpperCase() ||
-                      '?'}
+                    {(user.name || '?').charAt(0).toUpperCase()}
                   </div>
                 )}
               </div>
               <div className="flex-1">
-                <p className="text-sm font-medium">{user.name ?? '-'}</p>
+                <p className="text-sm font-medium">{user.name || '?'}</p>
                 <p className="text-muted-foreground text-xs">{user.id}</p>
               </div>
               <Button

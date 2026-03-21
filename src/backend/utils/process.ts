@@ -1,4 +1,4 @@
-import { logError } from '@/framework/logging';
+import { frameworkAdapter } from '@/adapter/backend/framework';
 import { wait } from '@airent/api';
 import { Awaitable } from 'airent';
 
@@ -11,7 +11,7 @@ export async function retry<T>(
     return await fn();
   } catch (error) {
     if (retries > 0) {
-      logError(error, { retries, delay });
+      frameworkAdapter.logError(error, { retries, delay });
       await wait(delay);
       return retry(fn, retries - 1, delay);
     }
@@ -23,7 +23,7 @@ export async function safe<T>(fn: () => Awaitable<T>, fallback: T): Promise<T> {
   try {
     return await fn();
   } catch (error) {
-    logError(error);
+    frameworkAdapter.logError(error);
     return fallback;
   }
 }

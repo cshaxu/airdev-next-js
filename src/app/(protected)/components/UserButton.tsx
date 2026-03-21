@@ -1,5 +1,7 @@
 'use client';
 
+import { apiClientAdapter } from '@/adapter/frontend/api-client';
+import { shellAdapter } from '@/adapter/frontend/shell';
 import {
   Avatar,
   AvatarFallback,
@@ -22,12 +24,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/frontend/components/ui/DropdownMenu';
+import { useRequiredCurrentUser } from '@/frontend/hooks/data/user';
 import { cn } from '@/frontend/lib/cn';
 import {
   useBecameUser,
   useSetBecameUser,
 } from '@/frontend/stores/becameUserStore';
-import { getShellFrontendIntegration } from '@/integration/frontend/shell';
 import {
   ChevronRightIcon,
   Cog6ToothIcon,
@@ -35,6 +37,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useQueryClient } from '@tanstack/react-query';
 import { LogOut, Wrench } from 'lucide-react';
+import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import {
   ReactNode,
@@ -55,13 +58,12 @@ type BottomNavProps = {
 type Props = SidebarProps | BottomNavProps;
 
 function useUserInitials() {
-  const { useCurrentUserRequired } = getShellFrontendIntegration();
-  const { data: user } = useCurrentUserRequired();
-  const [firstName, lastName] = user.name?.split(' ') ?? [];
+  const { data: user } = useRequiredCurrentUser();
+  const [firstName, lastName] = user.name.split(' ') ?? [];
   const initials =
     firstName && lastName
       ? `${firstName[0]}${lastName[0]}`
-      : (user.email?.[0]?.toUpperCase() ?? 'A');
+      : (user.email.at(0)?.toUpperCase() ?? '?');
 
   return { user, initials };
 }
@@ -170,7 +172,6 @@ function AccountActionRow({
 }
 
 export default function UserButton(props: Props) {
-  const shellIntegration = getShellFrontendIntegration();
   const { user, initials } = useUserInitials();
   const queryClient = useQueryClient();
   const became = useBecameUser();
@@ -188,11 +189,11 @@ export default function UserButton(props: Props) {
 
   const handleSignOut = async () => {
     queryClient.clear();
-    await shellIntegration.signOut(shellIntegration.logoutCallbackUrl);
+    await signOut({ callbackUrl: shellAdapter.navigation.logoutCallbackUrl });
   };
 
   const handleRevertSelf = async () => {
-    await shellIntegration.becomeUser(null);
+    await apiClientAdapter.becomeUser(null);
     setBecameUser(null);
     window.location.reload();
   };
@@ -387,12 +388,12 @@ export default function UserButton(props: Props) {
   };
 
   const mobileActions: AccountAction[] = [
-    ...(user.isAdmin && shellIntegration.adminHref
+    ...(user.isAdmin && shellAdapter.navigation.adminHref
       ? [
           {
             key: 'admin',
             label: 'Admin',
-            href: shellIntegration.adminHref,
+            href: shellAdapter.navigation.adminHref,
             icon: <Wrench className="size-5" />,
           },
         ]
@@ -400,7 +401,7 @@ export default function UserButton(props: Props) {
     {
       key: 'settings',
       label: 'Settings',
-      href: shellIntegration.settingsHref,
+      href: shellAdapter.navigation.settingsHref,
       icon: <Cog6ToothIcon className="size-5" />,
     },
     became
@@ -523,16 +524,16 @@ export default function UserButton(props: Props) {
       >
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {user.isAdmin && shellIntegration.adminHref && (
+        {user.isAdmin && shellAdapter.navigation.adminHref && (
           <DropdownMenuItem asChild>
-            <Link href={shellIntegration.adminHref}>
+            <Link href={shellAdapter.navigation.adminHref}>
               <Wrench className="mr-2 size-4" />
               <span>Admin</span>
             </Link>
           </DropdownMenuItem>
         )}
         <DropdownMenuItem asChild>
-          <Link href={shellIntegration.settingsHref}>
+          <Link href={shellAdapter.navigation.settingsHref}>
             <Cog6ToothIcon className="mr-2 size-4" />
             <span>Settings</span>
           </Link>

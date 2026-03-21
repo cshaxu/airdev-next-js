@@ -1,10 +1,8 @@
-import { DEFAULT_API_BATCH_SIZE } from '@/common/config';
+import { privateConfig } from '@/backend/config';
 import { Context } from '@/framework/context';
 import { CommonResponse, buildInvalidErrorMessage, logInfo } from '@airent/api';
 import { Awaitable, sequential } from 'airent';
 import createHttpError from 'http-errors';
-
-const DEFAULT_DB_BATCH_SIZE = 1000;
 
 export async function batchExecuteByPageParam<ENTITY, RESULT, PAGE_PARAM>(
   loader: (
@@ -13,7 +11,7 @@ export async function batchExecuteByPageParam<ENTITY, RESULT, PAGE_PARAM>(
   ) => Promise<ENTITY[]>,
   executor: (array: ENTITY[], previousResults: RESULT[]) => Promise<RESULT[]>,
   pageParamMapper: (entity: ENTITY) => PAGE_PARAM,
-  batchSize: number = DEFAULT_DB_BATCH_SIZE,
+  batchSize: number = privateConfig.defaultDbBatchSize,
   initialPageParam: PAGE_PARAM | undefined = undefined
 ): Promise<RESULT[]> {
   let pageParam = initialPageParam;
@@ -47,7 +45,7 @@ export async function batchFindFilteredMany<ENTITY, PAGE_PARAM>(
   filter: (entity: ENTITY) => Promise<boolean>,
   initialPageParam: PAGE_PARAM | undefined,
   pageSize: number,
-  batchSize: number = DEFAULT_API_BATCH_SIZE
+  batchSize: number = privateConfig.defaultApiBatchSize
 ): Promise<ENTITY[]> {
   const result = [];
   let batch: ENTITY[] = [];
@@ -68,7 +66,7 @@ export async function batchFindFilteredMany<ENTITY, PAGE_PARAM>(
 export async function filterAsync<T>(
   array: T[],
   filter: (object: T) => Promise<boolean>,
-  batchSize: number = DEFAULT_DB_BATCH_SIZE
+  batchSize: number = privateConfig.defaultDbBatchSize
 ): Promise<T[]> {
   const result = [];
   for (let i = 0; i < array.length; i += batchSize) {
@@ -140,7 +138,7 @@ export async function batchExecuteOneByPageParam<ENTITY, RESULT, PAGE_PARAM>(
   reducer: (results: RESULT[]) => Awaitable<CommonResponse>,
   options: BatchExecuteOneOptions = {}
 ): Promise<CommonResponse> {
-  const batchSize = options.batchSize ?? DEFAULT_DB_BATCH_SIZE;
+  const batchSize = options.batchSize ?? privateConfig.defaultDbBatchSize;
   const isSequential = options.isSequential ?? false;
   const isVerbose = options.isVerbose ?? true;
   const executor = async (array: ENTITY[], previous: RESULT[]) => {

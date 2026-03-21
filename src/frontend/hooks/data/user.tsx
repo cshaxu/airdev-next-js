@@ -1,20 +1,36 @@
 'use client';
 
-import { getSettingsFrontendIntegration } from '@/integration/frontend/settings';
-import { getShellFrontendIntegration } from '@/integration/frontend/shell';
+import { apiClientAdapter } from '@/adapter/frontend/api-client';
+import {
+  queryOptions,
+  useQuery,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 
-export const useCurrentUserRequired = () => {
-  return getShellFrontendIntegration().useCurrentUserRequired();
+const currentUserQueryOptions = {
+  queryKey: ['currentUser'],
+  retry: false,
+  staleTime: 60 * 1000 * 5,
 };
 
-export const useCurrentUserSafe = () => {
-  return getShellFrontendIntegration().useCurrentUserSafe();
-};
+const nullableCurrentUserQueryOptions = queryOptions({
+  ...currentUserQueryOptions,
+  queryFn: apiClientAdapter.getNullableCurrentUser,
+});
 
-export const useUpdateCurrentUser = () => {
-  return getSettingsFrontendIntegration().useUpdateCurrentUser();
-};
+export const useNullableCurrentUser = () =>
+  useQuery(nullableCurrentUserQueryOptions);
 
-export const useDeleteCurrentUser = () => {
-  return getSettingsFrontendIntegration().useDeleteCurrentUser();
-};
+const requiredCurrentUserQueryOptions = queryOptions({
+  ...currentUserQueryOptions,
+  queryFn: () =>
+    apiClientAdapter.getNullableCurrentUser().then((user) => {
+      if (user === null) {
+        throw new Error('A visitor should not access this page');
+      }
+      return user;
+    }),
+});
+
+export const useRequiredCurrentUser = () =>
+  useSuspenseQuery(requiredCurrentUserQueryOptions);

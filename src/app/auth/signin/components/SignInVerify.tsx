@@ -1,5 +1,7 @@
 'use client';
 
+import { clientQueryAdapter } from '@/adapter/frontend/query';
+import { publicConfig } from '@/common/config';
 import { Button } from '@/frontend/components/ui/Button';
 import {
   Form,
@@ -13,28 +15,34 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from '@/frontend/components/ui/InputOTP';
-import { getAuthFrontendIntegration } from '@/integration/frontend/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { signIn } from 'next-auth/react';
 import { parseAsString, useQueryState } from 'nuqs';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 type Props = { email: string };
 
-const verificationCodeLength = 5;
-const formSchema = z.object({
-  code: z.string().length(verificationCodeLength, {
-    message: 'Please enter a valid code',
-  }),
-});
-type FormSchema = z.infer<typeof formSchema>;
+type FormSchema = { code: string };
 
 export default function SignInVerify({ email }: Props) {
-  const authIntegration = getAuthFrontendIntegration();
+  const { verificationCodeLength } = publicConfig.auth;
   const [next] = useQueryState('next', parseAsString);
   const [isSigningIn, setIsSigningIn] = useState(false);
-  const [isResendingCode, setIsResendingCode] = useState(false);
+  const {
+    mutate: createVerificationToken,
+    isPending: isCreatingVerificationToken,
+  } = clientQueryAdapter.useCreateOneNextauthVerificationToken();
+  const formSchema = useMemo(
+    () =>
+      z.object({
+        code: z.string().length(verificationCodeLength, {
+          message: 'Please enter a valid code',
+        }),
+      }),
+    [verificationCodeLength]
+  );
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: { code: '' },
@@ -48,21 +56,13 @@ export default function SignInVerify({ email }: Props) {
       setIsSigningIn(true);
       const { code } = values;
 
-      const result = await authIntegration.verifyEmailCode({
-        callbackUrl: next || '/',
-        code,
-        email,
-      });
-
-      if (!result.ok) {
-        form.setError('code', {
-          message: result.errorMessage ?? 'Invalid code',
-        });
-      }
-
-      setIsSigningIn(false);
+      await signIn('credentials', { email, code, callbackUrl: next || '/' })
+        .catch(() => {
+          form.setError('code', { message: 'Invalid code' });
+        })
+        .finally(() => setIsSigningIn(false));
     },
-    [authIntegration, email, next, isSigningIn, form]
+    [email, next, isSigningIn, form]
   );
 
   const handleComplete = useCallback(
@@ -73,14 +73,18 @@ export default function SignInVerify({ email }: Props) {
     [form, onSubmit]
   );
 
-  const resendCode = async () => {
-    if (isResendingCode) {
+  const resendCode = () => {
+    if (isCreatingVerificationToken) {
       return;
     }
-    setIsResendingCode(true);
-    await authIntegration.requestEmailCode(email);
-    form.reset({ code: '' });
-    setIsResendingCode(false);
+    createVerificationToken(
+      { email },
+      {
+        onSuccess: () => {
+          form.reset({ code: undefined });
+        },
+      }
+    );
   };
 
   return (
@@ -91,9 +95,7 @@ export default function SignInVerify({ email }: Props) {
       <Form {...form}>
         <form
           className="flex flex-col gap-y-4"
-          onSubmit={(event) => {
-            void form.handleSubmit(onSubmit)(event);
-          }}
+          onSubmit={form.handleSubmit(onSubmit)}
         >
           <FormField
             control={form.control}
@@ -102,21 +104,21 @@ export default function SignInVerify({ email }: Props) {
               <FormItem className="mb-4 flex flex-col items-center">
                 <FormControl>
                   <InputOTP
-                    maxLength={authIntegration.verificationCodeLength}
+                    maxLength={verificationCodeLength}
                     {...field}
                     className="mx-auto w-full justify-center"
                     onComplete={handleComplete}
                   >
-                    {Array.from(
-                      Array(authIntegration.verificationCodeLength).keys()
-                    ).map((i) => (
-                      <InputOTPGroup key={i}>
-                        <InputOTPSlot
-                          index={i}
-                          className="size-11 bg-white text-base font-semibold text-black sm:size-12"
-                        />
-                      </InputOTPGroup>
-                    ))}
+                    {Array.from(Array(verificationCodeLength).keys()).map(
+                      (i) => (
+                        <InputOTPGroup key={i}>
+                          <InputOTPSlot
+                            index={i}
+                            className="size-11 bg-white text-base font-semibold text-black sm:size-12"
+                          />
+                        </InputOTPGroup>
+                      )
+                    )}
                   </InputOTP>
                 </FormControl>
                 <FormMessage />
@@ -136,8 +138,10 @@ export default function SignInVerify({ email }: Props) {
             type="button"
             variant="link"
             size="xl"
-            disabled={isResendingCode || form.formState.isSubmitting}
-            onClick={() => void resendCode()}
+            disabled={
+              isCreatingVerificationToken || form.formState.isSubmitting
+            }
+            onClick={resendCode}
           >
             Resend code
           </Button>

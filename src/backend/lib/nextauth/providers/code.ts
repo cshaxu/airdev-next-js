@@ -1,9 +1,6 @@
+import { databaseAdapter, type DatabaseUser } from '@/adapter/backend/data';
 import { mockContext } from '@/backend/lib/framework';
-import {
-  getNextAuthBackendIntegration,
-  type AuthAppUser,
-} from '@/integration/backend/auth';
-import type { AdapterUser } from 'next-auth/adapters';
+import { pick } from 'lodash-es';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 // Note:
@@ -22,40 +19,36 @@ export const codeProvider = CredentialsProvider({
   async authorize(
     credentials: Record<string | number | symbol, string> | undefined
   ) {
-    if (credentials === undefined || !credentials.email || !credentials.code) {
+    if (credentials === undefined) {
       return null;
     }
     const context = await mockContext();
-    const integration = getNextAuthBackendIntegration();
-    const nextauthVerificationToken = await integration.verificationTokens.use(
-      credentials.email,
-      credentials.code
-    );
+    const nextauthVerificationToken =
+      await databaseAdapter.deleteOneNextauthVerificationTokenSafe(
+        { code: credentials.code, email: credentials.email },
+        context
+      );
     if (nextauthVerificationToken === null) {
       return null;
     }
     const { identifier: email } = nextauthVerificationToken;
-    const user = await integration.users.createFromEmailCode(
-      email,
-      context.time
+    const existingUser = await databaseAdapter.getOneUserSafe(
+      { id: email },
+      context
     );
-    return buildAdapterUser(user, 'email');
+    const user =
+      existingUser ?? (await databaseAdapter.createOneUser({ email }, context));
+    const verifiedUser = await databaseAdapter.updateOneUser(
+      user,
+      { emailVerified: context.time },
+      context
+    );
+    return buildAdapterUser(verifiedUser, 'email');
   },
 });
 
-export const buildAdapterUser = (
-  user: AuthAppUser,
-  source: 'google' | 'email'
-): AdapterUser => {
-  const integration = getNextAuthBackendIntegration();
-  return integration.mapAuthUserToAdapterUser
-    ? (integration.mapAuthUserToAdapterUser(user, source) as AdapterUser)
-    : ({
-        id: user.id,
-        email: user.email ?? 'account@example.com',
-        emailVerified: user.emailVerified ?? null,
-        image: user.imageUrl ?? null,
-        name: user.name ?? null,
-        source,
-      } as AdapterUser);
-};
+const buildAdapterUser = (user: DatabaseUser, source: 'google' | 'email') => ({
+  source,
+  image: user.imageUrl,
+  ...pick(user, ['id', 'email', 'emailVerified', 'name', 'imageUrl']),
+});
