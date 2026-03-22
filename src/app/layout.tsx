@@ -22,8 +22,8 @@ export const metadata = { title: pageTitle(), description: '' };
 
 export default async function RootLayout({ children }: ReactNodeProps) {
   return (
-    <html lang="en" className={frutiger.className}>
-      <body suppressHydrationWarning>
+    <html lang="en" className={frutiger.className} suppressHydrationWarning>
+      <body>
         <ErrorBoundary>
           <ReactQueryProvider>
             <ThemeProvider

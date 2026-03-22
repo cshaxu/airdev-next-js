@@ -1,3 +1,4 @@
+import { initializePermission } from '@/app/(protected)/initializePermission';
 import CurrentUserProvider from '@/frontend/providers/CurrentUserProvider';
 import { ReactNodeProps } from '@/frontend/types/props';
 import {
@@ -12,6 +13,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function ProtectedLayout({ children }: ReactNodeProps) {
   const queryClient = new QueryClient();
+  await initializePermission(queryClient);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

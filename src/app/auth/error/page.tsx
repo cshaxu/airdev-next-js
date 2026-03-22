@@ -3,8 +3,9 @@
 import { publicConfig } from '@/common/config';
 import { withError } from '@/frontend/utils/page';
 import { parseAsString, useQueryState } from 'nuqs';
+import { Suspense } from 'react';
 
-function Page() {
+function ErrorPageContent() {
   const [error] = useQueryState('error', parseAsString);
   const isVerificationError = error === 'Verification';
 
@@ -31,6 +32,14 @@ function Page() {
         )}
       </div>
     </div>
+  );
+}
+
+function Page() {
+  return (
+    <Suspense>
+      <ErrorPageContent />
+    </Suspense>
   );
 }
 

@@ -3,6 +3,7 @@ import { currentUserServerQueryOptions } from '@/frontend/hooks/data/user-server
 import { withError } from '@/frontend/utils/page';
 import { QueryClient } from '@tanstack/react-query';
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
 import SignInSteps from './components/SignInSteps';
 
 export const dynamic = 'force-dynamic';
@@ -26,7 +27,11 @@ async function Page({ searchParams }: SignInPageProps) {
     redirect(next || shellAdapter.navigation.homeHref);
   }
 
-  return <SignInSteps />;
+  return (
+    <Suspense>
+      <SignInSteps />
+    </Suspense>
+  );
 }
 
 const SafePage = withError(Page);
