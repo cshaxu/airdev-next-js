@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/frontend/lib/cn';
+import { cn } from '@airdev/next/frontend/lib/cn';
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
 import { CheckIcon, ChevronRightIcon, CircleIcon } from 'lucide-react';
 import * as React from 'react';

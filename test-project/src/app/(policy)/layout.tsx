@@ -1,5 +1,4 @@
-import { ReactNodeProps } from '@/frontend/types/props';
+import '@/airdev/setup-server';
 
-export default function PolicyLayout({ children }: ReactNodeProps) {
-  return <main className="h-screen overflow-y-auto px-6 py-6">{children}</main>;
-}
+export * from '@airdev/next/app/(policy)/layout';
+export { default } from '@airdev/next/app/(policy)/layout';

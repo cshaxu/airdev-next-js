@@ -4,7 +4,7 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { XIcon } from 'lucide-react';
 import * as React from 'react';
 
-import { cn } from '@/frontend/lib/cn';
+import { cn } from '@airdev/next/frontend/lib/cn';
 
 function BottomPopupSheet(
   props: React.ComponentProps<typeof DialogPrimitive.Root>

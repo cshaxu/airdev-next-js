@@ -1,13 +1,13 @@
-import { databaseAdapter } from '@/adapter/backend/data';
-import { frameworkAdapter } from '@/adapter/backend/framework';
-import { privateConfig } from '@/backend/config';
-import { HEADER_CURRENT_USER_ID_KEY, publicConfig } from '@/common/config';
+import { databaseAdapter } from '@airdev/next/adapter/backend/data';
+import { frameworkAdapter } from '@airdev/next/adapter/backend/framework';
+import { privateConfig } from '@airdev/next/backend/config';
+import { HEADER_CURRENT_USER_ID_KEY, publicConfig } from '@airdev/next/common/config';
 import {
   DispatcherOptions,
   commonDispatcherConfig,
   commonHandlerConfig,
-} from '@/framework/callbacks';
-import { Context, ContextUser, mockContext } from '@/framework/context';
+} from '@airdev/next/framework/callbacks';
+import { Context, ContextUser, mockContext } from '@airdev/next/framework/context';
 import { DispatcherConfig, Executor, wait } from '@airent/api';
 import { HandlerConfig } from '@airent/api-next';
 import createHttpError from 'http-errors';
@@ -15,7 +15,7 @@ import { pick } from 'lodash-es';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './nextauth';
 
-export { mockContext } from '@/framework/context';
+export { mockContext } from '@airdev/next/framework/context';
 
 export const dispatcherConfig: Pick<
   DispatcherConfig<DispatcherOptions, Context, any, any, any, any>,

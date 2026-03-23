@@ -1,7 +1,7 @@
 'use client';
 
-import { publicConfig } from '@/common/config';
-import { withError } from '@/frontend/utils/page';
+import { publicConfig } from '@airdev/next/common/config';
+import { withError } from '@airdev/next/frontend/utils/page';
 import { parseAsString, useQueryState } from 'nuqs';
 import { Suspense } from 'react';
 

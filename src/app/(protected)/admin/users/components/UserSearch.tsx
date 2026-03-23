@@ -1,14 +1,14 @@
 'use client';
 
-import { apiClientAdapter } from '@/adapter/frontend/api-client';
-import { clientQueryAdapter } from '@/adapter/frontend/query';
-import { CurrentUser } from '@/common/types/context';
-import { Button } from '@/frontend/components/ui/Button';
-import { Input } from '@/frontend/components/ui/Input';
+import { apiClientAdapter } from '@airdev/next/adapter/frontend/api-client';
+import { clientQueryAdapter } from '@airdev/next/adapter/frontend/query';
+import { CurrentUser } from '@airdev/next/common/types/context';
+import { Button } from '@airdev/next/frontend/components/ui/Button';
+import { Input } from '@airdev/next/frontend/components/ui/Input';
 import {
   useBecameUser,
   useSetBecameUser,
-} from '@/frontend/stores/becameUserStore';
+} from '@airdev/next/frontend/stores/becameUserStore';
 import { useQuery } from '@tanstack/react-query';
 import { Drama, Smile, User, UserKey } from 'lucide-react';
 import { useState } from 'react';

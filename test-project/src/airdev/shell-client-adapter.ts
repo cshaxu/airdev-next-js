@@ -1,8 +1,7 @@
-import LandingPageView from '@/app/components/LandingPageView';
+import type { ShellAdapter } from '@airdev/next/adapter/frontend/shell';
 import { MAIN_NAV_ITEMS } from '@/app/(protected)/components/NavConfig';
-import type { ShellAdapter } from './types';
 
-const defaultShellAdapter: ShellAdapter = {
+export const airdevClientShellAdapter: ShellAdapter = {
   navigation: {
     primaryItems: MAIN_NAV_ITEMS.map((item) => ({
       key: item.key,
@@ -26,30 +25,7 @@ const defaultShellAdapter: ShellAdapter = {
   },
   component: {
     logoSrc: '/logo.png',
-    LandingComponent: LandingPageView,
+    LandingComponent: () => null,
     AirentApiNextStudioComponent: () => null,
   },
 };
-
-export let shellAdapter: ShellAdapter = defaultShellAdapter;
-
-export function setShellAdapter(adapter: ShellAdapter): void {
-  shellAdapter = {
-    ...defaultShellAdapter,
-    ...adapter,
-    navigation: {
-      ...defaultShellAdapter.navigation,
-      ...adapter.navigation,
-      primaryItems:
-        adapter.navigation?.primaryItems ??
-        defaultShellAdapter.navigation.primaryItems,
-      adminTabItems:
-        adapter.navigation?.adminTabItems ??
-        defaultShellAdapter.navigation.adminTabItems,
-    },
-    component: {
-      ...defaultShellAdapter.component,
-      ...adapter.component,
-    },
-  };
-}

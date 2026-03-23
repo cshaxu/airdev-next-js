@@ -1,8 +1,8 @@
 'use client';
 
-import { shellAdapter } from '@/adapter/frontend/shell';
-import { useRequiredCurrentUser } from '@/frontend/hooks/data/user';
-import { cn } from '@/frontend/lib/cn';
+import { shellAdapter } from '@airdev/next/adapter/frontend/shell';
+import { useRequiredCurrentUser } from '@airdev/next/frontend/hooks/data/user';
+import { cn } from '@airdev/next/frontend/lib/cn';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';

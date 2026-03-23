@@ -1,18 +1,18 @@
 'use client';
 
-import { clientQueryAdapter } from '@/adapter/frontend/query';
-import { shellAdapter } from '@/adapter/frontend/shell';
-import { publicConfig } from '@/common/config';
-import GoogleLogo from '@/frontend/components/logos/GoogleLogo';
-import { Button } from '@/frontend/components/ui/Button';
+import { clientQueryAdapter } from '@airdev/next/adapter/frontend/query';
+import { shellAdapter } from '@airdev/next/adapter/frontend/shell';
+import { publicConfig } from '@airdev/next/common/config';
+import GoogleLogo from '@airdev/next/frontend/components/logos/GoogleLogo';
+import { Button } from '@airdev/next/frontend/components/ui/Button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from '@/frontend/components/ui/Form';
-import { Input } from '@/frontend/components/ui/Input';
+} from '@airdev/next/frontend/components/ui/Form';
+import { Input } from '@airdev/next/frontend/components/ui/Input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';

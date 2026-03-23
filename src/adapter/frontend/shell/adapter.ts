@@ -1,7 +1,7 @@
 import {
   bootstrapShellComponentAdapter,
   bootstrapShellNavigationAdapter,
-} from '@/bootstrap/frontend/shell';
+} from '@airdev/next/bootstrap/frontend/shell';
 import type { ShellAdapter } from './index';
 
 const defaultShellAdapter: ShellAdapter = {

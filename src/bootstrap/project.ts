@@ -1,5 +1,5 @@
-import type { PrivateConfig } from '@/adapter/private-config';
-import type { PublicConfig } from '@/adapter/public-config';
+import type { PrivateConfig } from '@airdev/next/adapter/private-config';
+import type { PublicConfig } from '@airdev/next/adapter/public-config';
 
 export const bootstrapPublicConfig: PublicConfig = {
   app: {

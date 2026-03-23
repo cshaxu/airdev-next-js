@@ -1,9 +1,4 @@
-import { withError } from '@/frontend/utils/page';
-import AirentApiNextStudio from '@/generated/airent-api-next-studio';
+import '@/airdev/setup-server';
 
-async function Page() {
-  return <AirentApiNextStudio />;
-}
-
-const SafePage = withError(Page);
-export default SafePage;
+export * from '@airdev/next/app/(protected)/admin/api/page';
+export { default } from '@airdev/next/app/(protected)/admin/api/page';

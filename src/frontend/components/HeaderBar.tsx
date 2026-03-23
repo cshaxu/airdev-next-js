@@ -1,9 +1,9 @@
 'use client';
 
-import TranslateButton from '@/frontend/components/TranslateButton';
-import { ResponsiveBreadcrumb } from '@/frontend/components/ui/ResponsiveBreadcrumb';
-// import useChatOpenStore from '@/frontend/stores/useChatOpenStore';
-import { ReactNodeProps } from '@/frontend/types/props';
+import TranslateButton from '@airdev/next/frontend/components/TranslateButton';
+import { ResponsiveBreadcrumb } from '@airdev/next/frontend/components/ui/ResponsiveBreadcrumb';
+// import useChatOpenStore from '@airdev/next/frontend/stores/useChatOpenStore';
+import { ReactNodeProps } from '@airdev/next/frontend/types/props';
 
 export type HeaderBarItem = {
   label: string;

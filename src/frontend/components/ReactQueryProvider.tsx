@@ -1,7 +1,7 @@
 'use client';
 
-import useIsBrowser from '@/frontend/hooks/useIsBrowser';
-import { ReactNodeProps } from '@/frontend/types/props';
+import useIsBrowser from '@airdev/next/frontend/hooks/useIsBrowser';
+import { ReactNodeProps } from '@airdev/next/frontend/types/props';
 import {
   isServer,
   QueryClient,

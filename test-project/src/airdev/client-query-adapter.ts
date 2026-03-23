@@ -1,14 +1,14 @@
+import type { ClientQueryAdapter } from '@airdev/next/adapter/frontend/query';
 import {
   UserQueries,
   useDeleteOneUser,
   useUpdateOneUser,
 } from '@/generated/tanstack-hooks/user-client';
 import { useCreateOneNextauthVerificationToken } from '@/generated/tanstack-hooks/nextauth-verification-token-client';
-import type { ClientQueryAdapter } from './types';
 
-export const defaultClientQueryAdapter: ClientQueryAdapter = {
+export const airdevClientQueryAdapter: ClientQueryAdapter = {
   getManyUsersQueryOptions: ({ q }) =>
-    UserQueries.getMany({ q }) as ReturnType<
+    UserQueries.getMany({ q }) as unknown as ReturnType<
       ClientQueryAdapter['getManyUsersQueryOptions']
     >,
   useDeleteOneUser:
@@ -18,9 +18,3 @@ export const defaultClientQueryAdapter: ClientQueryAdapter = {
   useCreateOneNextauthVerificationToken:
     useCreateOneNextauthVerificationToken as ClientQueryAdapter['useCreateOneNextauthVerificationToken'],
 };
-
-export let clientQueryAdapter: ClientQueryAdapter = defaultClientQueryAdapter;
-
-export function setClientQueryAdapter(adapter: ClientQueryAdapter): void {
-  clientQueryAdapter = adapter;
-}

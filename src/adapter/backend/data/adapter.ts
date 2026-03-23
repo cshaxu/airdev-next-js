@@ -1,4 +1,4 @@
-import { bootstrapDatabaseAdapter } from '@/bootstrap/backend/data';
+import { bootstrapDatabaseAdapter } from '@airdev/next/bootstrap/backend/data';
 import type { DatabaseAdapter } from './types';
 
 export let databaseAdapter: DatabaseAdapter = bootstrapDatabaseAdapter;

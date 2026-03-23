@@ -3,7 +3,7 @@
 export {
   publicConfigAdapter as publicConfig,
   type Environment,
-} from '@/adapter/public-config';
+} from '@airdev/next/adapter/public-config';
 
 export const HEADER_CURRENT_USER_ID_KEY = 'X-CURRENT-USER-ID';
 export const HEADER_INTERNAL_SECRET_KEY = 'X-INTERNAL-SECRET';

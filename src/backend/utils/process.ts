@@ -1,4 +1,4 @@
-import { frameworkAdapter } from '@/adapter/backend/framework';
+import { frameworkAdapter } from '@airdev/next/adapter/backend/framework';
 import { wait } from '@airent/api';
 import { Awaitable } from 'airent';
 

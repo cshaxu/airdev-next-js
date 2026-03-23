@@ -1,7 +1,3 @@
-import { nextauthAdapter } from '@/adapter/backend/nextauth';
-import { PagesOptions } from 'next-auth';
+import '@/airdev/setup-server';
 
-export const pages: Partial<PagesOptions> = {
-  signIn: nextauthAdapter.signInPath,
-  error: nextauthAdapter.errorPath, // Error code passed in query string as ?error=
-};
+export * from '@airdev/next/backend/lib/nextauth/pages';

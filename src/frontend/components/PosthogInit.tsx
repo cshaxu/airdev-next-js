@@ -1,6 +1,6 @@
 'use client';
 
-import { publicConfig } from '@/common/config';
+import { publicConfig } from '@airdev/next/common/config';
 import { parseAsBoolean, useQueryState } from 'nuqs';
 import posthog from 'posthog-js';
 import { useEffect } from 'react';

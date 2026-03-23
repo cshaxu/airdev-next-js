@@ -1,6 +1,6 @@
-import { frameworkAdapter } from '@/adapter/backend/framework';
-import { publicConfig } from '@/common/config';
-import { NextPageResponse } from '@/frontend/types/props';
+import { frameworkAdapter } from '@airdev/next/adapter/backend/framework';
+import { publicConfig } from '@airdev/next/common/config';
+import { NextPageResponse } from '@airdev/next/frontend/types/props';
 import { NextSearchParams } from '@airent/api-next';
 import { Awaitable } from 'airent';
 import { Metadata } from 'next';

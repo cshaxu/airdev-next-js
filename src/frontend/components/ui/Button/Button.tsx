@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/frontend/lib/cn';
+import { cn } from '@airdev/next/frontend/lib/cn';
 import { Slot } from '@radix-ui/react-slot';
 import { type VariantProps } from 'class-variance-authority';
 import { Loader2 } from 'lucide-react';

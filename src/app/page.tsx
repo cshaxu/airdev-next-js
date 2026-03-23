@@ -1,7 +1,7 @@
-import { shellAdapter } from '@/adapter/frontend/shell';
-import { SESSION_TOKEN_COOKIE_NAME } from '@/backend/lib/nextauth/cookies';
-import { currentUserServerQueryOptions } from '@/frontend/hooks/data/user-server';
-import { withError } from '@/frontend/utils/page';
+import { shellAdapter } from '@airdev/next/adapter/frontend/shell';
+import { SESSION_TOKEN_COOKIE_NAME } from '@airdev/next/backend/lib/nextauth/cookies';
+import { currentUserServerQueryOptions } from '@airdev/next/frontend/hooks/data/user-server';
+import { withError } from '@airdev/next/frontend/utils/page';
 import { QueryClient } from '@tanstack/react-query';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';

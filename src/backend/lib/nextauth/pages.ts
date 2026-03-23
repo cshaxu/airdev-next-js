@@ -1,4 +1,4 @@
-import { nextauthAdapter } from '@/adapter/backend/nextauth';
+import { nextauthAdapter } from '@airdev/next/adapter/backend/nextauth';
 import { PagesOptions } from 'next-auth';
 
 export const pages: Partial<PagesOptions> = {

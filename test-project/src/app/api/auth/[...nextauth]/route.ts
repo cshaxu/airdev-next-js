@@ -1,6 +1,3 @@
-import { authOptions } from '@/backend/lib/nextauth';
-import NextAuth from 'next-auth';
+import '@/airdev/setup-server';
 
-const handler = NextAuth(authOptions);
-
-export { handler as GET, handler as POST };
+export * from '@airdev/next/app/api/auth/[...nextauth]/route';

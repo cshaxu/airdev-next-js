@@ -1,12 +1,12 @@
 'use client';
 
-import { apiClientAdapter } from '@/adapter/frontend/api-client';
-import { shellAdapter } from '@/adapter/frontend/shell';
+import { apiClientAdapter } from '@airdev/next/adapter/frontend/api-client';
+import { shellAdapter } from '@airdev/next/adapter/frontend/shell';
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from '@/frontend/components/ui/Avatar';
+} from '@airdev/next/frontend/components/ui/Avatar';
 import {
   BottomPopupSheet,
   BottomPopupSheetContent,
@@ -14,8 +14,8 @@ import {
   BottomPopupSheetHeader,
   BottomPopupSheetTitle,
   BottomPopupSheetTrigger,
-} from '@/frontend/components/ui/BottomPopupSheet';
-import { Button } from '@/frontend/components/ui/Button';
+} from '@airdev/next/frontend/components/ui/BottomPopupSheet';
+import { Button } from '@airdev/next/frontend/components/ui/Button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,13 +23,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/frontend/components/ui/DropdownMenu';
-import { useRequiredCurrentUser } from '@/frontend/hooks/data/user';
-import { cn } from '@/frontend/lib/cn';
+} from '@airdev/next/frontend/components/ui/DropdownMenu';
+import { useRequiredCurrentUser } from '@airdev/next/frontend/hooks/data/user';
+import { cn } from '@airdev/next/frontend/lib/cn';
 import {
   useBecameUser,
   useSetBecameUser,
-} from '@/frontend/stores/becameUserStore';
+} from '@airdev/next/frontend/stores/becameUserStore';
 import {
   ChevronRightIcon,
   Cog6ToothIcon,

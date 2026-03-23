@@ -1,18 +1,18 @@
 'use client';
 
-import { clientQueryAdapter } from '@/adapter';
-import { shellAdapter } from '@/adapter/frontend/shell';
-import DeleteDialog from '@/frontend/components/DeleteDialog';
-import HeaderBar, { HeaderBarItem } from '@/frontend/components/HeaderBar';
+import { clientQueryAdapter } from '@airdev/next/adapter';
+import { shellAdapter } from '@airdev/next/adapter/frontend/shell';
+import DeleteDialog from '@airdev/next/frontend/components/DeleteDialog';
+import HeaderBar, { HeaderBarItem } from '@airdev/next/frontend/components/HeaderBar';
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from '@/frontend/components/ui/Avatar';
-import { Button } from '@/frontend/components/ui/Button';
-import { Input } from '@/frontend/components/ui/Input';
-import { useRequiredCurrentUser } from '@/frontend/hooks/data/user';
-import { cn } from '@/frontend/lib/cn';
+} from '@airdev/next/frontend/components/ui/Avatar';
+import { Button } from '@airdev/next/frontend/components/ui/Button';
+import { Input } from '@airdev/next/frontend/components/ui/Input';
+import { useRequiredCurrentUser } from '@airdev/next/frontend/hooks/data/user';
+import { cn } from '@airdev/next/frontend/lib/cn';
 import { useQueryClient } from '@tanstack/react-query';
 import { Home, Trash2 } from 'lucide-react';
 import { signOut } from 'next-auth/react';

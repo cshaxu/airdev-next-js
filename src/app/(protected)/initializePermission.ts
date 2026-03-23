@@ -1,5 +1,5 @@
-import { nextauthAdapter } from '@/adapter/backend/nextauth';
-import { currentUserServerQueryOptions } from '@/frontend/hooks/data/user-server';
+import { nextauthAdapter } from '@airdev/next/adapter/backend/nextauth';
+import { currentUserServerQueryOptions } from '@airdev/next/frontend/hooks/data/user-server';
 import { QueryClient } from '@tanstack/react-query';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';

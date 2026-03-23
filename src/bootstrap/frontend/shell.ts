@@ -1,7 +1,7 @@
 import type {
   ShellComponentAdapter,
   ShellNavigationAdapter,
-} from '@/adapter/frontend/shell';
+} from '@airdev/next/adapter/frontend/shell';
 import { House } from 'lucide-react';
 import { createElement } from 'react';
 

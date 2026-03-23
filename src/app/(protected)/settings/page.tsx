@@ -1,4 +1,4 @@
-import { withError } from '@/frontend/utils/page';
+import { withError } from '@airdev/next/frontend/utils/page';
 import Settings from './components/Settings';
 
 async function Page() {

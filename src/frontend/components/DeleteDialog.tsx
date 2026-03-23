@@ -9,8 +9,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/frontend/components/ui/AlertDialog';
-import { Input } from '@/frontend/components/ui/Input';
+} from '@airdev/next/frontend/components/ui/AlertDialog';
+import { Input } from '@airdev/next/frontend/components/ui/Input';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 

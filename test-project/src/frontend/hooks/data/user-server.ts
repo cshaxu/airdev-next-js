@@ -1,6 +1,3 @@
-import { serverApiClientAdapter } from '@/adapter/frontend/server-api-client';
+import '@/airdev/setup-server';
 
-export const currentUserServerQueryOptions = {
-  queryKey: ['currentUser'],
-  queryFn: serverApiClientAdapter.fetchCurrentUser,
-};
+export * from '@airdev/next/frontend/hooks/data/user-server';

@@ -1,4 +1,4 @@
-import { measureElementWidth } from '@/frontend/utils/element';
+import { measureElementWidth } from '@airdev/next/frontend/utils/element';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {

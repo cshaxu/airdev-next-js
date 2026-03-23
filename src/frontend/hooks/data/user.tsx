@@ -1,6 +1,6 @@
 'use client';
 
-import { apiClientAdapter } from '@/adapter/frontend/api-client';
+import { apiClientAdapter } from '@airdev/next/adapter/frontend/api-client';
 import {
   queryOptions,
   useQuery,

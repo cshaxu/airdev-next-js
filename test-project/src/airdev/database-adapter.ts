@@ -1,3 +1,4 @@
+import type { DatabaseAdapter } from '@airdev/next/adapter/backend/data';
 import { NextauthAccountEntity } from '@/backend/entities/nextauth-account';
 import { NextauthSessionEntity } from '@/backend/entities/nextauth-session';
 import { SystemRequestCacheEntity } from '@/backend/entities/system-request-cache';
@@ -6,9 +7,8 @@ import NextauthVerificationTokenService from '@/backend/services/data/nextauth-v
 import SystemRequestCacheService from '@/backend/services/data/system-request-cache';
 import UserService from '@/backend/services/data/user';
 import { purify } from '@airent/api';
-import type { DatabaseAdapter } from './types';
 
-const defaultDatabaseAdapter: DatabaseAdapter = {
+export const airdevDatabaseAdapter: DatabaseAdapter = {
   getOneUserSafe: (params, context) => UserService.getOneSafe(params, context),
   createOneUser: async (body, context) => {
     const user = await UserService.findOrCreateOne(body.email, context);
@@ -89,9 +89,3 @@ const defaultDatabaseAdapter: DatabaseAdapter = {
     await SystemRequestCacheService.updateOneSafe(one, response, context);
   },
 };
-
-export let databaseAdapter: DatabaseAdapter = defaultDatabaseAdapter;
-
-export function setDatabaseAdapter(adapter: DatabaseAdapter): void {
-  databaseAdapter = adapter;
-}

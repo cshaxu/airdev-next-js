@@ -1,5 +1,5 @@
-import { publicConfig } from '@/common/config';
-import { ReactNodeProps } from '@/frontend/types/props';
+import { publicConfig } from '@airdev/next/common/config';
+import { ReactNodeProps } from '@airdev/next/frontend/types/props';
 import { Sparkles } from 'lucide-react';
 import Image from 'next/image';
 

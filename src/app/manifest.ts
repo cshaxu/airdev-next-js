@@ -1,4 +1,4 @@
-import { publicConfig } from '@/common/config';
+import { publicConfig } from '@airdev/next/common/config';
 import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {

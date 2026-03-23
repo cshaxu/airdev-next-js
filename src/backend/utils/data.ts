@@ -1,5 +1,5 @@
-import { privateConfig } from '@/backend/config';
-import { Context } from '@/framework/context';
+import { privateConfig } from '@airdev/next/backend/config';
+import { Context } from '@airdev/next/framework/context';
 import { CommonResponse, buildInvalidErrorMessage, logInfo } from '@airent/api';
 import { Awaitable, sequential } from 'airent';
 import createHttpError from 'http-errors';

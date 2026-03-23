@@ -1,4 +1,4 @@
-import { nextauthAdapter } from '@/adapter/backend/nextauth';
+import { nextauthAdapter } from '@airdev/next/adapter/backend/nextauth';
 import { AuthOptions } from 'next-auth';
 import { callbacks } from './callbacks';
 import { cookies } from './cookies';

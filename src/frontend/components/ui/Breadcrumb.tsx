@@ -1,4 +1,4 @@
-import { cn } from '@/frontend/lib/cn';
+import { cn } from '@airdev/next/frontend/lib/cn';
 import { Slot } from '@radix-ui/react-slot';
 import { ChevronRight, MoreHorizontal } from 'lucide-react';
 import * as React from 'react';

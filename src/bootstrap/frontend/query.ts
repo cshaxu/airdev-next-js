@@ -1,5 +1,5 @@
-import type { ClientQueryAdapter } from '@/adapter/frontend/query';
-import type { CurrentUser } from '@/common/types/context';
+import type { ClientQueryAdapter } from '@airdev/next/adapter/frontend/query';
+import type { CurrentUser } from '@airdev/next/common/types/context';
 
 type UpdateOneUserMutation = ReturnType<ClientQueryAdapter['useUpdateOneUser']>;
 type UpdateOneUserVariables = Parameters<UpdateOneUserMutation['mutate']>[0];

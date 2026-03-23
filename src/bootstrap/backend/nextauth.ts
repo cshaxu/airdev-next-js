@@ -1,4 +1,4 @@
-import type { NextauthAdapter } from '@/adapter/backend/nextauth';
+import type { NextauthAdapter } from '@airdev/next/adapter/backend/nextauth';
 
 export const bootstrapNextauthAdapter: NextauthAdapter = {
   errorPath: '/auth/error',

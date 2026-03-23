@@ -1,20 +1,20 @@
 'use client';
 
-import { clientQueryAdapter } from '@/adapter/frontend/query';
-import { publicConfig } from '@/common/config';
-import { Button } from '@/frontend/components/ui/Button';
+import { clientQueryAdapter } from '@airdev/next/adapter/frontend/query';
+import { publicConfig } from '@airdev/next/common/config';
+import { Button } from '@airdev/next/frontend/components/ui/Button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from '@/frontend/components/ui/Form';
+} from '@airdev/next/frontend/components/ui/Form';
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-} from '@/frontend/components/ui/InputOTP';
+} from '@airdev/next/frontend/components/ui/InputOTP';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import { parseAsString, useQueryState } from 'nuqs';

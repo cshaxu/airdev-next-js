@@ -1,31 +1,4 @@
-import { shellAdapter } from '@/adapter/frontend/shell';
-import { SESSION_TOKEN_COOKIE_NAME } from '@/backend/lib/nextauth/cookies';
-import { currentUserServerQueryOptions } from '@/frontend/hooks/data/user-server';
-import { withError } from '@/frontend/utils/page';
-import { QueryClient } from '@tanstack/react-query';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+import '@/airdev/setup-server';
 
-export const dynamic = 'force-dynamic';
-
-async function Page() {
-  const cookieStore = await cookies();
-  if (!cookieStore.has(SESSION_TOKEN_COOKIE_NAME)) {
-    const LandingComponent = shellAdapter.component.LandingComponent;
-    return <LandingComponent />;
-  }
-
-  const queryClient = new QueryClient();
-  const currentUser = await queryClient.fetchQuery(
-    currentUserServerQueryOptions
-  );
-  if (currentUser !== null) {
-    redirect(shellAdapter.navigation.homeHref);
-  }
-
-  const LandingComponent = shellAdapter.component.LandingComponent;
-  return <LandingComponent />;
-}
-
-const SafePage = withError(Page);
-export default SafePage;
+export * from '@airdev/next/app/page';
+export { default } from '@airdev/next/app/page';

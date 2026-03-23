@@ -1,4 +1,4 @@
-import type { FrameworkAdapter } from '@/adapter/backend/framework';
+import type { FrameworkAdapter } from '@airdev/next/adapter/backend/framework';
 import * as AirentApi from '@airent/api';
 import createHttpError from 'http-errors';
 import { ZodError } from 'zod';

@@ -1,8 +1,3 @@
-import { Provider } from 'next-auth/providers/index';
-import { codeProvider } from './code';
-import { getGoogleProvider } from './google';
+import '@/airdev/setup-server';
 
-export const providers: Provider[] = [
-  codeProvider,
-  ...[getGoogleProvider()].filter(Boolean),
-] as Provider[];
+export * from '@airdev/next/backend/lib/nextauth/providers';

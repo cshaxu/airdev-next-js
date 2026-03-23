@@ -1,7 +1,7 @@
 'use client';
 
-import { buttonVariants } from '@/frontend/components/ui/Button';
-import { cn } from '@/frontend/lib/cn';
+import { buttonVariants } from '@airdev/next/frontend/components/ui/Button';
+import { cn } from '@airdev/next/frontend/lib/cn';
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
 import * as React from 'react';
 

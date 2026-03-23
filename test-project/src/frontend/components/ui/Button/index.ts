@@ -1,2 +1,1 @@
-export { Button } from './Button';
-export { buttonVariants } from './button-variants';
+export * from '@airdev/next/frontend/components/ui/Button';

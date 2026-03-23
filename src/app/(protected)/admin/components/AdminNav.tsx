@@ -1,8 +1,8 @@
 'use client';
 
-import { shellAdapter } from '@/adapter/frontend/shell';
-import HeaderBar from '@/frontend/components/HeaderBar';
-import { cn } from '@/frontend/lib/cn';
+import { shellAdapter } from '@airdev/next/adapter/frontend/shell';
+import HeaderBar from '@airdev/next/frontend/components/HeaderBar';
+import { cn } from '@airdev/next/frontend/lib/cn';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 

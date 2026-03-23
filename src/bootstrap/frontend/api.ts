@@ -1,6 +1,6 @@
-import type { ApiClientAdapter } from '@/adapter/frontend/api-client';
-import type { ServerApiClientAdapter } from '@/adapter/frontend/server-api-client';
-import type { CurrentUser } from '@/common/types/context';
+import type { ApiClientAdapter } from '@airdev/next/adapter/frontend/api-client';
+import type { ServerApiClientAdapter } from '@airdev/next/adapter/frontend/server-api-client';
+import type { CurrentUser } from '@airdev/next/common/types/context';
 
 const bootstrapCurrentUser: CurrentUser = {
   id: 'user_1',

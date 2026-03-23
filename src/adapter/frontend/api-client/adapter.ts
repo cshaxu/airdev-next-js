@@ -1,4 +1,4 @@
-import { bootstrapClientApiClientAdapter } from '@/bootstrap/frontend/api';
+import { bootstrapClientApiClientAdapter } from '@airdev/next/bootstrap/frontend/api';
 import type { ApiClientAdapter } from './types';
 
 export let apiClientAdapter: ApiClientAdapter = bootstrapClientApiClientAdapter;

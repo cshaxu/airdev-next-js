@@ -1,3 +1,4 @@
-import NotFound from '@/frontend/components/NotFound';
+import '@/airdev/setup-server';
 
-export default NotFound;
+export * from '@airdev/next/app/(protected)/not-found';
+export { default } from '@airdev/next/app/(protected)/not-found';

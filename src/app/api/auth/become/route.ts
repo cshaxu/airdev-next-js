@@ -1,4 +1,4 @@
-import { HEADER_CURRENT_USER_ID_KEY } from '@/common/config';
+import { HEADER_CURRENT_USER_ID_KEY } from '@airdev/next/common/config';
 import { CommonResponse } from '@airent/api';
 import { NextRequest, NextResponse } from 'next/server';
 

@@ -1,4 +1,4 @@
-import { nextauthAdapter } from '@/adapter/backend/nextauth';
+import { nextauthAdapter } from '@airdev/next/adapter/backend/nextauth';
 import GoogleProvider from 'next-auth/providers/google';
 
 export function getGoogleProvider() {

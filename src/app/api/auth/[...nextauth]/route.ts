@@ -1,4 +1,4 @@
-import { authOptions } from '@/backend/lib/nextauth';
+import { authOptions } from '@airdev/next/backend/lib/nextauth';
 import NextAuth from 'next-auth';
 
 const handler = NextAuth(authOptions);

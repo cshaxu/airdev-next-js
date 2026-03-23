@@ -1,4 +1,4 @@
-import { bootstrapNextauthAdapter } from '@/bootstrap/backend/nextauth';
+import { bootstrapNextauthAdapter } from '@airdev/next/bootstrap/backend/nextauth';
 import type { NextauthAdapter } from './types';
 
 export let nextauthAdapter: NextauthAdapter = bootstrapNextauthAdapter;

@@ -1,5 +1,5 @@
-import { shellAdapter } from '@/adapter/frontend/shell';
-import { withError } from '@/frontend/utils/page';
+import { shellAdapter } from '@airdev/next/adapter/frontend/shell';
+import { withError } from '@airdev/next/frontend/utils/page';
 
 function Page() {
   const { AirentApiNextStudioComponent } = shellAdapter.component;

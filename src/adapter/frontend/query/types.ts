@@ -1,4 +1,4 @@
-import type { CurrentUser } from '@/common/types/context';
+import type { CurrentUser } from '@airdev/next/common/types/context';
 import type {
   DefaultError,
   UseMutationOptions,

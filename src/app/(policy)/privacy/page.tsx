@@ -1,6 +1,6 @@
-import { publicConfig } from '@/common/config';
-import Header from '@/frontend/components/ui/Header';
-import { pageTitle } from '@/frontend/utils/page';
+import { publicConfig } from '@airdev/next/common/config';
+import Header from '@airdev/next/frontend/components/ui/Header';
+import { pageTitle } from '@airdev/next/frontend/utils/page';
 import Link from 'next/link';
 
 export function generateMetadata() {

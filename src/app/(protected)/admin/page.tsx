@@ -1,4 +1,4 @@
-import { withError } from '@/frontend/utils/page';
+import { withError } from '@airdev/next/frontend/utils/page';
 
 async function Page() {
   return (

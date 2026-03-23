@@ -1,4 +1,4 @@
-import { privateConfig } from '@/backend/config';
+import { privateConfig } from '@airdev/next/backend/config';
 import * as z from 'zod';
 
 export const DEFAULT_TAKE = z

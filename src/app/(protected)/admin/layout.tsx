@@ -1,6 +1,6 @@
-import { initializePermission } from '@/app/(protected)/initializePermission';
-import { getRealCurrentUser } from '@/backend/lib/framework';
-import { ReactNodeProps } from '@/frontend/types/props';
+import { initializePermission } from '@airdev/next/app/(protected)/initializePermission';
+import { getRealCurrentUser } from '@airdev/next/backend/lib/framework';
+import { ReactNodeProps } from '@airdev/next/frontend/types/props';
 import { QueryClient } from '@tanstack/react-query';
 import { redirect } from 'next/navigation';
 import AdminNav from './components/AdminNav';

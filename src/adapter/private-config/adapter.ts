@@ -1,4 +1,4 @@
-import { bootstrapPrivateConfig } from '@/bootstrap/project';
+import { bootstrapPrivateConfig } from '@airdev/next/bootstrap/project';
 import type { PrivateConfig } from './types';
 
 export let privateConfigAdapter: PrivateConfig = bootstrapPrivateConfig;

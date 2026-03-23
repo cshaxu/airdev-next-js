@@ -1,4 +1,4 @@
-import type { Context } from '@/framework/context';
+import type { Context } from '@airdev/next/framework/context';
 import type { Awaitable } from 'airent';
 import { ProviderType } from 'next-auth/providers/index';
 

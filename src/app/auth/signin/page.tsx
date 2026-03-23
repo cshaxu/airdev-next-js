@@ -1,6 +1,6 @@
-import { shellAdapter } from '@/adapter';
-import { currentUserServerQueryOptions } from '@/frontend/hooks/data/user-server';
-import { withError } from '@/frontend/utils/page';
+import { shellAdapter } from '@airdev/next/adapter';
+import { currentUserServerQueryOptions } from '@airdev/next/frontend/hooks/data/user-server';
+import { withError } from '@airdev/next/frontend/utils/page';
 import { QueryClient } from '@tanstack/react-query';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';

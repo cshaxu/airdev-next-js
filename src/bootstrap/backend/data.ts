@@ -1,4 +1,4 @@
-import type { DatabaseAdapter, DatabaseUser } from '@/adapter/backend/data';
+import type { DatabaseAdapter, DatabaseUser } from '@airdev/next/adapter/backend/data';
 
 const bootstrapUser: DatabaseUser = {
   id: 'user_1',

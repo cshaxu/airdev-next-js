@@ -2,10 +2,10 @@ import {
   databaseAdapter,
   DatabaseUser,
   updateOneNextauthAccountBodyFromAdapterAccount,
-} from '@/adapter/backend/data';
-import { nextauthAdapter } from '@/adapter/backend/nextauth';
-import { mockContext } from '@/backend/lib/framework';
-import { publicConfig } from '@/common/config';
+} from '@airdev/next/adapter/backend/data';
+import { nextauthAdapter } from '@airdev/next/adapter/backend/nextauth';
+import { mockContext } from '@airdev/next/backend/lib/framework';
+import { publicConfig } from '@airdev/next/common/config';
 import { addSeconds } from 'date-fns';
 import { Account, CallbacksOptions, Profile, User } from 'next-auth';
 import { GoogleProfile } from 'next-auth/providers/google';

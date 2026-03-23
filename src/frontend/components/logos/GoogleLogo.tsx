@@ -1,4 +1,4 @@
-import { cn } from '@/frontend/lib/cn';
+import { cn } from '@airdev/next/frontend/lib/cn';
 
 type Props = { className?: string };
 

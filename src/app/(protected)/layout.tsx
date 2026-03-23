@@ -1,6 +1,6 @@
-import { initializePermission } from '@/app/(protected)/initializePermission';
-import CurrentUserProvider from '@/frontend/providers/CurrentUserProvider';
-import { ReactNodeProps } from '@/frontend/types/props';
+import { initializePermission } from '@airdev/next/app/(protected)/initializePermission';
+import CurrentUserProvider from '@airdev/next/frontend/providers/CurrentUserProvider';
+import { ReactNodeProps } from '@airdev/next/frontend/types/props';
 import {
   dehydrate,
   HydrationBoundary,

@@ -1,3 +1,2 @@
-import NotFound from '@/frontend/components/NotFound';
-
-export default NotFound;
+export * from '@airdev/next/app/not-found';
+export { default } from '@airdev/next/app/not-found';

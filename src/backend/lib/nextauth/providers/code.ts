@@ -1,5 +1,5 @@
-import { databaseAdapter, type DatabaseUser } from '@/adapter/backend/data';
-import { mockContext } from '@/backend/lib/framework';
+import { databaseAdapter, type DatabaseUser } from '@airdev/next/adapter/backend/data';
+import { mockContext } from '@airdev/next/backend/lib/framework';
 import { pick } from 'lodash-es';
 import CredentialsProvider from 'next-auth/providers/credentials';
 

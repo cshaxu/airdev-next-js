@@ -1,10 +1,10 @@
 'use client';
 
-import { shellAdapter } from '@/adapter/frontend/shell';
-import { publicConfig } from '@/common/config';
-import { buttonVariants } from '@/frontend/components/ui/Button';
-import { PixelResizablePanel } from '@/frontend/components/ui/PixelResizable';
-import { cn } from '@/frontend/lib/cn';
+import { shellAdapter } from '@airdev/next/adapter/frontend/shell';
+import { publicConfig } from '@airdev/next/common/config';
+import { buttonVariants } from '@airdev/next/frontend/components/ui/Button';
+import { PixelResizablePanel } from '@airdev/next/frontend/components/ui/PixelResizable';
+import { cn } from '@airdev/next/frontend/lib/cn';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';

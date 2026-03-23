@@ -1,18 +1,6 @@
 'use client';
 
-import { useNullableCurrentUser } from '@/frontend/hooks/data/user';
-import { useSetUser } from '@/frontend/stores/currentUserStore';
-import { useEffect } from 'react';
+import '@/airdev/setup-client';
 
-export default function CurrentUserProvider() {
-  const setUser = useSetUser();
-  const { data: currentUser } = useNullableCurrentUser();
-
-  useEffect(() => {
-    if (currentUser) {
-      setUser(currentUser);
-    }
-  }, [currentUser, setUser]);
-
-  return null;
-}
+export * from '@airdev/next/frontend/providers/CurrentUserProvider';
+export { default } from '@airdev/next/frontend/providers/CurrentUserProvider';

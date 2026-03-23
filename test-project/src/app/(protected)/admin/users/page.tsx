@@ -1,9 +1,4 @@
-import { withError } from '@/frontend/utils/page';
-import UserSearch from './components/UserSearch';
+import '@/airdev/setup-server';
 
-function Page() {
-  return <UserSearch />;
-}
-
-const SafePage = withError(Page);
-export default SafePage;
+export * from '@airdev/next/app/(protected)/admin/users/page';
+export { default } from '@airdev/next/app/(protected)/admin/users/page';

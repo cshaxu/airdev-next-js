@@ -1,1 +1,1 @@
-export { privateConfigAdapter as privateConfig } from '@/adapter/private-config';
+export { privateConfigAdapter as privateConfig } from '@airdev/next/adapter/private-config';

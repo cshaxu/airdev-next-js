@@ -1,4 +1,4 @@
-import { bootstrapClientQueryAdapter } from '@/bootstrap/frontend/query';
+import { bootstrapClientQueryAdapter } from '@airdev/next/bootstrap/frontend/query';
 import type { ClientQueryAdapter } from './types';
 
 export let clientQueryAdapter: ClientQueryAdapter = bootstrapClientQueryAdapter;
