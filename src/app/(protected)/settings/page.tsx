@@ -1,9 +1,1 @@
-import { withError } from '@airdev/next/frontend/utils/page';
-import Settings from './components/Settings';
-
-async function Page() {
-  return <Settings />;
-}
-
-const SafePage = withError(Page);
-export default SafePage;
+export { default } from '@/frontend/routes/settings/SettingsPage';

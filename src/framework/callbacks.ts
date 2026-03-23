@@ -1,6 +1,9 @@
 import { frameworkAdapter } from '@airdev/next/adapter/backend/framework';
 import { privateConfig } from '@airdev/next/backend/config';
-import { HEADER_INTERNAL_SECRET_KEY, publicConfig } from '@airdev/next/common/config';
+import {
+  HEADER_INTERNAL_SECRET_KEY,
+  publicConfig,
+} from '@airdev/next/common/config';
 import {
   CommonResponse,
   DispatcherConfig,

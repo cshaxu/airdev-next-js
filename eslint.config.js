@@ -237,9 +237,12 @@ module.exports = [
       'src/**/*.ts',
       'src/**/layout.tsx',
       'src/**/page.tsx',
+      'src/**/error.tsx',
+      'src/**/loading.tsx',
       'src/**/not-found.tsx',
-      'src/frontend/components/ErrorBoundary.tsx',
+      'src/frontend/components/shell/**/*.tsx',
       'src/frontend/components/ui/**/*.tsx',
+      'src/frontend/routes/**/*.tsx',
       'src/packages/**/*.tsx',
       'src/**/hooks/**/*.tsx',
       'src/**/context/**/*.tsx',
@@ -259,7 +262,7 @@ module.exports = [
   {
     files: [
       'src/backend/services/content/rule.ts',
-      'src/frontend/components/NotFound.tsx',
+      'src/frontend/components/shell/NotFound.tsx',
     ],
     rules: { 'airdev/no-negative-names': 'off' },
   },
