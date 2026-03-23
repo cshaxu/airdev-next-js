@@ -18,6 +18,11 @@ export type UpdateOneUserMutationParams = {
 
 export type CreateOneNextauthVerificationTokenBody = { email: string };
 
+export type SearchUser = Pick<
+  CurrentUser,
+  'id' | 'name' | 'imageUrl' | 'isAdmin'
+>;
+
 export type MutationOptions<TData> = {
   onSuccess?: (data: TData) => void | Promise<void>;
 };
@@ -34,7 +39,7 @@ export type QueryOptionsLike<TData> = {
 export type ClientQueryAdapter = {
   getManyUsersQueryOptions: (
     query: GetManyUsersQuery
-  ) => QueryOptionsLike<CurrentUser[]>;
+  ) => QueryOptionsLike<SearchUser[]>;
   useUpdateOneUser: UseMutationHookLike<
     CurrentUser,
     UpdateOneUserMutationParams

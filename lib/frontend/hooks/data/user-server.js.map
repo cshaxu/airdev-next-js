@@ -1,0 +1,1 @@
+{"version":3,"file":"user-server.js","sourceRoot":"","sources":["../../../../src/frontend/hooks/data/user-server.ts"],"names":[],"mappings":";;;AAAA,uFAAyF;AAE5E,QAAA,6BAA6B,GAAG;IAC3C,QAAQ,EAAE,CAAC,aAAa,CAAC;IACzB,OAAO,EAAE,GAAG,EAAE,CAAC,0CAAsB,CAAC,gBAAgB,EAAE;CACzD,CAAC"}

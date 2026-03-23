@@ -1,5 +1,7 @@
-import Privacy, { buildMetadata } from '@/frontend/components/policy/Privacy';
 import { publicConfig } from '@airdev/next/common/config';
+import Privacy, {
+  buildMetadata,
+} from '@airdev/next/frontend/components/policy/Privacy';
 
 export function generateMetadata() {
   return buildMetadata(publicConfig.app.name);

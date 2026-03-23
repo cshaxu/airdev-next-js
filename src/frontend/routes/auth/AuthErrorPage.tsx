@@ -1,8 +1,8 @@
 'use client';
 
-import AuthError from '@/frontend/components/auth/AuthError';
 import { shellAdapter } from '@airdev/next/adapter/frontend/shell';
 import { publicConfig } from '@airdev/next/common/config';
+import AuthError from '@airdev/next/frontend/components/auth/AuthError';
 import { withError } from '@airdev/next/frontend/utils/page';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';

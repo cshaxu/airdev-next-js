@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/frontend/components/ui/Button';
+import { Button } from '@airdev/next/frontend/components/ui/Button';
 import { Globe } from 'lucide-react';
 import { useEffect, useState } from 'react';
 

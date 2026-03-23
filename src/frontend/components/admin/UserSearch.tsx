@@ -1,8 +1,10 @@
 'use client';
 
 import type { ApiClientAdapter } from '@airdev/next/adapter/frontend/api-client/types';
-import type { ClientQueryAdapter } from '@airdev/next/adapter/frontend/query/types';
-import { CurrentUser } from '@airdev/next/common/types/context';
+import type {
+  ClientQueryAdapter,
+  SearchUser,
+} from '@airdev/next/adapter/frontend/query/types';
 import { Button } from '@airdev/next/frontend/components/ui/Button';
 import { Input } from '@airdev/next/frontend/components/ui/Input';
 import {
@@ -48,7 +50,7 @@ export default function UserSearch({
     }
   }
 
-  async function handleBecome(user: CurrentUser) {
+  async function handleBecome(user: SearchUser) {
     await becomeUser(user.id);
     setBecameUser(user);
     window.location.reload();
@@ -60,7 +62,7 @@ export default function UserSearch({
     window.location.reload();
   }
 
-  async function handleToggleAdmin(user: CurrentUser) {
+  async function handleToggleAdmin(user: SearchUser) {
     setAdminTargetUserId(user.id);
     try {
       await updateUser({

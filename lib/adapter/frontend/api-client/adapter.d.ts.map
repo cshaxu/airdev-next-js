@@ -1,0 +1,1 @@
+{"version":3,"file":"adapter.d.ts","sourceRoot":"","sources":["../../../../src/adapter/frontend/api-client/adapter.ts"],"names":[],"mappings":"AACA,OAAO,KAAK,EAAE,gBAAgB,EAAE,MAAM,SAAS,CAAC;AAEhD,eAAO,IAAI,gBAAgB,EAAE,gBAA0C,CAAC;AAExE,wBAAgB,mBAAmB,CAAC,OAAO,EAAE,gBAAgB,GAAG,IAAI,CAEnE"}

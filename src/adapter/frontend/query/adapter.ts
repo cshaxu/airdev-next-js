@@ -1,7 +1,7 @@
-import { bootstrapClientQueryAdapter } from '@airdev/next/bootstrap/frontend/query';
+import { defaultClientQueryAdapter } from '@airdev/next/adapter/defaults';
 import type { ClientQueryAdapter } from './types';
 
-export let clientQueryAdapter: ClientQueryAdapter = bootstrapClientQueryAdapter;
+export let clientQueryAdapter: ClientQueryAdapter = defaultClientQueryAdapter;
 
 export function setClientQueryAdapter(adapter: ClientQueryAdapter): void {
   clientQueryAdapter = adapter;

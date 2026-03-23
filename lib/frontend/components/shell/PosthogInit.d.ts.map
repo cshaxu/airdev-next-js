@@ -1,0 +1,1 @@
+{"version":3,"file":"PosthogInit.d.ts","sourceRoot":"","sources":["../../../../src/frontend/components/shell/PosthogInit.tsx"],"names":[],"mappings":"AAQA,KAAK,KAAK,GAAG;IACX,OAAO,EAAE,MAAM,CAAC;IAChB,QAAQ,EAAE,MAAM,CAAC;IACjB,WAAW,EAAE,MAAM,CAAC;CACrB,CAAC;AAEF,MAAM,CAAC,OAAO,UAAU,WAAW,CAAC,EAAE,OAAO,EAAE,QAAQ,EAAE,WAAW,EAAE,EAAE,KAAK,QAiB5E"}

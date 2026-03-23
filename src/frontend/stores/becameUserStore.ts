@@ -1,10 +1,10 @@
-import type { CurrentUser } from '@airdev/next/common/types/context';
+import type { SearchUser } from '@airdev/next/adapter/frontend/query/types';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface BecameUserState {
-  setUser: (user: CurrentUser | null) => void;
-  user: CurrentUser | null;
+  setUser: (user: SearchUser | null) => void;
+  user: SearchUser | null;
 }
 
 const useBecameUserStore = create<BecameUserState>()(

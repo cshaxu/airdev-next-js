@@ -1,5 +1,7 @@
-import Terms, { buildMetadata } from '@/frontend/components/policy/Terms';
 import { publicConfig } from '@airdev/next/common/config';
+import Terms, {
+  buildMetadata,
+} from '@airdev/next/frontend/components/policy/Terms';
 
 export function generateMetadata() {
   return buildMetadata();

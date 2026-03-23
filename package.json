@@ -1,11 +1,180 @@
 {
   "name": "@airdev/next",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./adapter": {
+      "types": "./lib/adapter/index.d.ts",
+      "default": "./lib/adapter/index.js"
+    },
+    "./adapter/backend/data": {
+      "types": "./lib/adapter/backend/data/index.d.ts",
+      "default": "./lib/adapter/backend/data/index.js"
+    },
+    "./adapter/backend/framework": {
+      "types": "./lib/adapter/backend/framework/index.d.ts",
+      "default": "./lib/adapter/backend/framework/index.js"
+    },
+    "./adapter/backend/nextauth": {
+      "types": "./lib/adapter/backend/nextauth/index.d.ts",
+      "default": "./lib/adapter/backend/nextauth/index.js"
+    },
+    "./adapter/backend/*": {
+      "types": "./lib/adapter/backend/*.d.ts",
+      "default": "./lib/adapter/backend/*.js"
+    },
+    "./adapter/frontend/api-client": {
+      "types": "./lib/adapter/frontend/api-client/index.d.ts",
+      "default": "./lib/adapter/frontend/api-client/index.js"
+    },
+    "./adapter/frontend/query": {
+      "types": "./lib/adapter/frontend/query/index.d.ts",
+      "default": "./lib/adapter/frontend/query/index.js"
+    },
+    "./adapter/frontend/server-api-client": {
+      "types": "./lib/adapter/frontend/server-api-client/index.d.ts",
+      "default": "./lib/adapter/frontend/server-api-client/index.js"
+    },
+    "./adapter/frontend/shell": {
+      "types": "./lib/adapter/frontend/shell/index.d.ts",
+      "default": "./lib/adapter/frontend/shell/index.js"
+    },
+    "./adapter/frontend/*": {
+      "types": "./lib/adapter/frontend/*.d.ts",
+      "default": "./lib/adapter/frontend/*.js"
+    },
+    "./adapter/*": {
+      "types": "./lib/adapter/*.d.ts",
+      "default": "./lib/adapter/*.js"
+    },
+    "./adapter/private-config": {
+      "types": "./lib/adapter/private-config/index.d.ts",
+      "default": "./lib/adapter/private-config/index.js"
+    },
+    "./adapter/public-config": {
+      "types": "./lib/adapter/public-config/index.d.ts",
+      "default": "./lib/adapter/public-config/index.js"
+    },
+    "./backend/lib/*": {
+      "types": "./lib/backend/lib/*.d.ts",
+      "default": "./lib/backend/lib/*.js"
+    },
+    "./backend/lib/*/*": {
+      "types": "./lib/backend/lib/*/*.d.ts",
+      "default": "./lib/backend/lib/*/*.js"
+    },
+    "./backend/lib/*/*/*": {
+      "types": "./lib/backend/lib/*/*/*.d.ts",
+      "default": "./lib/backend/lib/*/*/*.js"
+    },
+    "./backend/types/*": {
+      "types": "./lib/backend/types/*.d.ts",
+      "default": "./lib/backend/types/*.js"
+    },
+    "./backend/utils/*": {
+      "types": "./lib/backend/utils/*.d.ts",
+      "default": "./lib/backend/utils/*.js"
+    },
+    "./backend/*": {
+      "types": "./lib/backend/*.d.ts",
+      "default": "./lib/backend/*.js"
+    },
+    "./common/*": {
+      "types": "./lib/common/*.d.ts",
+      "default": "./lib/common/*.js"
+    },
+    "./common/types/*": {
+      "types": "./lib/common/types/*.d.ts",
+      "default": "./lib/common/types/*.js"
+    },
+    "./common/utils/*": {
+      "types": "./lib/common/utils/*.d.ts",
+      "default": "./lib/common/utils/*.js"
+    },
+    "./framework/*": {
+      "types": "./lib/framework/*.d.ts",
+      "default": "./lib/framework/*.js"
+    },
+    "./frontend/components/*": {
+      "types": "./lib/frontend/components/*.d.ts",
+      "default": "./lib/frontend/components/*.js"
+    },
+    "./frontend/components/*/*": {
+      "types": "./lib/frontend/components/*/*.d.ts",
+      "default": "./lib/frontend/components/*/*.js"
+    },
+    "./frontend/components/*/*/*": {
+      "types": "./lib/frontend/components/*/*/*.d.ts",
+      "default": "./lib/frontend/components/*/*/*.js"
+    },
+    "./frontend/components/ui/Button": {
+      "types": "./lib/frontend/components/ui/Button/index.d.ts",
+      "default": "./lib/frontend/components/ui/Button/index.js"
+    },
+    "./frontend/hooks/*": {
+      "types": "./lib/frontend/hooks/*.d.ts",
+      "default": "./lib/frontend/hooks/*.js"
+    },
+    "./frontend/hooks/*/*": {
+      "types": "./lib/frontend/hooks/*/*.d.ts",
+      "default": "./lib/frontend/hooks/*/*.js"
+    },
+    "./frontend/lib/*": {
+      "types": "./lib/frontend/lib/*.d.ts",
+      "default": "./lib/frontend/lib/*.js"
+    },
+    "./frontend/providers/*": {
+      "types": "./lib/frontend/providers/*.d.ts",
+      "default": "./lib/frontend/providers/*.js"
+    },
+    "./frontend/routes/*": {
+      "types": "./lib/frontend/routes/*.d.ts",
+      "default": "./lib/frontend/routes/*.js"
+    },
+    "./frontend/routes/*/*": {
+      "types": "./lib/frontend/routes/*/*.d.ts",
+      "default": "./lib/frontend/routes/*/*.js"
+    },
+    "./frontend/types/*": {
+      "types": "./lib/frontend/types/*.d.ts",
+      "default": "./lib/frontend/types/*.js"
+    },
+    "./frontend/stores/*": {
+      "types": "./lib/frontend/stores/*.d.ts",
+      "default": "./lib/frontend/stores/*.js"
+    },
+    "./frontend/utils/*": {
+      "types": "./lib/frontend/utils/*.d.ts",
+      "default": "./lib/frontend/utils/*.js"
+    },
+    "./frontend/*": {
+      "types": "./lib/frontend/*.d.ts",
+      "default": "./lib/frontend/*.js"
+    },
+    "./frontend/styles/globals.css": "./lib/frontend/styles/globals.css",
+    "./frontend/styles/colors.css": "./lib/frontend/styles/colors.css",
+    "./proxy": {
+      "types": "./lib/proxy.d.ts",
+      "default": "./lib/proxy.js"
+    },
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "dev": "next dev",
     "dev-turbo": "next dev --turbopack",
     "build": "npm run lint && next build",
+    "build:lib": "node ./scripts/build-lib.mjs",
+    "prepack": "npm run build:lib",
+    "pack:local": "npm pack",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "format": "prettier --check --ignore-path .gitignore .",
@@ -65,14 +234,14 @@
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^9.39.4",
     "@next/eslint-plugin-next": "^16.2.0",
+    "@tanstack/react-query": "^5.91.2",
+    "@tanstack/react-query-devtools": "^5.91.3",
     "@types/http-errors": "^2.0.5",
     "@types/lodash-es": "^4.17.8",
     "@types/node": "^25.5.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.0.3",
     "@typescript-eslint/parser": "^8.57.1",
-    "@tanstack/react-query": "^5.91.2",
-    "@tanstack/react-query-devtools": "^5.91.3",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "eslint": "^9.39.4",

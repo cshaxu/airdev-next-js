@@ -1,0 +1,1 @@
+{"version":3,"file":"AdminApiPage.js","sourceRoot":"","sources":["../../../../src/frontend/routes/admin/AdminApiPage.tsx"],"names":[],"mappings":";;;AAAA,+DAAmE;AACnE,2DAA6D;AAE7D,SAAS,YAAY;IACnB,MAAM,EAAE,4BAA4B,EAAE,GAAG,oBAAY,CAAC,SAAS,CAAC;IAChE,OAAO,uBAAC,4BAA4B,KAAG,CAAC;AAC1C,CAAC;AAED,MAAM,gBAAgB,GAAG,IAAA,gBAAS,EAAC,YAAY,CAAC,CAAC;AACjD,kBAAe,gBAAgB,CAAC"}

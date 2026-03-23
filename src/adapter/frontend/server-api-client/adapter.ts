@@ -1,8 +1,8 @@
-import { bootstrapServerApiClientAdapter } from '@airdev/next/bootstrap/frontend/api';
+import { defaultServerApiClientAdapter } from '@airdev/next/adapter/defaults';
 import type { ServerApiClientAdapter } from './types';
 
 export let serverApiClientAdapter: ServerApiClientAdapter =
-  bootstrapServerApiClientAdapter;
+  defaultServerApiClientAdapter;
 
 export function setServerApiClientAdapter(
   adapter: ServerApiClientAdapter

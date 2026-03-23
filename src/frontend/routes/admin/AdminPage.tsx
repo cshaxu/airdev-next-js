@@ -1,4 +1,4 @@
-import AdminPageView from '@/frontend/components/admin/AdminPageView';
+import AdminPageView from '@airdev/next/frontend/components/admin/AdminPageView';
 import { withError } from '@airdev/next/frontend/utils/page';
 
 async function AdminPage() {
