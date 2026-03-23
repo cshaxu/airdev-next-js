@@ -9,63 +9,19 @@ import {
 } from '@/frontend/components/ui/Avatar';
 import { Button } from '@/frontend/components/ui/Button';
 import { Input } from '@/frontend/components/ui/Input';
-import { useRequiredCurrentUser } from '@/frontend/hooks/data/user';
-import { cn } from '@/frontend/lib/cn';
 import {
   useDeleteOneUser,
+  useRequiredCurrentUser,
   useUpdateOneUser,
-} from '@/generated/tanstack-hooks/user-client';
+} from '@/frontend/hooks/data/user';
+import { cn } from '@/frontend/lib/cn';
 import { useQueryClient } from '@tanstack/react-query';
 import { Home, Trash2 } from 'lucide-react';
 import { signOut } from 'next-auth/react';
-import { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { KeyboardEvent, ReactNode, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
-type ActionTileProps = {
-  icon: React.ReactNode;
-  iconBg: string;
-  label: string;
-  description: string;
-  disabled?: boolean;
-  onClick: () => void;
-};
-
-function ActionTile({
-  icon,
-  iconBg,
-  label,
-  description,
-  disabled = false,
-  onClick,
-}: ActionTileProps) {
-  return (
-    <button
-      className={cn(
-        'flex items-center gap-4 rounded-xl border p-5 text-left shadow-sm transition-colors',
-        disabled
-          ? 'cursor-not-allowed opacity-60'
-          : 'hover:bg-muted/40 cursor-pointer'
-      )}
-      onClick={onClick}
-      disabled={disabled}
-    >
-      <div
-        className={cn(
-          'flex size-12 shrink-0 items-center justify-center rounded-lg',
-          iconBg
-        )}
-      >
-        {icon}
-      </div>
-      <div>
-        <p className="text-xl font-bold">{label}</p>
-        <p className="text-muted-foreground text-sm">{description}</p>
-      </div>
-    </button>
-  );
-}
-
-export default function Settings() {
+export default function Settings({ children }: { children?: ReactNode }) {
   const { data: currentUser } = useRequiredCurrentUser();
   const queryClient = useQueryClient();
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -225,28 +181,24 @@ export default function Settings() {
                 >
                   {isEditingName ? 'Cancel' : 'Edit'}
                 </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setDeleteOpen(true)}
+                  disabled={isDeleting}
+                  className="text-red-700"
+                >
+                  <Trash2
+                    className={cn(
+                      'mr-2 size-4',
+                      isDeleting && 'animate-pulse'
+                    )}
+                  />
+                  Delete
+                </Button>
               </div>
             </section>
 
-            <div className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-4">
-              <ActionTile
-                icon={
-                  <Trash2
-                    className={cn(
-                      'size-6',
-                      isDeleting
-                        ? 'text-muted-foreground animate-pulse'
-                        : 'text-red-600'
-                    )}
-                  />
-                }
-                iconBg="bg-red-100"
-                label="Delete Account"
-                description="Permanently delete your account and all data."
-                disabled={isDeleting}
-                onClick={() => setDeleteOpen(true)}
-              />
-            </div>
+            {children}
           </div>
         </div>
       </div>

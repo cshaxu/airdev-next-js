@@ -16,19 +16,23 @@ export const APP_LOGO_URL =
 
 export const DEFAULT_API_BATCH_SIZE = 100;
 export const DEFAULT_PAGE_SIZE = 50;
+export const VERIFICATION_CODE_LENGTH = 5;
 
 export const HEADER_CURRENT_USER_ID_KEY = 'X-CURRENT-USER-ID';
 export const HEADER_DATA_ENVIRONMENT_KEY = 'X-DATA-ENVIRONMENT';
 export const HEADER_INTERNET_SECRET_KEY = 'X-INTERNAL-SECRET';
+export const HEADER_INTERNAL_SECRET_KEY = HEADER_INTERNET_SECRET_KEY;
 
 // environment definitions
 
 export type Environment = 'local' /* | 'development' */ | 'production';
 
-export const SERVICE_ENVIRONMENT = process.env
-  .NEXT_PUBLIC_BAREBONE_NEXT_SERVICE_ENVIRONMENT as Environment;
-export const DATA_ENVIRONMENT = process.env
-  .NEXT_PUBLIC_BAREBONE_NEXT_DATA_ENVIRONMENT as Environment;
+export const SERVICE_ENVIRONMENT =
+  (process.env.NEXT_PUBLIC_BAREBONE_NEXT_SERVICE_ENVIRONMENT as Environment) ||
+  'local';
+export const DATA_ENVIRONMENT =
+  (process.env.NEXT_PUBLIC_BAREBONE_NEXT_DATA_ENVIRONMENT as Environment) ||
+  'local';
 
 export const IS_SERVICE_LOCAL = SERVICE_ENVIRONMENT === 'local';
 // export const IS_SERVICE_DEVELOPMENT = SERVICE_ENVIRONMENT === 'development';
@@ -80,3 +84,26 @@ export const GOOGLE_OAUTH_SIGNIN_SCOPES = [
 // external - posthog
 export const POSTHOG_API_TOKEN = publicCommonDataConfig.posthog.apiToken;
 export const POSTHOG_API_HOST = publicCommonDataConfig.posthog.apiHost;
+
+export const publicConfig = {
+  app: {
+    name: APP_NAME,
+    owner: APP_OWNER,
+    ownerShort: APP_OWNER_SHORT,
+    mainUrl: APP_MAIN_URL,
+    email: APP_EMAIL,
+    description: APP_DESCRIPTION,
+  },
+  auth: {
+    verificationCodeLength: VERIFICATION_CODE_LENGTH,
+  },
+  posthog: {
+    apiHost: POSTHOG_API_HOST,
+    apiToken: POSTHOG_API_TOKEN,
+  },
+  service: {
+    environment: SERVICE_ENVIRONMENT,
+    rootDomain: SERVICE_ROOT_DOMAIN,
+    titlePrefix: SERVICE_TITLE_PREFIX,
+  },
+} as const;

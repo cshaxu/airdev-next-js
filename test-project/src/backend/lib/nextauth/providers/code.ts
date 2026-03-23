@@ -1,8 +1,5 @@
-import { UserEntity } from '@/backend/entities/user';
+import { databaseAdapter, type DatabaseUser } from '@/adapter/backend/data';
 import { mockContext } from '@/backend/lib/framework';
-import NextauthVerificationTokenService from '@/backend/services/data/nextauth-verification-token';
-import UserService from '@/backend/services/data/user';
-import { GetOneNextauthVerificationTokenParams } from '@/common/types/data/nextauth-verification-token';
 import { pick } from 'lodash-es';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
@@ -27,23 +24,31 @@ export const codeProvider = CredentialsProvider({
     }
     const context = await mockContext();
     const nextauthVerificationToken =
-      await NextauthVerificationTokenService.deleteOneSafe(
-        credentials as GetOneNextauthVerificationTokenParams,
+      await databaseAdapter.deleteOneNextauthVerificationTokenSafe(
+        { code: credentials.code, email: credentials.email },
         context
       );
     if (nextauthVerificationToken === null) {
       return null;
     }
     const { identifier: email } = nextauthVerificationToken;
-    const user = await UserService.findOrCreateOne(email, context);
-    user.emailVerified = context.time;
-    user.updatedAt = context.time;
-    await user.save();
-    return buildAdapterUser(user, 'email');
+    const existingUser = await databaseAdapter.getOneUserSafe(
+      { id: email },
+      context
+    );
+    const user =
+      existingUser ?? (await databaseAdapter.createOneUser({ email }, context));
+    const verifiedUser = await databaseAdapter.updateOneUser(
+      user,
+      { emailVerified: context.time },
+      context
+    );
+    return buildAdapterUser(verifiedUser, 'email');
   },
 });
 
-const buildAdapterUser = (user: UserEntity, source: 'google' | 'email') => ({
+const buildAdapterUser = (user: DatabaseUser, source: 'google' | 'email') => ({
   source,
-  ...pick(user, ['id', 'name', 'imageUrl', 'email', 'emailVerified']),
+  image: user.imageUrl,
+  ...pick(user, ['id', 'email', 'emailVerified', 'name', 'imageUrl']),
 });

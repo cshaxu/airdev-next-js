@@ -2,33 +2,34 @@
 
 import { Button } from '@/frontend/components/ui/Button';
 import { Input } from '@/frontend/components/ui/Input';
+import {
+  getManyUsersQueryOptions,
+  useUpdateOneUser,
+} from '@/frontend/hooks/data/user';
 import { becomeUser } from '@/frontend/sdks/auth-client';
 import {
   useBecameUser,
   useSetBecameUser,
 } from '@/frontend/stores/becameUserStore';
-import {
-  UserQueries,
-  useUpdateOneUser,
-} from '@/generated/tanstack-hooks/user-client';
 import { GetManySelectedUserResponse } from '@/generated/tanstack-hooks/user-types';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Drama, Smile, User, UserKey } from 'lucide-react';
 import { useState } from 'react';
 
 export default function UserSearch() {
   const [inputQ, setInputQ] = useState('');
   const [searchQ, setSearchQ] = useState('');
-  const [adminTargetUserId, _setAdminTargetUserId] = useState<string | null>(
+  const [adminTargetUserId, setAdminTargetUserId] = useState<string | null>(
     null
   );
   const became = useBecameUser();
   const setBecameUser = useSetBecameUser();
-  const { mutateAsync: _updateUser, isPending: isUpdatingUser } =
+  const queryClient = useQueryClient();
+  const { mutateAsync: updateUser, isPending: isUpdatingUser } =
     useUpdateOneUser();
 
   const { data: users = [], isFetching } = useQuery(
-    UserQueries.getMany({ q: searchQ })
+    getManyUsersQueryOptions(searchQ)
   );
 
   function handleSearch() {
@@ -53,17 +54,20 @@ export default function UserSearch() {
     window.location.reload();
   }
 
-  async function handleToggleAdmin(_user: GetManySelectedUserResponse) {
-    // TODO: not supported yet
-    // setAdminTargetUserId(user.id);
-    // try {
-    //   await updateUser({
-    //     params: { id: user.id },
-    //     body: { setAdmin: !user.isAdmin },
-    //   });
-    // } finally {
-    //   setAdminTargetUserId(null);
-    // }
+  async function handleToggleAdmin(user: GetManySelectedUserResponse) {
+    setAdminTargetUserId(user.id);
+    try {
+      await updateUser({
+        params: { id: user.id },
+        body: { setAdmin: !user.isAdmin },
+      });
+      await queryClient.invalidateQueries({
+        queryKey: getManyUsersQueryOptions(searchQ).queryKey,
+      });
+      await queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+    } finally {
+      setAdminTargetUserId(null);
+    }
   }
 
   return (
@@ -79,7 +83,7 @@ export default function UserSearch() {
               />
             ) : (
               <div className="bg-primary text-primary-foreground flex size-full items-center justify-center text-sm font-bold">
-                {became.name.charAt(0)?.toUpperCase() ?? '?'}
+                {(became.name || '?').charAt(0).toUpperCase()}
               </div>
             )}
           </div>
@@ -138,7 +142,7 @@ export default function UserSearch() {
               <Button
                 size="sm"
                 variant={became?.id === user.id ? 'default' : 'outline'}
-                onClick={() => handleBecome(user)}
+                onClick={() => void handleBecome(user)}
                 disabled={became?.id === user.id}
                 title={became?.id === user.id ? 'Active' : 'Become'}
               >

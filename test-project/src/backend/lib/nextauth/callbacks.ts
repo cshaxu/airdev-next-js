@@ -1,14 +1,14 @@
-import { NEXTAUTH_SESSION_MAX_AGE } from '@/backend/config';
-import { NextauthAccountEntity } from '@/backend/entities/nextauth-account';
-import { UserEntity } from '@/backend/entities/user';
+import {
+  databaseAdapter,
+  DatabaseUser,
+  updateOneNextauthAccountBodyFromAdapterAccount,
+} from '@/adapter/backend/data';
+import { nextauthAdapter } from '@/adapter/backend/nextauth';
 import { mockContext } from '@/backend/lib/framework';
-import UserService from '@/backend/services/data/user';
-import { SERVICE_ROOT_DOMAIN } from '@/common/config';
-import { purify } from '@airent/api';
+import { publicConfig } from '@/common/config';
 import { addSeconds } from 'date-fns';
 import { Account, CallbacksOptions, Profile, User } from 'next-auth';
 import { GoogleProfile } from 'next-auth/providers/google';
-import { adapter } from './adapter';
 
 type SignInParams = {
   account: Account | null;
@@ -26,19 +26,18 @@ const signIn = async (params: SignInParams) => {
   } = params;
 
   // Check if this is being called in the code auth flow.
-  // If so, use the next-auth adapter to create a session entry in the database
+  // If so, create a session entry through the configured session adapter
   // (signIn is called after authorize so we can safely assume the user is valid
   // and already authenticated).
   const isCode = 'source' in nextauthUser && nextauthUser.source === 'email';
   if (isCode) {
     const sessionToken = crypto.randomUUID();
-    const expires = addSeconds(context.time, NEXTAUTH_SESSION_MAX_AGE);
+    const expires = addSeconds(context.time, nextauthAdapter.sessionMaxAge);
 
-    await adapter.createSession!({
-      sessionToken,
-      userId: nextauthUser.id,
-      expires,
-    });
+    await databaseAdapter.createOneNextauthSession(
+      { expires, sessionToken, userId: nextauthUser.id },
+      context
+    );
     // Hack user.email field to pass sessionToken to jwt.encode
     // because we only have id/name/email fields in the user object there
     nextauthUser.email = JSON.stringify({
@@ -60,8 +59,8 @@ const signIn = async (params: SignInParams) => {
     return true;
   }
 
-  const existingUser = await UserEntity.findUnique(
-    { where: { email } },
+  const existingUser = await databaseAdapter.getOneUserSafe(
+    { id: email },
     context
   );
 
@@ -89,33 +88,43 @@ const signIn = async (params: SignInParams) => {
 
   // Automatically create user when signing in with Google
   const user =
-    existingUser ?? (await UserService.findOrCreateOne(email, context));
-  const data = purify({
-    ...(user.emailVerified === null &&
-      email_verified && { emailVerified: context.time }),
-    ...(user.name === null && { name }),
-    ...(user.imageUrl === null && { imageUrl }),
-    updatedAt: context.time,
-  });
+    existingUser ?? (await databaseAdapter.createOneUser({ email }, context));
+  const data: Partial<DatabaseUser> = {};
+  if (user.emailVerified === null && email_verified) {
+    data.emailVerified = context.time;
+  }
+  if (!user.name && name) {
+    data.name = name;
+  }
+  if (user.imageUrl === null && imageUrl) {
+    data.imageUrl = imageUrl;
+  }
   if (Object.keys(data).length > 0) {
-    user.fromModel(data);
-    await user.save();
+    await databaseAdapter.updateOneUser(user, data, context);
   }
 
   // Find and update account
   if (nextauthAccount !== null) {
-    const account = await NextauthAccountEntity.findUnique(
+    const existingAccount = await databaseAdapter.getOneNextauthAccountSafe(
       {
-        where: {
-          provider: nextauthAccount.provider,
-          providerAccountId: nextauthAccount.providerAccountId,
-        },
+        provider: nextauthAccount.provider,
+        providerAccountId: nextauthAccount.providerAccountId,
       },
       context
     );
-    if (account !== null) {
-      account.fromModel(nextauthAccount);
-      await account.save();
+    if (existingAccount !== null) {
+      const account = updateOneNextauthAccountBodyFromAdapterAccount({
+        ...nextauthAccount,
+        userId: nextauthAccount.userId ?? user.id,
+        type: nextauthAccount.type,
+        provider: nextauthAccount.provider,
+        providerAccountId: nextauthAccount.providerAccountId,
+      });
+      await databaseAdapter.updateOneNextauthAccount(
+        existingAccount,
+        account,
+        context
+      );
     }
   }
 
@@ -130,7 +139,10 @@ const redirect = async ({ url, baseUrl }: RedirectParams) => {
     return `${baseUrl}${url}`;
   }
   const urlOrigin = new URL(url).origin;
-  if (urlOrigin === baseUrl || urlOrigin.endsWith(SERVICE_ROOT_DOMAIN)) {
+  if (
+    urlOrigin === baseUrl ||
+    urlOrigin.endsWith(publicConfig.service.rootDomain)
+  ) {
     // Allows callback URLs on the same origin
     return url;
   }

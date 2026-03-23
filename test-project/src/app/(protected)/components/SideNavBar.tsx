@@ -1,6 +1,7 @@
 'use client';
 
-import { APP_NAME } from '@/common/config';
+import { shellAdapter } from '@/adapter/frontend/shell';
+import { publicConfig } from '@/common/config';
 import { buttonVariants } from '@/frontend/components/ui/Button';
 import { PixelResizablePanel } from '@/frontend/components/ui/PixelResizable';
 import { cn } from '@/frontend/lib/cn';
@@ -8,10 +9,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { MAIN_NAV_ITEMS } from './NavConfig';
 import UserButton from './UserButton';
 
-const adminRegex = /^\/admin(?:\/.*)?$/;
+const defaultCollapseMatcher = (pathname: string) =>
+  pathname.startsWith('/admin');
 
 type SideNavLinkProps = {
   label: string;
@@ -45,20 +46,23 @@ function SideNavLink({ label, icon, to, isFull, isActive }: SideNavLinkProps) {
 export default function SideNavBar() {
   const pathname = usePathname();
   const lastPathRef = useRef(pathname);
+  const navItems = shellAdapter.navigation.primaryItems;
+  const shouldAutoCollapse =
+    shellAdapter.navigation.shouldAutoCollapse ?? defaultCollapseMatcher;
 
-  const shouldCollapse = Boolean(pathname.match(adminRegex));
+  const shouldCollapse = shouldAutoCollapse(pathname);
   const [isCollapsed, setIsCollapsed] = useState(shouldCollapse);
 
   useEffect(() => {
-    const wasCollapsePage = Boolean(lastPathRef.current.match(adminRegex));
-    const isCollapsePage = Boolean(pathname.match(adminRegex));
+    const wasCollapsePage = shouldAutoCollapse(lastPathRef.current);
+    const isCollapsePage = shouldAutoCollapse(pathname);
 
     if (wasCollapsePage !== isCollapsePage) {
       setIsCollapsed(isCollapsePage);
     }
 
     lastPathRef.current = pathname;
-  }, [pathname]);
+  }, [pathname, shouldAutoCollapse]);
 
   return (
     <PixelResizablePanel
@@ -77,30 +81,37 @@ export default function SideNavBar() {
           )}
         >
           <Image
-            src="/logo.png"
+            src={shellAdapter.component.logoSrc}
             alt="Logo"
             width={40}
             height={40}
             className="size-10"
           />
           {!isCollapsed && (
-            <span className="nav-icon text-xl font-bold">{APP_NAME}</span>
+            <span className="nav-icon text-xl font-bold">
+              {publicConfig.app.name}
+            </span>
           )}
         </div>
 
         <div className="nav-separator mx-4 h-px" />
 
         <nav className="flex flex-col gap-1">
-          {MAIN_NAV_ITEMS.map((item) => (
-            <SideNavLink
-              key={item.to}
-              label={item.label}
-              to={item.to}
-              icon={item.renderIcon('nav-icon size-4')}
-              isFull={!isCollapsed}
-              isActive={item.isActive(pathname)}
-            />
-          ))}
+          {navItems.map((item) => {
+            const isActive = item.match
+              ? item.match(pathname)
+              : pathname === item.href || pathname.startsWith(`${item.href}/`);
+            return (
+              <SideNavLink
+                key={item.href}
+                label={item.label}
+                to={item.href}
+                icon={item.renderIcon('nav-icon size-4')}
+                isFull={!isCollapsed}
+                isActive={isActive}
+              />
+            );
+          })}
         </nav>
 
         <div className="flex-1" />

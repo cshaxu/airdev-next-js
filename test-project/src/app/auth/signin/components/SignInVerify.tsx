@@ -1,5 +1,7 @@
 'use client';
 
+import { clientQueryAdapter } from '@/adapter/frontend/query';
+import { publicConfig } from '@/common/config';
 import { Button } from '@/frontend/components/ui/Button';
 import {
   Form,
@@ -13,28 +15,34 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from '@/frontend/components/ui/InputOTP';
-import { useCreateOneNextauthVerificationToken } from '@/generated/tanstack-hooks/nextauth-verification-token-client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import { parseAsString, useQueryState } from 'nuqs';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 type Props = { email: string };
 
-const formSchema = z.object({
-  code: z.string().length(5, { message: 'Please enter a valid code' }),
-});
-type FormSchema = z.infer<typeof formSchema>;
+type FormSchema = { code: string };
 
 export default function SignInVerify({ email }: Props) {
+  const { verificationCodeLength } = publicConfig.auth;
   const [next] = useQueryState('next', parseAsString);
   const [isSigningIn, setIsSigningIn] = useState(false);
   const {
     mutate: createVerificationToken,
     isPending: isCreatingVerificationToken,
-  } = useCreateOneNextauthVerificationToken();
+  } = clientQueryAdapter.useCreateOneNextauthVerificationToken();
+  const formSchema = useMemo(
+    () =>
+      z.object({
+        code: z.string().length(verificationCodeLength, {
+          message: 'Please enter a valid code',
+        }),
+      }),
+    [verificationCodeLength]
+  );
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -61,7 +69,7 @@ export default function SignInVerify({ email }: Props) {
   const handleComplete = useCallback(
     (value: string) => {
       form.setValue('code', value);
-      form.handleSubmit(onSubmit)();
+      void form.handleSubmit(onSubmit)();
     },
     [form, onSubmit]
   );
@@ -97,19 +105,21 @@ export default function SignInVerify({ email }: Props) {
               <FormItem className="mb-4 flex flex-col items-center">
                 <FormControl>
                   <InputOTP
-                    maxLength={5}
+                    maxLength={verificationCodeLength}
                     {...field}
                     className="mx-auto w-full justify-center"
                     onComplete={handleComplete}
                   >
-                    {Array.from(Array(5).keys()).map((i) => (
-                      <InputOTPGroup key={i}>
-                        <InputOTPSlot
-                          index={i}
-                          className="size-11 bg-white text-base font-semibold text-black sm:size-12"
-                        />
-                      </InputOTPGroup>
-                    ))}
+                    {Array.from(Array(verificationCodeLength).keys()).map(
+                      (i) => (
+                        <InputOTPGroup key={i}>
+                          <InputOTPSlot
+                            index={i}
+                            className="size-11 bg-white text-base font-semibold text-black sm:size-12"
+                          />
+                        </InputOTPGroup>
+                      )
+                    )}
                   </InputOTP>
                 </FormControl>
                 <FormMessage />

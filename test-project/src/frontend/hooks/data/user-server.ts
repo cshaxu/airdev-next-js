@@ -1,6 +1,6 @@
-import { fetchCurrentUser } from '@/frontend/sdks/auth-server';
+import { serverApiClientAdapter } from '@/adapter/frontend/server-api-client';
 
 export const currentUserServerQueryOptions = {
   queryKey: ['currentUser'],
-  queryFn: fetchCurrentUser,
+  queryFn: serverApiClientAdapter.fetchCurrentUser,
 };

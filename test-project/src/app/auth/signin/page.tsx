@@ -1,6 +1,6 @@
+import { shellAdapter } from '@/adapter';
 import { currentUserServerQueryOptions } from '@/frontend/hooks/data/user-server';
 import { withError } from '@/frontend/utils/page';
-import { NextPageProps } from '@airent/api-next';
 import { QueryClient } from '@tanstack/react-query';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
@@ -8,15 +8,23 @@ import SignInSteps from './components/SignInSteps';
 
 export const dynamic = 'force-dynamic';
 
-async function Page({ searchParams }: NextPageProps<{}, { next: string }>) {
+type SignInPageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
+async function Page({ searchParams }: SignInPageProps) {
   const queryClient = new QueryClient();
-  const { next } = await searchParams;
+  const resolvedSearchParams = await searchParams;
+  const next =
+    typeof resolvedSearchParams.next === 'string'
+      ? resolvedSearchParams.next
+      : undefined;
   const currentUser = await queryClient.fetchQuery(
     currentUserServerQueryOptions
   );
 
   if (!!currentUser) {
-    redirect(next || '/');
+    redirect(next || shellAdapter.navigation.homeHref);
   }
 
   return (

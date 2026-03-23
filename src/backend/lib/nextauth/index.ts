@@ -9,9 +9,21 @@ import { providers } from './providers';
 export const authOptions: AuthOptions = {
   cookies,
   pages,
-  session: { maxAge: nextauthAdapter.sessionMaxAge },
-  adapter: nextauthAdapter.nextAuthAdapter,
+  session: {
+    strategy: 'database',
+    maxAge: nextauthAdapter.sessionMaxAge,
+  },
   providers,
   callbacks,
   jwt,
 };
+
+Object.defineProperty(authOptions, 'adapter', {
+  configurable: true,
+  enumerable: true,
+  get() {
+    return (
+      nextauthAdapter.getNextAuthAdapter?.() ?? nextauthAdapter.nextAuthAdapter
+    );
+  },
+});

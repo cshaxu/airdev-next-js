@@ -7,27 +7,15 @@ import {
   commonDispatcherConfig,
   commonHandlerConfig,
 } from '@/framework/callbacks';
-import { Context, ContextUser } from '@/framework/context';
+import { Context, ContextUser, mockContext } from '@/framework/context';
 import { DispatcherConfig, Executor, wait } from '@airent/api';
 import { HandlerConfig } from '@airent/api-next';
 import createHttpError from 'http-errors';
 import { pick } from 'lodash-es';
 import { getServerSession } from 'next-auth';
-import { headers as getHeaders } from 'next/headers';
 import { authOptions } from './nextauth';
 
-export async function mockContext(
-  context?: Partial<Context>
-): Promise<Context> {
-  const headers = context?.headers ?? (await getHeaders());
-  return {
-    time: context?.time ?? new Date(),
-    method: context?.method ?? '',
-    url: context?.url ?? '',
-    headers,
-    currentUser: context?.currentUser ?? null,
-  };
-}
+export { mockContext } from '@/framework/context';
 
 export const dispatcherConfig: Pick<
   DispatcherConfig<DispatcherOptions, Context, any, any, any, any>,

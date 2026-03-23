@@ -1,6 +1,5 @@
-import { NEXTAUTH_SESSION_MAX_AGE } from '@/backend/config';
+import { nextauthAdapter } from '@/adapter/backend/nextauth';
 import { AuthOptions } from 'next-auth';
-import { adapter } from './adapter';
 import { callbacks } from './callbacks';
 import { cookies } from './cookies';
 import { jwt } from './jwt';
@@ -10,9 +9,21 @@ import { providers } from './providers';
 export const authOptions: AuthOptions = {
   cookies,
   pages,
-  session: { maxAge: NEXTAUTH_SESSION_MAX_AGE },
-  adapter,
+  session: {
+    strategy: 'database',
+    maxAge: nextauthAdapter.sessionMaxAge,
+  },
   providers,
   callbacks,
   jwt,
 };
+
+Object.defineProperty(authOptions, 'adapter', {
+  configurable: true,
+  enumerable: true,
+  get() {
+    return (
+      nextauthAdapter.getNextAuthAdapter?.() ?? nextauthAdapter.nextAuthAdapter
+    );
+  },
+});

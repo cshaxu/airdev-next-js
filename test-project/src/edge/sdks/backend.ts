@@ -1,5 +1,5 @@
 import { HEADER_CURRENT_USER_ID_KEY } from '@/common/config';
-import { ContextUserFieldRequest } from '@/framework/context';
+import { CurrentUserFieldRequest } from '@/common/types/context';
 import UserEdgeApiClient from '@/generated/edge-clients/user';
 
 export const getCurrentUser = async (
@@ -8,7 +8,7 @@ export const getCurrentUser = async (
 ) =>
   UserEdgeApiClient.getOneSafe(
     { id: 'me' },
-    ContextUserFieldRequest,
+    CurrentUserFieldRequest,
     isReal
       ? buildHeaders(headers, {
           excludedCookieKeys: [HEADER_CURRENT_USER_ID_KEY],

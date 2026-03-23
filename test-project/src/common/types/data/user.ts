@@ -32,6 +32,7 @@ export const UpdateOneUserBody = z
     email: z.string().email().optional(),
     emailCode: z.string().length(5).optional(),
     imageUrl: z.string().optional(),
+    setAdmin: z.boolean().optional(),
   })
   .refine(
     (data) =>

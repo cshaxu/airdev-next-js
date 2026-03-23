@@ -1,5 +1,3 @@
-'use client';
-
 import { LayoutDashboard, MessageCircle, Wrench } from 'lucide-react';
 
 type IconRenderer = (className: string) => React.ReactNode;

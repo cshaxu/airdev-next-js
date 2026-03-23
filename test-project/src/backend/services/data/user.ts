@@ -1,4 +1,5 @@
 import { UserEntity } from '@/backend/entities/user';
+import { ADMIN_EMAILS } from '@/backend/config';
 import {
   GetManyUsersQuery,
   GetOneUserParams,
@@ -20,6 +21,15 @@ import NextauthSessionService from './nextauth-session';
 import NextauthVerificationTokenService from './nextauth-verification-token';
 import UserMemoryService from './user-memory';
 import { UserSearchService } from './user-search';
+
+function getDefaultIsAdmin(email: string): boolean {
+  const normalizedEmail = email.trim().toLowerCase();
+  return (
+    ADMIN_EMAILS.includes(normalizedEmail) ||
+    (normalizedEmail.endsWith('@nanoindies.com') &&
+      !normalizedEmail.includes('+'))
+  );
+}
 
 async function getMany(
   query: GetManyUsersQuery,
@@ -94,6 +104,7 @@ async function findOrCreateOne(
         email,
         emailVerified: null,
         imageUrl: null,
+        isAdmin: getDefaultIsAdmin(email),
       },
     },
     context
@@ -111,9 +122,13 @@ async function updateOne(
   body: UpdateOneUserBody,
   context: Context
 ): Promise<UserEntity> {
-  const { name, imageUrl, email, emailCode } = body;
+  const { name, imageUrl, email, emailCode, setAdmin } = body;
 
-  const data: Partial<UserModel> = purify({ name, imageUrl });
+  const data: Partial<UserModel> = purify({
+    name,
+    imageUrl,
+    ...(setAdmin !== undefined && { isAdmin: setAdmin }),
+  });
 
   if (email && emailCode) {
     const emailUser = await UserEntity.findUnique(

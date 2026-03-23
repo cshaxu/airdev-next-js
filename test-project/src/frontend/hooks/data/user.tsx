@@ -1,7 +1,7 @@
 'use client';
 
-import { CurrentUserFieldRequest } from '@/common/types/context';
-import UserApiClient from '@/generated/clients/user';
+import { apiClientAdapter } from '@/adapter/frontend/api-client';
+import { clientQueryAdapter } from '@/adapter/frontend/query';
 import {
   queryOptions,
   useQuery,
@@ -14,14 +14,9 @@ const currentUserQueryOptions = {
   staleTime: 60 * 1000 * 5,
 };
 
-const getNullableCurrentUser = () =>
-  UserApiClient.getOneSafe({ id: 'me' }, CurrentUserFieldRequest).then(
-    (r) => r.user
-  );
-
 const nullableCurrentUserQueryOptions = queryOptions({
   ...currentUserQueryOptions,
-  queryFn: getNullableCurrentUser,
+  queryFn: apiClientAdapter.getNullableCurrentUser,
 });
 
 export const useNullableCurrentUser = () =>
@@ -30,7 +25,7 @@ export const useNullableCurrentUser = () =>
 const requiredCurrentUserQueryOptions = queryOptions({
   ...currentUserQueryOptions,
   queryFn: () =>
-    getNullableCurrentUser().then((user) => {
+    apiClientAdapter.getNullableCurrentUser().then((user) => {
       if (user === null) {
         throw new Error('A visitor should not access this page');
       }
@@ -40,3 +35,13 @@ const requiredCurrentUserQueryOptions = queryOptions({
 
 export const useRequiredCurrentUser = () =>
   useSuspenseQuery(requiredCurrentUserQueryOptions);
+
+export const getManyUsersQueryOptions = (q: string) =>
+  clientQueryAdapter.getManyUsersQueryOptions({ q });
+
+export const useUpdateOneUser = clientQueryAdapter.useUpdateOneUser;
+
+export const useDeleteOneUser = clientQueryAdapter.useDeleteOneUser;
+
+export const useCreateOneNextauthVerificationToken =
+  clientQueryAdapter.useCreateOneNextauthVerificationToken;

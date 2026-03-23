@@ -1,3 +1,4 @@
+import { nextauthAdapter } from '@/adapter/backend/nextauth';
 import { currentUserServerQueryOptions } from '@/frontend/hooks/data/user-server';
 import { QueryClient } from '@tanstack/react-query';
 import { headers } from 'next/headers';
@@ -12,7 +13,9 @@ export async function initializePermission(queryClient: QueryClient) {
   const pathname = headersList.get('x-url') || '';
 
   if (!currentUser?.id) {
-    return redirect(`/auth/signin?next=${encodeURIComponent(pathname)}`);
+    return redirect(
+      `${nextauthAdapter.signInPath}?next=${encodeURIComponent(pathname)}`
+    );
   }
 
   return { currentUser };

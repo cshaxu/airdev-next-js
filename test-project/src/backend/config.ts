@@ -1,7 +1,13 @@
 import { decrypt } from 'databag';
 import dns from 'node:dns';
 import EncryptedPrivateConfig from '../../private.config.json';
-import { DATA_ENVIRONMENT, SERVICE_ENVIRONMENT } from '../common/config';
+import {
+  DATA_ENVIRONMENT,
+  DEFAULT_API_BATCH_SIZE,
+  DEFAULT_PAGE_SIZE,
+  SERVICE_ENVIRONMENT,
+} from '../common/config';
+import { CRON_SECRET, INTERNAL_SECRET } from '../edge/config';
 
 // enforce fetch api to prefer ipv4 over ipv6
 // so localhost can be resolved correctly
@@ -61,3 +67,16 @@ export const TYPESENSE_API_KEY =
 export const TYPESENSE_HOST = privateEnvironmentalDataConfig.typesense.host;
 export const TYPESENSE_PROTOCOL = 'https';
 export const TYPESENSE_PORT = 443;
+
+export const privateConfig = {
+  cronSecret: CRON_SECRET,
+  internalSecret: INTERNAL_SECRET,
+  defaultDbBatchSize: DEFAULT_DB_BATCH_SIZE,
+  defaultApiBatchSize: DEFAULT_API_BATCH_SIZE,
+  defaultPageSize: DEFAULT_PAGE_SIZE,
+  cacheRequestPathPrefixes: [
+    '/data/create-one-',
+    '/data/update-one-',
+    '/data/delete-one-',
+  ],
+} as const;

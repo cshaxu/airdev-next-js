@@ -1,13 +1,10 @@
-// import { UserSearchService } from '@/backend/services/data/user-search';
-import { intersect } from '@/backend/utils/object';
-
 import { APP_LOGO_URL } from '@/common/config';
 import { UserEmailPayload } from '@/common/types/data/user';
 
-import { ADMIN_EMAILS } from '@/backend/config';
 import { Context } from '@/framework/context';
 import { UserEntityBase } from '@/generated/entities/user';
 import { UserPrimitiveField } from '@/generated/types/user';
+import { intersect } from '@/backend/utils/object';
 
 export class UserEntity extends UserEntityBase {
   protected static async afterCreate(
@@ -39,11 +36,7 @@ export class UserEntity extends UserEntityBase {
 
   public getThisUserId = () => this.context.currentUser?.id ?? null;
 
-  public getIsAdmin = () =>
-    ADMIN_EMAILS.includes(this.email) ||
-    (this.emailVerified !== null &&
-      this.email.endsWith('@nanoindies.com') &&
-      !this.email.includes('+'));
+  public getIsAdmin = () => this.isAdmin;
 
   public getVerifiedEmail = () =>
     this.emailVerified === null ? null : this.email;

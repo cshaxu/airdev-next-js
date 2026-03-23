@@ -14,7 +14,7 @@ types:
   - name: UserEmailPayload
     import: '@/common/types/data/user'
   - name: UserModel
-    define: '{ id: string; createdAt: Date; updatedAt: Date; name: string; email: string; emailVerified: Date | null; imageUrl: string | null }'
+    define: '{ id: string; createdAt: Date; updatedAt: Date; name: string; email: string; emailVerified: Date | null; imageUrl: string | null; isAdmin: boolean }'
 keys:
   - id
 fields:
@@ -53,21 +53,22 @@ fields:
     type: string | null
     strategy: primitive
     internal: false
-  - id: 1
+  - id: 8
     name: isAdmin
     type: boolean
-    strategy: computed
-  - id: 2
+    strategy: primitive
+    internal: false
+  - id: 9
     internal: true
     name: verifiedEmail
     type: string | null
     strategy: computed
-  - id: 3
+  - id: 10
     internal: true
     name: emailPayload
     type: UserEmailPayload
     strategy: computedAsync
-  - id: 4
+  - id: 11
     internal: true
     name: thisUserId
     type: string | null

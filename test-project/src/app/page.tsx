@@ -1,4 +1,4 @@
-import LandingPageView from '@/app/components/LandingPageView';
+import { shellAdapter } from '@/adapter/frontend/shell';
 import { SESSION_TOKEN_COOKIE_NAME } from '@/backend/lib/nextauth/cookies';
 import { currentUserServerQueryOptions } from '@/frontend/hooks/data/user-server';
 import { withError } from '@/frontend/utils/page';
@@ -11,7 +11,8 @@ export const dynamic = 'force-dynamic';
 async function Page() {
   const cookieStore = await cookies();
   if (!cookieStore.has(SESSION_TOKEN_COOKIE_NAME)) {
-    return <LandingPageView />;
+    const LandingComponent = shellAdapter.component.LandingComponent;
+    return <LandingComponent />;
   }
 
   const queryClient = new QueryClient();
@@ -19,10 +20,11 @@ async function Page() {
     currentUserServerQueryOptions
   );
   if (currentUser !== null) {
-    redirect('/dashboard');
+    redirect(shellAdapter.navigation.homeHref);
   }
 
-  return <LandingPageView />;
+  const LandingComponent = shellAdapter.component.LandingComponent;
+  return <LandingComponent />;
 }
 
 const SafePage = withError(Page);

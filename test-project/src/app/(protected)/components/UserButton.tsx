@@ -1,5 +1,7 @@
 'use client';
 
+import { apiClientAdapter } from '@/adapter/frontend/api-client';
+import { shellAdapter } from '@/adapter/frontend/shell';
 import {
   Avatar,
   AvatarFallback,
@@ -24,7 +26,6 @@ import {
 } from '@/frontend/components/ui/DropdownMenu';
 import { useRequiredCurrentUser } from '@/frontend/hooks/data/user';
 import { cn } from '@/frontend/lib/cn';
-import { becomeUser } from '@/frontend/sdks/auth-client';
 import {
   useBecameUser,
   useSetBecameUser,
@@ -60,7 +61,9 @@ function useUserInitials() {
   const { data: user } = useRequiredCurrentUser();
   const [firstName, lastName] = user.name.split(' ') ?? [];
   const initials =
-    firstName && lastName ? `${firstName[0]}${lastName[0]}` : 'A';
+    firstName && lastName
+      ? `${firstName[0]}${lastName[0]}`
+      : (user.email.at(0)?.toUpperCase() ?? '?');
 
   return { user, initials };
 }
@@ -186,11 +189,11 @@ export default function UserButton(props: Props) {
 
   const handleSignOut = async () => {
     queryClient.clear();
-    await signOut({ callbackUrl: '/' });
+    await signOut({ callbackUrl: shellAdapter.navigation.logoutCallbackUrl });
   };
 
   const handleRevertSelf = async () => {
-    await becomeUser(null);
+    await apiClientAdapter.becomeUser(null);
     setBecameUser(null);
     window.location.reload();
   };
@@ -385,12 +388,12 @@ export default function UserButton(props: Props) {
   };
 
   const mobileActions: AccountAction[] = [
-    ...(user.isAdmin
+    ...(user.isAdmin && shellAdapter.navigation.adminHref
       ? [
           {
             key: 'admin',
             label: 'Admin',
-            href: '/admin',
+            href: shellAdapter.navigation.adminHref,
             icon: <Wrench className="size-5" />,
           },
         ]
@@ -398,7 +401,7 @@ export default function UserButton(props: Props) {
     {
       key: 'settings',
       label: 'Settings',
-      href: '/settings',
+      href: shellAdapter.navigation.settingsHref,
       icon: <Cog6ToothIcon className="size-5" />,
     },
     became
@@ -521,30 +524,30 @@ export default function UserButton(props: Props) {
       >
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {user.isAdmin && (
+        {user.isAdmin && shellAdapter.navigation.adminHref && (
           <DropdownMenuItem asChild>
-            <Link href="/admin">
+            <Link href={shellAdapter.navigation.adminHref}>
               <Wrench className="mr-2 size-4" />
               <span>Admin</span>
             </Link>
           </DropdownMenuItem>
         )}
         <DropdownMenuItem asChild>
-          <Link href="/settings">
+          <Link href={shellAdapter.navigation.settingsHref}>
             <Cog6ToothIcon className="mr-2 size-4" />
             <span>Settings</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         {became ? (
-          <button className="w-full" onClick={handleRevertSelf}>
+          <button className="w-full" onClick={() => void handleRevertSelf()}>
             <DropdownMenuItem className="w-full cursor-pointer">
               <LogOut className="mr-2 size-4" />
               <span>Revert to self</span>
             </DropdownMenuItem>
           </button>
         ) : (
-          <button className="w-full" onClick={handleSignOut}>
+          <button className="w-full" onClick={() => void handleSignOut()}>
             <DropdownMenuItem className="w-full cursor-pointer">
               <LogOut className="mr-2 size-4" />
               <span>Log out</span>

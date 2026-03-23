@@ -1,6 +1,8 @@
 'use client';
 
-import { APP_NAME, APP_OWNER_SHORT } from '@/common/config';
+import { clientQueryAdapter } from '@/adapter/frontend/query';
+import { shellAdapter } from '@/adapter/frontend/shell';
+import { publicConfig } from '@/common/config';
 import GoogleLogo from '@/frontend/components/logos/GoogleLogo';
 import { Button } from '@/frontend/components/ui/Button';
 import {
@@ -11,7 +13,6 @@ import {
   FormMessage,
 } from '@/frontend/components/ui/Form';
 import { Input } from '@/frontend/components/ui/Input';
-import { useCreateOneNextauthVerificationToken } from '@/generated/tanstack-hooks/nextauth-verification-token-client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
@@ -28,7 +29,7 @@ export default function SignInStart({ setEmail }: Props) {
   const [_, setStep] = useQueryState('step');
   const [next] = useQueryState('next', parseAsString);
   const { mutate: createVerificationToken, isPending } =
-    useCreateOneNextauthVerificationToken();
+    clientQueryAdapter.useCreateOneNextauthVerificationToken();
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: { email: '' },
@@ -41,7 +42,7 @@ export default function SignInStart({ setEmail }: Props) {
       { email },
       {
         onSuccess: () => {
-          setStep('2');
+          void setStep('2');
         },
       }
     );
@@ -50,13 +51,18 @@ export default function SignInStart({ setEmail }: Props) {
   return (
     <div className="flex flex-col gap-5 sm:gap-6">
       <h3 className="text-center text-xl font-bold text-[var(--blue-dark-75)] sm:text-2xl">
-        Welcome to {APP_NAME}
+        Welcome to {publicConfig.app.name}
       </h3>
       <Button
         variant="outline"
         size="lg"
         className="flex h-12 w-full items-center gap-2 rounded-[12px] px-4 sm:h-11 [&_svg]:size-5"
-        onClick={() => signIn('google', { callbackUrl: next || '/' })}
+        onClick={() =>
+          void signIn('google', {
+            callbackUrl: next || shellAdapter.navigation.homeHref,
+          })
+        }
+        type="button"
       >
         <GoogleLogo />
         Continue with Google
@@ -106,12 +112,21 @@ export default function SignInStart({ setEmail }: Props) {
             Continue with Email
           </Button>
           <small className="text-muted-foreground mx-auto block w-full max-w-sm text-center text-xs leading-5">
-            Powered by {APP_OWNER_SHORT}. By signing up, you agree to the{' '}
-            <Link href="/terms" prefetch={false} className="underline">
+            Powered by {publicConfig.app.ownerShort}. By signing up, you agree
+            to the{' '}
+            <Link
+              href={shellAdapter.navigation.termsHref}
+              prefetch={false}
+              className="underline"
+            >
               Terms of Service
             </Link>{' '}
             and{' '}
-            <Link href="/privacy" prefetch={false} className="underline">
+            <Link
+              href={shellAdapter.navigation.privacyHref}
+              prefetch={false}
+              className="underline"
+            >
               Privacy Policy
             </Link>
             , including Cookie Use.

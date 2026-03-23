@@ -1,11 +1,11 @@
 'use client';
 
+import { shellAdapter } from '@/adapter/frontend/shell';
 import { useRequiredCurrentUser } from '@/frontend/hooks/data/user';
 import { cn } from '@/frontend/lib/cn';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { MAIN_NAV_ITEMS } from './NavConfig';
 import UserButton from './UserButton';
 
 export default function BottomNavBar() {
@@ -13,6 +13,7 @@ export default function BottomNavBar() {
   useRequiredCurrentUser();
   const navItemsRef = useRef<HTMLDivElement>(null);
   const [showLabels, setShowLabels] = useState(true);
+  const navItems = shellAdapter.navigation.primaryItems;
 
   useEffect(() => {
     const element = navItemsRef.current;
@@ -22,7 +23,7 @@ export default function BottomNavBar() {
 
     const updateLabelVisibility = () => {
       const minTabWidthForLabel = 74;
-      const tabCount = MAIN_NAV_ITEMS.length + 1;
+      const tabCount = navItems.length + 1;
       const shouldShow = element.clientWidth >= tabCount * minTabWidthForLabel;
       setShowLabels(shouldShow);
     };
@@ -31,7 +32,7 @@ export default function BottomNavBar() {
     const observer = new ResizeObserver(updateLabelVisibility);
     observer.observe(element);
     return () => observer.disconnect();
-  }, []);
+  }, [navItems.length]);
 
   return (
     <nav
@@ -45,20 +46,22 @@ export default function BottomNavBar() {
         ref={navItemsRef}
         className="mx-auto flex h-16 max-w-xl items-center px-2"
       >
-        {MAIN_NAV_ITEMS.map((tab) => {
-          const active = tab.isActive(pathname);
+        {navItems.map((item) => {
+          const isActive = item.match
+            ? item.match(pathname)
+            : pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
             <Link
-              key={tab.to}
-              href={tab.to}
+              key={item.href}
+              href={item.href}
               className={cn(
                 'flex flex-1 flex-col items-center gap-1 rounded-lg py-1 text-[11px] transition-colors',
-                active ? 'text-foreground' : 'text-muted-foreground'
+                isActive ? 'text-foreground' : 'text-muted-foreground'
               )}
             >
-              {tab.renderIcon('size-5')}
+              {item.renderIcon('size-5')}
               {showLabels && (
-                <span className="whitespace-nowrap">{tab.label}</span>
+                <span className="whitespace-nowrap">{item.label}</span>
               )}
             </Link>
           );
