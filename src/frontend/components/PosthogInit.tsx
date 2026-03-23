@@ -1,7 +1,7 @@
 'use client';
 
 import { publicConfig } from '@airdev/next/common/config';
-import { parseAsBoolean, useQueryState } from 'nuqs';
+import { useSearchParams } from 'next/navigation';
 import posthog from 'posthog-js';
 import { useEffect } from 'react';
 
@@ -9,7 +9,10 @@ let initialized = false;
 
 export default function PosthogInit() {
   const { apiHost, apiToken } = publicConfig.posthog;
-  const [forcePosthog] = useQueryState('forcePosthog', parseAsBoolean);
+  const searchParams = useSearchParams();
+  const forcePosthog = ['1', 'true'].includes(
+    searchParams.get('forcePosthog')?.toLowerCase() ?? ''
+  );
   useEffect(() => {
     if (
       initialized ||

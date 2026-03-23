@@ -21,11 +21,11 @@ export default async function ProtectedLayout({ children }: ReactNodeProps) {
       <div className="flex h-screen flex-col overflow-hidden">
         <main className="h-full flex-1 overflow-hidden">
           <div className="flex h-full">
-            <div className="hidden h-full md:block [@media(orientation:portrait)]:hidden">
+            <div className="hidden h-full md:block">
               <SideNavBar />
             </div>
 
-            <div className="protected-mobile-main h-full min-w-0 flex-1 overflow-hidden pb-16 md:pb-0 [@media(orientation:portrait)]:pb-16">
+            <div className="protected-mobile-main h-full min-w-0 flex-1 overflow-hidden pb-16 md:pb-0">
               {children}
             </div>
           </div>

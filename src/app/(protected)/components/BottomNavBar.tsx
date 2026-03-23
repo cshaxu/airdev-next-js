@@ -38,7 +38,7 @@ export default function BottomNavBar() {
     <nav
       className={cn(
         'mobile-bottom-nav bg-background/95 border-border fixed right-0 bottom-0 left-0 z-40 border-t backdrop-blur',
-        'md:hidden [@media(orientation:portrait)]:block'
+        'md:hidden'
       )}
       style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 0px)' }}
     >

@@ -3,11 +3,12 @@
 import { shellAdapter } from '@airdev/next/adapter/frontend/shell';
 import { publicConfig } from '@airdev/next/common/config';
 import { withError } from '@airdev/next/frontend/utils/page';
-import { parseAsString, useQueryState } from 'nuqs';
+import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
 function ErrorPageContent() {
-  const [error] = useQueryState('error', parseAsString);
+  const searchParams = useSearchParams();
+  const error = searchParams.get('error');
   const isVerificationError = error === 'Verification';
 
   return (
