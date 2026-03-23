@@ -1,5 +1,6 @@
 'use client';
 
+import { shellAdapter } from '@airdev/next/adapter/frontend/shell';
 import { publicConfig } from '@airdev/next/common/config';
 import { withError } from '@airdev/next/frontend/utils/page';
 import { parseAsString, useQueryState } from 'nuqs';
@@ -15,7 +16,7 @@ function ErrorPageContent() {
         <h1 className="text-2xl font-bold">Unable to sign in</h1>
         <img
           className="h-24 w-24"
-          src="/logo.svg"
+          src={shellAdapter.component.logoSrc}
           alt={publicConfig.app.name}
         />
         {isVerificationError && (

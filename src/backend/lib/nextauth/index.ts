@@ -4,16 +4,15 @@ import { callbacks } from './callbacks';
 import { cookies } from './cookies';
 import { jwt } from './jwt';
 import { pages } from './pages';
-import { providers } from './providers';
+import { getProviders } from './providers';
 
 export const authOptions: AuthOptions = {
   cookies,
   pages,
   session: {
-    strategy: 'database',
     maxAge: nextauthAdapter.sessionMaxAge,
   },
-  providers,
+  providers: getProviders(),
   callbacks,
   jwt,
 };
@@ -25,5 +24,13 @@ Object.defineProperty(authOptions, 'adapter', {
     return (
       nextauthAdapter.getNextAuthAdapter?.() ?? nextauthAdapter.nextAuthAdapter
     );
+  },
+});
+
+Object.defineProperty(authOptions, 'providers', {
+  configurable: true,
+  enumerable: true,
+  get() {
+    return getProviders();
   },
 });

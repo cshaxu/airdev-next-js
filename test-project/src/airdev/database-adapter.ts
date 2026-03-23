@@ -1,4 +1,3 @@
-import type { DatabaseAdapter } from '@airdev/next/adapter/backend/data';
 import { NextauthAccountEntity } from '@/backend/entities/nextauth-account';
 import { NextauthSessionEntity } from '@/backend/entities/nextauth-session';
 import { SystemRequestCacheEntity } from '@/backend/entities/system-request-cache';
@@ -6,6 +5,7 @@ import { UserEntity } from '@/backend/entities/user';
 import NextauthVerificationTokenService from '@/backend/services/data/nextauth-verification-token';
 import SystemRequestCacheService from '@/backend/services/data/system-request-cache';
 import UserService from '@/backend/services/data/user';
+import type { DatabaseAdapter } from '@airdev/next/adapter/backend/data';
 import { purify } from '@airent/api';
 
 export const airdevDatabaseAdapter: DatabaseAdapter = {
@@ -28,7 +28,10 @@ export const airdevDatabaseAdapter: DatabaseAdapter = {
     return user;
   },
   updateOneUser: async (one, body, context) => {
-    const user = await UserEntity.findUnique({ where: { id: one.id } }, context);
+    const user = await UserEntity.findUnique(
+      { where: { id: one.id } },
+      context
+    );
     if (user === null) {
       throw new Error(`User not found: ${one.id}`);
     }
@@ -73,7 +76,10 @@ export const airdevDatabaseAdapter: DatabaseAdapter = {
       context
     ) as Promise<any>,
   deleteOneNextauthVerificationTokenSafe: (params, context) =>
-    NextauthVerificationTokenService.deleteOneSafe(params, context) as Promise<any>,
+    NextauthVerificationTokenService.deleteOneSafe(
+      params,
+      context
+    ) as Promise<any>,
   getOneRequestCache: (body, context) =>
     SystemRequestCacheService.getOne(body, context) as Promise<any>,
   createOneRequestCacheSafe: (body, context) =>

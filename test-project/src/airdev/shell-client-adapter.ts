@@ -1,5 +1,5 @@
-import type { ShellAdapter } from '@airdev/next/adapter/frontend/shell';
 import { MAIN_NAV_ITEMS } from '@/app/(protected)/components/NavConfig';
+import type { ShellAdapter } from '@airdev/next/adapter/frontend/shell';
 
 export const airdevClientShellAdapter: ShellAdapter = {
   navigation: {

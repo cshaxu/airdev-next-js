@@ -1,10 +1,10 @@
-import type { NextauthAdapter } from '@airdev/next/adapter/backend/nextauth';
 import {
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
   NEXTAUTH_SESSION_MAX_AGE,
 } from '@/backend/config';
 import { adapter as nextAuthAdapter } from '@/backend/lib/nextauth/adapter';
+import type { NextauthAdapter } from '@airdev/next/adapter/backend/nextauth';
 
 export const airdevNextauthAdapter: NextauthAdapter = {
   sessionMaxAge: NEXTAUTH_SESSION_MAX_AGE,

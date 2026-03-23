@@ -1,18 +1,59 @@
 import { publicConfig } from '@airdev/next/common/config';
 import { CookiesOptions } from 'next-auth';
 
-const secureCookiePrefix =
-  publicConfig.service.environment === 'local' ? '' : '__Secure-';
-const hostCookiePrefix =
-  publicConfig.service.environment === 'local' ? '' : '__Host-';
-export const SESSION_TOKEN_COOKIE_NAME = `${secureCookiePrefix}next-auth.session-token`;
-const CALLBACK_URL_COOKIE_NAME = `${secureCookiePrefix}next-auth.callback-url`;
-const CSRF_TOKEN_COOKIE_NAME = `${hostCookiePrefix}next-auth.csrf-token`;
+function buildCookieOptions() {
+  const isLocal = publicConfig.service.environment === 'local';
+  const secureCookiePrefix = isLocal ? '' : '__Secure-';
+  const hostCookiePrefix = isLocal ? '' : '__Host-';
+  const options = {
+    path: '/',
+    sameSite: (isLocal ? 'lax' : 'none') as 'lax' | 'none',
+    secure: !isLocal,
+  };
 
-const options = { path: '/', sameSite: 'none' as const, secure: true };
+  return {
+    sessionToken: {
+      name: `${secureCookiePrefix}next-auth.session-token`,
+      options,
+    },
+    csrfToken: {
+      name: `${hostCookiePrefix}next-auth.csrf-token`,
+      options,
+    },
+    callbackUrl: {
+      name: `${secureCookiePrefix}next-auth.callback-url`,
+      options,
+    },
+  } satisfies Partial<CookiesOptions>;
+}
 
-export const cookies: Partial<CookiesOptions> = {
-  sessionToken: { name: SESSION_TOKEN_COOKIE_NAME, options },
-  csrfToken: { name: CSRF_TOKEN_COOKIE_NAME, options },
-  callbackUrl: { name: CALLBACK_URL_COOKIE_NAME, options },
-};
+export const SESSION_TOKEN_COOKIE_NAME =
+  publicConfig.service.environment === 'local'
+    ? 'next-auth.session-token'
+    : '__Secure-next-auth.session-token';
+
+export const cookies: Partial<CookiesOptions> = {};
+
+Object.defineProperties(cookies, {
+  sessionToken: {
+    enumerable: true,
+    configurable: true,
+    get() {
+      return buildCookieOptions().sessionToken;
+    },
+  },
+  csrfToken: {
+    enumerable: true,
+    configurable: true,
+    get() {
+      return buildCookieOptions().csrfToken;
+    },
+  },
+  callbackUrl: {
+    enumerable: true,
+    configurable: true,
+    get() {
+      return buildCookieOptions().callbackUrl;
+    },
+  },
+});

@@ -1,7 +1,7 @@
-import type { ApiClientAdapter } from '@airdev/next/adapter/frontend/api-client';
 import { CurrentUserFieldRequest } from '@/common/types/context';
-import UserApiClient from '@/generated/clients/user';
 import { becomeUser } from '@/frontend/sdks/auth-client';
+import UserApiClient from '@/generated/clients/user';
+import type { ApiClientAdapter } from '@airdev/next/adapter/frontend/api-client';
 
 export const airdevApiClientAdapter: ApiClientAdapter = {
   becomeUser: (userId) => becomeUser(userId).then(() => undefined),

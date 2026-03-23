@@ -3,7 +3,9 @@
 import { clientQueryAdapter } from '@airdev/next/adapter';
 import { shellAdapter } from '@airdev/next/adapter/frontend/shell';
 import DeleteDialog from '@airdev/next/frontend/components/DeleteDialog';
-import HeaderBar, { HeaderBarItem } from '@airdev/next/frontend/components/HeaderBar';
+import HeaderBar, {
+  HeaderBarItem,
+} from '@airdev/next/frontend/components/HeaderBar';
 import {
   Avatar,
   AvatarFallback,
