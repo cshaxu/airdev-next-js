@@ -1,0 +1,41 @@
+{
+  "service": {
+    "common": {},
+    "local": {
+      "baseUrl": "http://localhost:3000",
+      "name": "localhost",
+      "protocol": "http:",
+      "rootDomain": "localhost:3000",
+      "titlePrefix": "Local"
+    },
+    "production": {
+      "baseUrl": "https://www.nanoindies.com",
+      "name": "barebone-prod",
+      "protocol": "https:",
+      "rootDomain": "nanoindies.com",
+      "titlePrefix": "Production"
+    }
+  },
+  "data": {
+    "common": {
+      "posthog": {
+        "apiToken": "placeholder",
+        "apiHost": "https://us.posthog.com"
+      },
+      "pusher": {
+        "key": "placeholder",
+        "cluster": "placeholder"
+      }
+    },
+    "local": {
+      "aws": {
+        "s3Bucket": "barebone-local"
+      }
+    },
+    "production": {
+      "aws": {
+        "s3Bucket": "barebone-production"
+      }
+    }
+  }
+}

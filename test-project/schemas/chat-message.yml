@@ -1,0 +1,75 @@
+name: ChatMessage
+model: ChatMessageModel
+api:
+  cursors:
+    - createdAt: desc
+  methods:
+    getMany: null
+    getOne: null
+types:
+  - name: PrismaJsonValue
+    define: unknown
+  - name: ChatMessageContent
+    import: '@/common/types/data/chat-message'
+  - name: ChatMessageAttachment
+    import: '@/common/types/data/chat-message'
+  - name: ChatMessageModel
+    define: '{ id: string; createdAt: Date; chatId: string; userId: string | null; chat?: ChatModel; user?: UserModel | null; content: ChatMessageContent; attachments: ChatMessageAttachment[] }'
+keys:
+  - id
+fields:
+  - id: 1
+    name: id
+    type: string
+    strategy: primitive
+    internal: false
+  - id: 2
+    name: createdAt
+    type: Date
+    strategy: primitive
+    internal: false
+  - id: 3
+    name: chatId
+    type: string
+    strategy: primitive
+    internal: false
+  - id: 4
+    name: userId
+    type: string | null
+    strategy: primitive
+    internal: false
+  - id: 7
+    name: chat
+    type: Chat
+    strategy: association
+    sourceKeys:
+      - chatId
+    targetKeys:
+      - id
+    internal: false
+    isImdb: true
+  - id: 8
+    name: user
+    type: User | null
+    strategy: association
+    sourceKeys:
+      - userId
+    targetKeys:
+      - id
+    internal: false
+    isImdb: true
+  - id: 1
+    internal: true
+    name: content
+    type: ChatMessageContent
+    strategy: primitive
+    cast: true
+  - id: 2
+    name: text
+    type: string
+    strategy: computed
+  - id: 3
+    name: attachments
+    type: ChatMessageAttachment[]
+    strategy: primitive
+    cast: true

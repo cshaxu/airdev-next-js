@@ -1,0 +1,31 @@
+name: ChatUser
+model: ChatUserModel
+api:
+  methods:
+    getMany: null
+types:
+  - name: ChatUserModel
+    define: '{ id: string; createdAt: Date; chatId: string; userId: string }'
+keys:
+  - id
+fields:
+  - id: 1
+    name: id
+    type: string
+    strategy: primitive
+    internal: false
+  - id: 2
+    name: createdAt
+    type: Date
+    strategy: primitive
+    internal: false
+  - id: 3
+    name: chatId
+    type: string
+    strategy: primitive
+    internal: false
+  - id: 4
+    name: userId
+    type: string
+    strategy: primitive
+    internal: false

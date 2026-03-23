@@ -1,0 +1,29 @@
+import LandingPageView from '@/app/components/LandingPageView';
+import { SESSION_TOKEN_COOKIE_NAME } from '@/backend/lib/nextauth/cookies';
+import { currentUserServerQueryOptions } from '@/frontend/hooks/data/user-server';
+import { withError } from '@/frontend/utils/page';
+import { QueryClient } from '@tanstack/react-query';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+
+export const dynamic = 'force-dynamic';
+
+async function Page() {
+  const cookieStore = await cookies();
+  if (!cookieStore.has(SESSION_TOKEN_COOKIE_NAME)) {
+    return <LandingPageView />;
+  }
+
+  const queryClient = new QueryClient();
+  const currentUser = await queryClient.fetchQuery(
+    currentUserServerQueryOptions
+  );
+  if (currentUser !== null) {
+    redirect('/dashboard');
+  }
+
+  return <LandingPageView />;
+}
+
+const SafePage = withError(Page);
+export default SafePage;

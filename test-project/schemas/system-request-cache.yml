@@ -1,0 +1,38 @@
+name: SystemRequestCache
+model: SystemRequestCacheModel
+internal: true
+types:
+  - name: PrismaJsonValue
+    define: unknown
+  - name: SystemRequestCacheModel
+    define: '{ id: string; createdAt: Date; completedAt: Date | null; request: unknown | null; response: unknown | null }'
+keys:
+  - id
+fields:
+  - id: 1
+    name: id
+    type: string
+    strategy: primitive
+    internal: false
+  - id: 2
+    name: createdAt
+    type: Date
+    strategy: primitive
+    internal: false
+  - id: 3
+    name: completedAt
+    type: Date | null
+    strategy: primitive
+    internal: false
+  - id: 4
+    name: request
+    type: PrismaJsonValue | null
+    strategy: primitive
+    cast: true
+    internal: false
+  - id: 5
+    name: response
+    type: PrismaJsonValue | null
+    strategy: primitive
+    cast: true
+    internal: false
