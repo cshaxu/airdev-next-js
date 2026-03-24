@@ -10,6 +10,13 @@ import {
 import { Drama, Smile, User, UserKey } from 'lucide-react';
 import { useState } from 'react';
 
+type SearchUser = {
+  id: string;
+  name: string;
+  imageUrl: string | null;
+  isAdmin: boolean;
+};
+
 export default function UserSearch() {
   const { become } = clientFunctionConfig.apiClient.auth;
   const [inputQ, setInputQ] = useState('');
@@ -23,7 +30,10 @@ export default function UserSearch() {
     clientFunctionConfig.query.user.useUpdateOne();
 
   const { data: users = [], isFetching } =
-    clientFunctionConfig.query.user.useGetMany({ q: searchQ });
+    clientFunctionConfig.query.user.useGetMany({ q: searchQ }) as {
+      data?: SearchUser[];
+      isFetching: boolean;
+    };
 
   function handleSearch() {
     setSearchQ(inputQ.trim());
@@ -35,7 +45,7 @@ export default function UserSearch() {
     }
   }
 
-  async function handleBecome(user: (typeof users)[number]) {
+  async function handleBecome(user: SearchUser) {
     await become(user.id);
     setBecameUser(user);
     window.location.reload();
@@ -47,7 +57,7 @@ export default function UserSearch() {
     window.location.reload();
   }
 
-  async function handleToggleAdmin(user: (typeof users)[number]) {
+  async function handleToggleAdmin(user: SearchUser) {
     setAdminTargetUserId(user.id);
     try {
       await updateUser({
@@ -106,7 +116,7 @@ export default function UserSearch() {
 
       {users.length > 0 && (
         <div className="space-y-2">
-          {users.map((user) => (
+          {users.map((user: SearchUser) => (
             <div
               key={user.id}
               className="flex items-center gap-3 rounded-lg border p-3"

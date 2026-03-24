@@ -1,10 +1,13 @@
 import { serverFunctionConfig } from '@/config/function/server';
-import { CurrentUserFieldRequest } from '@/package/common/types/context';
+import {
+  CurrentUser,
+  CurrentUserFieldRequest,
+} from '@/package/common/types/context';
 
 export const currentUserServerQueryOptions = {
   queryKey: ['currentUser'],
   queryFn: () =>
     serverFunctionConfig.apiClient.user
       .getOneSafe({ id: 'me' }, CurrentUserFieldRequest)
-      .then((page) => page.user),
+      .then((page: { user: CurrentUser | null }) => page.user),
 };

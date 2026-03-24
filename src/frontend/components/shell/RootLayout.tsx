@@ -1,5 +1,5 @@
 import { publicConfig } from '@/config/public';
-import { Toaster } from '@/frontend/components/ui/Toaster';
+import { Toaster } from '@/package/frontend/components/ui/Toaster';
 import ErrorBoundary from '@/package/frontend/components/ErrorBoundary';
 import ReactQueryProvider from '@/package/frontend/components/ReactQueryProvider';
 import ThemeProvider from '@/package/frontend/components/theme/ThemeProvider';

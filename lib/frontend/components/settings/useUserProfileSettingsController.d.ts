@@ -1,0 +1,21 @@
+import type { HeaderBarItem } from '../shell/HeaderBar';
+import { KeyboardEvent } from 'react';
+export declare function useUserProfileSettingsController(): {
+    currentUser: any;
+    breadcrumbs: HeaderBarItem[];
+    deleteOpen: boolean;
+    isEditingName: boolean;
+    draftName: any;
+    nameInputRef: import("react").RefObject<HTMLInputElement | null>;
+    isDeleting: any;
+    isUpdatingUser: boolean;
+    displayName: any;
+    nameInitials: any;
+    setDeleteOpen: import("react").Dispatch<import("react").SetStateAction<boolean>>;
+    setDraftName: import("react").Dispatch<any>;
+    handleDeleteAccount: () => void;
+    handleStartEditingName: () => void;
+    handleCancelEditingName: () => void;
+    handleNameKeyDown: (event: KeyboardEvent<HTMLInputElement>) => void;
+};
+export type UserProfileSettingsViewModel = ReturnType<typeof useUserProfileSettingsController>;

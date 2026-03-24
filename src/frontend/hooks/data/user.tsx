@@ -29,12 +29,12 @@ const currentUserQueryOptions = {
 const getNullableCurrentUser = () =>
   clientFunctionConfig.apiClient.user
     .getOneSafe({ id: 'me' }, CurrentUserFieldRequest)
-    .then((page) => page.user);
+    .then((page: { user: CurrentUser | null }) => page.user);
 
 const requiredCurrentUserQueryOptions = queryOptions({
   ...currentUserQueryOptions,
   queryFn: () =>
-    getNullableCurrentUser().then((user) => {
+    getNullableCurrentUser().then((user: CurrentUser | null) => {
       if (user === null) {
         throw new Error('A visitor should not access this page');
       }
@@ -62,7 +62,7 @@ export function useUpdateCurrentUser(
   const mutationFn = ({ params, body }: UpdateOneUserMutationParams) =>
     clientFunctionConfig.apiClient.user
       .updateOne(params, body, CurrentUserFieldRequest)
-      .then((page) => page.user);
+      .then((page: { user: CurrentUser | null }) => page.user);
 
   const queryClient = useQueryClient();
 

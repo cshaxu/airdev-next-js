@@ -11,6 +11,13 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import UserButton from './UserButton';
 
+type NavItem = {
+  to: string;
+  label: string;
+  renderIcon: (className: string) => React.ReactNode;
+  isActive: (pathname: string) => boolean;
+};
+
 const adminRegex = /^\/admin(?:\/.*)?$/;
 
 type SideNavLinkProps = {
@@ -46,7 +53,9 @@ export default function SideNavBar() {
   const pathname = usePathname();
   const lastPathRef = useRef(pathname);
 
-  const { navItems } = clientComponentConfig.NavContent();
+  const { navItems } = clientComponentConfig.NavContent() as {
+    navItems: NavItem[];
+  };
 
   const shouldCollapse = Boolean(
     pathname.match(adminRegex) // || pathname.match(adminRegex)
@@ -104,7 +113,7 @@ export default function SideNavBar() {
         <div className="nav-separator mx-4 h-px" />
 
         <nav className="flex flex-col gap-1">
-          {navItems.map((item) => (
+          {navItems.map((item: NavItem) => (
             <SideNavLink
               key={item.to}
               label={item.label}

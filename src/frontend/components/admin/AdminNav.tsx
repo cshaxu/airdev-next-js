@@ -6,13 +6,18 @@ import { cn } from '@/package/frontend/utils/cn';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+type AdminTab = {
+  href: string;
+  label: string;
+};
+
 export default function AdminNav() {
   const pathname = usePathname();
 
   return (
     <HeaderBar>
       <div className="flex gap-1">
-        {shellConfig.adminTabs.map((tab) => (
+        {(shellConfig.adminTabs as AdminTab[]).map((tab: AdminTab) => (
           <Link
             key={tab.href}
             href={tab.href}

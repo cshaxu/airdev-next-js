@@ -8,9 +8,18 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import UserButton from './UserButton';
 
+type NavItem = {
+  to: string;
+  label: string;
+  renderIcon: (className: string) => React.ReactNode;
+  isActive: (pathname: string) => boolean;
+};
+
 export default function BottomNavBar() {
   const pathname = usePathname();
-  const { navItems } = clientComponentConfig.NavContent();
+  const { navItems } = clientComponentConfig.NavContent() as {
+    navItems: NavItem[];
+  };
 
   useRequiredCurrentUser();
   const navItemsRef = useRef<HTMLDivElement>(null);
@@ -47,7 +56,7 @@ export default function BottomNavBar() {
         ref={navItemsRef}
         className="mx-auto flex h-16 max-w-xl items-center px-2"
       >
-        {navItems.map((item) => {
+        {navItems.map((item: NavItem) => {
           const active = item.isActive(pathname);
           return (
             <Link
