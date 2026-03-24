@@ -1,28 +1,33 @@
-import { databaseAdapter } from '@airdev/next/adapter/backend/data';
-import { frameworkAdapter } from '@airdev/next/adapter/backend/framework';
-import { privateConfig } from '@airdev/next/backend/config';
-import {
-  HEADER_CURRENT_USER_ID_KEY,
-  publicConfig,
-} from '@airdev/next/common/config';
+import { backendFunctionConfig } from '@/config/function/backend';
+import { commonFunctionConfig } from '@/config/function/common';
+import { privateConfig } from '@/config/private';
+import { HEADER_CURRENT_USER_ID_KEY, publicConfig } from '@/config/public';
+import { buildContextUserFromPackageUser } from '@/package/backend/utils/user';
 import {
   DispatcherOptions,
   commonDispatcherConfig,
   commonHandlerConfig,
-} from '@airdev/next/framework/callbacks';
-import {
-  Context,
-  ContextUser,
-  mockContext,
-} from '@airdev/next/framework/context';
+} from '@/package/framework/callbacks';
+import { Context, ContextUser } from '@/package/framework/context';
 import { DispatcherConfig, Executor, wait } from '@airent/api';
 import { HandlerConfig } from '@airent/api-next';
 import createHttpError from 'http-errors';
-import { pick } from 'lodash-es';
 import { getServerSession } from 'next-auth';
+import { headers as getHeaders } from 'next/headers';
 import { authOptions } from './nextauth';
 
-export { mockContext } from '@airdev/next/framework/context';
+export async function mockContext(
+  context?: Partial<Context>
+): Promise<Context> {
+  const headers = context?.headers ?? (await getHeaders());
+  return {
+    time: context?.time ?? new Date(),
+    method: context?.method ?? '',
+    url: context?.url ?? '',
+    headers,
+    currentUser: context?.currentUser ?? null,
+  };
+}
 
 export const dispatcherConfig: Pick<
   DispatcherConfig<DispatcherOptions, Context, any, any, any, any>,
@@ -50,9 +55,8 @@ async function getCurrentUser(headers: Headers): Promise<ContextUser | null> {
     realCurrentUserPromise,
     becameUserPromise,
   ]);
-
   if (
-    publicConfig.service.environment === 'local' ||
+    publicConfig.service.serviceEnvironment === 'local' ||
     realCurrentUser?.isAdmin
   ) {
     return becameUser ?? realCurrentUser;
@@ -62,7 +66,7 @@ async function getCurrentUser(headers: Headers): Promise<ContextUser | null> {
 
 export async function getRealCurrentUser(): Promise<ContextUser | null> {
   const session = await getServerSession(authOptions);
-  const email = session?.user?.email ?? null;
+  const { email } = session?.user ?? {};
   // load actual current user
   return email ? await getNullableUserSafe(email) : null;
 }
@@ -75,26 +79,19 @@ async function getBecameUser(headers: Headers): Promise<ContextUser | null> {
 async function getNullableUserSafe(id: string): Promise<ContextUser | null> {
   try {
     const context = await mockContext();
-    const user = await databaseAdapter.getOneUserSafe({ id }, context);
+    const user = await backendFunctionConfig.user.getOneSafe(id, context);
     if (user === null) {
       return null;
     }
-    return pick(user, [
-      'id',
-      'email',
-      'name',
-      'imageUrl',
-      'isAdmin',
-      'createdAt',
-    ]);
+    return buildContextUserFromPackageUser(user);
   } catch (error) {
-    frameworkAdapter.logError(error, { id });
+    commonFunctionConfig.logError(error, { id });
     return null;
   }
 }
 
 function getCookieHeaderKey(headers: Headers, key: string): string | null {
-  const cookieUserId =
+  const cookierUserId =
     (headers.get('cookie') ?? '')
       .split(';')
       .map((s) => s.trim().split('='))
@@ -102,8 +99,14 @@ function getCookieHeaderKey(headers: Headers, key: string): string | null {
       .map(([_k, v]) => v)
       .at(0) ?? null;
   const headerUserId = headers.get(key);
-  return cookieUserId ?? headerUserId;
+  return cookierUserId ?? headerUserId;
 }
+
+const CACHED_REQUEST_PATHS = [
+  '/data/create-one-',
+  '/data/update-one-',
+  '/data/delete-one-',
+];
 
 function executorWrapper<PARSED, RESULT>(
   executor: Executor<PARSED, Context, RESULT>,
@@ -114,22 +117,22 @@ function executorWrapper<PARSED, RESULT>(
     const requireRequestCache =
       options?.cacheRequest !== undefined
         ? options.cacheRequest
-        : privateConfig.cacheRequestPathPrefixes.some((path) =>
-            url.includes(path)
-          );
-
+        : CACHED_REQUEST_PATHS.some((path) => url.includes(path));
     if (requireRequestCache) {
-      const requestCache = await databaseAdapter.createOneRequestCacheSafe(
-        parsed,
-        context
-      );
+      const requestCache =
+        await backendFunctionConfig.systemRequestCache.createOneSafe(
+          parsed,
+          context
+        );
       if (requestCache === null) {
         // key conflict
         let delay = 1000;
-        const maxDelay = 5 * 1000;
         do {
           const { completedAt, response } =
-            await databaseAdapter.getOneRequestCache(parsed, context);
+            await backendFunctionConfig.systemRequestCache.getOne(
+              parsed,
+              context
+            );
           if (completedAt === null) {
             // exponential backoff
             await wait(delay);
@@ -137,20 +140,20 @@ function executorWrapper<PARSED, RESULT>(
           } else {
             return response as RESULT;
           }
-        } while (delay < maxDelay);
+        } while (delay < privateConfig.database.dbDelaySeconds * 1000);
         throw createHttpError.RequestTimeout();
       } else {
         // key acquired
         const result = await executor(parsed, context);
-        await databaseAdapter.updateOneRequestCacheSafe(
-          requestCache,
+        await backendFunctionConfig.systemRequestCache.updateOneSafe(
+          requestCache.id,
           result,
           context
         );
         return result;
       }
+    } else {
+      return await executor(parsed, context);
     }
-
-    return await executor(parsed, context);
   };
 }

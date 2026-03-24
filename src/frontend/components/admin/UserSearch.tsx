@@ -1,31 +1,17 @@
 'use client';
 
-import type { ApiClientAdapter } from '@airdev/next/adapter/frontend/api-client/types';
-import type {
-  ClientQueryAdapter,
-  SearchUser,
-} from '@airdev/next/adapter/frontend/query/types';
-import { Button } from '@airdev/next/frontend/components/ui/Button';
-import { Input } from '@airdev/next/frontend/components/ui/Input';
+import { clientFunctionConfig } from '@/config/function/client';
+import { Button } from '@/package/frontend/components/ui/Button';
+import { Input } from '@/package/frontend/components/ui/Input';
 import {
   useBecameUser,
   useSetBecameUser,
-} from '@airdev/next/frontend/stores/becameUserStore';
-import { useQuery } from '@tanstack/react-query';
+} from '@/package/frontend/stores/becameUserStore';
 import { Drama, Smile, User, UserKey } from 'lucide-react';
 import { useState } from 'react';
 
-type Props = {
-  becomeUser: ApiClientAdapter['becomeUser'];
-  getManyUsersQueryOptions: ClientQueryAdapter['getManyUsersQueryOptions'];
-  useUpdateOneUser: ClientQueryAdapter['useUpdateOneUser'];
-};
-
-export default function UserSearch({
-  becomeUser,
-  getManyUsersQueryOptions,
-  useUpdateOneUser,
-}: Props) {
+export default function UserSearch() {
+  const { become } = clientFunctionConfig.apiClient.auth;
   const [inputQ, setInputQ] = useState('');
   const [searchQ, setSearchQ] = useState('');
   const [adminTargetUserId, setAdminTargetUserId] = useState<string | null>(
@@ -34,11 +20,10 @@ export default function UserSearch({
   const became = useBecameUser();
   const setBecameUser = useSetBecameUser();
   const { mutateAsync: updateUser, isPending: isUpdatingUser } =
-    useUpdateOneUser();
+    clientFunctionConfig.query.user.useUpdateOne();
 
-  const { data: users = [], isFetching } = useQuery(
-    getManyUsersQueryOptions({ q: searchQ })
-  );
+  const { data: users = [], isFetching } =
+    clientFunctionConfig.query.user.useGetMany({ q: searchQ });
 
   function handleSearch() {
     setSearchQ(inputQ.trim());
@@ -50,19 +35,19 @@ export default function UserSearch({
     }
   }
 
-  async function handleBecome(user: SearchUser) {
-    await becomeUser(user.id);
+  async function handleBecome(user: (typeof users)[number]) {
+    await become(user.id);
     setBecameUser(user);
     window.location.reload();
   }
 
   async function handleRevertSelf() {
-    await becomeUser(null);
+    await become(null);
     setBecameUser(null);
     window.location.reload();
   }
 
-  async function handleToggleAdmin(user: SearchUser) {
+  async function handleToggleAdmin(user: (typeof users)[number]) {
     setAdminTargetUserId(user.id);
     try {
       await updateUser({
@@ -87,18 +72,16 @@ export default function UserSearch({
               />
             ) : (
               <div className="bg-primary text-primary-foreground flex size-full items-center justify-center text-sm font-bold">
-                {(became.name || '?').charAt(0).toUpperCase()}
+                {became.name.charAt(0)?.toUpperCase() ?? '?'}
               </div>
             )}
           </div>
           <div className="flex-1">
-            <p className="text-sm font-medium">Impersonating: {became.name}</p>
+            <p className="text-sm font-medium">
+              Impersonating: {became.name ?? became.id}
+            </p>
           </div>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => void handleRevertSelf()}
-          >
+          <Button size="sm" variant="outline" onClick={handleRevertSelf}>
             Revert Self
           </Button>
         </div>
@@ -137,18 +120,18 @@ export default function UserSearch({
                   />
                 ) : (
                   <div className="bg-muted flex size-full items-center justify-center text-xs font-bold">
-                    {(user.name || '?').charAt(0).toUpperCase()}
+                    {user.name.charAt(0).toUpperCase() || '?'}
                   </div>
                 )}
               </div>
               <div className="flex-1">
-                <p className="text-sm font-medium">{user.name || '?'}</p>
+                <p className="text-sm font-medium">{user.name ?? '-'}</p>
                 <p className="text-muted-foreground text-xs">{user.id}</p>
               </div>
               <Button
                 size="sm"
                 variant={became?.id === user.id ? 'default' : 'outline'}
-                onClick={() => void handleBecome(user)}
+                onClick={() => handleBecome(user)}
                 disabled={became?.id === user.id}
                 title={became?.id === user.id ? 'Active' : 'Become'}
               >

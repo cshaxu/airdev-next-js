@@ -1,9 +1,10 @@
-import { frameworkAdapter } from '@airdev/next/adapter/backend/framework';
-import { privateConfig } from '@airdev/next/backend/config';
+import { CRON_SECRET, INTERNAL_SECRET } from '@/config/edge';
+import { commonFunctionConfig } from '@/config/function/common';
 import {
+  HEADER_AUTHORIZATION_KEY,
   HEADER_INTERNAL_SECRET_KEY,
   publicConfig,
-} from '@airdev/next/common/config';
+} from '@/config/public';
 import {
   CommonResponse,
   DispatcherConfig,
@@ -11,12 +12,12 @@ import {
   NormalizedError,
   Parser,
   buildInvalidErrorMessage,
+  logError,
 } from '@airent/api';
 import { HandlerConfig } from '@airent/api-next';
 import createHttpError from 'http-errors';
 import { ZodError } from 'zod';
 import { Context } from './context';
-const HEADER_AUTHORIZATION_KEY = 'authorization';
 
 export type DispatcherOptions = {
   requireLogin?: boolean;
@@ -44,8 +45,7 @@ function authorizer(context: Context, options?: DispatcherOptions): void {
   // require cron
   if (options?.requireCron === true) {
     if (
-      context.headers.get(HEADER_AUTHORIZATION_KEY) ===
-      `Bearer ${privateConfig.cronSecret ?? ''}`
+      context.headers.get(HEADER_AUTHORIZATION_KEY) === `Bearer ${CRON_SECRET}`
     ) {
       return;
     }
@@ -54,10 +54,7 @@ function authorizer(context: Context, options?: DispatcherOptions): void {
 
   // require internal
   if (options?.requireInternal === true) {
-    if (
-      context.headers.get(HEADER_INTERNAL_SECRET_KEY) ===
-      (privateConfig.internalSecret ?? '')
-    ) {
+    if (context.headers.get(HEADER_INTERNAL_SECRET_KEY) === INTERNAL_SECRET) {
       return;
     }
     throw createHttpError.Unauthorized(buildInvalidErrorMessage('access'));
@@ -111,9 +108,9 @@ function errorHandler<DATA, PARSED, RESULT>(
     ...dcRest,
     redactedHeaders: redactHeaders(headers),
   };
-  const normalizedError = frameworkAdapter.normalizeError(error);
-  frameworkAdapter.logError(normalizedError, redactedDc);
-  if (publicConfig.service.environment === 'production') {
+  const normalizedError = commonFunctionConfig.normalizeError(error);
+  logError(normalizedError, redactedDc);
+  if (publicConfig.service.serviceEnvironment === 'production') {
     delete normalizedError['original'];
     delete normalizedError['stack'];
   }

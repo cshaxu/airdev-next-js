@@ -1,6 +1,7 @@
-import { cn } from '@airdev/next/frontend/lib/cn';
+import { cn } from '@/package/frontend/utils/cn';
 import { Slot } from '@radix-ui/react-slot';
 import { ChevronRight, MoreHorizontal } from 'lucide-react';
+import Link from 'next/link';
 import * as React from 'react';
 
 const Breadcrumb = React.forwardRef<
@@ -43,12 +44,13 @@ const BreadcrumbLink = React.forwardRef<
   React.ComponentPropsWithoutRef<'a'> & {
     asChild?: boolean;
   }
->(({ asChild, className, ...props }, ref) => {
-  const Comp = asChild ? Slot : 'a';
+>(({ asChild, className, href, ...props }, ref) => {
+  const Comp = asChild ? Slot : Link;
 
   return (
     <Comp
       ref={ref}
+      href={href as string}
       className={cn(
         'hover:text-foreground transition-colors duration-200 hover:opacity-80',
         className

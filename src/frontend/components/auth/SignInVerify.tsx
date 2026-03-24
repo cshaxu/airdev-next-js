@@ -1,61 +1,40 @@
 'use client';
 
-import type { CreateOneNextauthVerificationTokenBody } from '@airdev/next/adapter/frontend/query/types';
-import { Button } from '@airdev/next/frontend/components/ui/Button';
+import { clientFunctionConfig } from '@/config/function/client';
+import { Button } from '@/package/frontend/components/ui/Button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from '@airdev/next/frontend/components/ui/Form';
+} from '@/package/frontend/components/ui/Form';
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-} from '@airdev/next/frontend/components/ui/InputOTP';
+} from '@/package/frontend/components/ui/InputOTP';
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { UseMutationResult } from '@tanstack/react-query';
-import { signIn } from 'next-auth/react';
 import { parseAsString, useQueryState } from 'nuqs';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-type Props = {
-  defaultCallbackUrl: string;
-  email: string;
-  useCreateOneNextauthVerificationToken: () => UseMutationResult<
-    unknown,
-    Error,
-    CreateOneNextauthVerificationTokenBody
-  >;
-  verificationCodeLength: number;
-};
+type Props = { email: string };
 
-type FormSchema = { code: string };
+const formSchema = z.object({
+  code: z.string().length(5, { message: 'Please enter a valid code' }),
+});
+type FormSchema = z.infer<typeof formSchema>;
 
-export default function SignInVerify({
-  defaultCallbackUrl,
-  email,
-  useCreateOneNextauthVerificationToken,
-  verificationCodeLength,
-}: Props) {
+export default function SignInVerify({ email }: Props) {
   const [next] = useQueryState('next', parseAsString);
   const [isSigningIn, setIsSigningIn] = useState(false);
   const {
     mutate: createVerificationToken,
     isPending: isCreatingVerificationToken,
-  } = useCreateOneNextauthVerificationToken();
-  const formSchema = useMemo(
-    () =>
-      z.object({
-        code: z.string().length(verificationCodeLength, {
-          message: 'Please enter a valid code',
-        }),
-      }),
-    [verificationCodeLength]
-  );
+  } = clientFunctionConfig.query.nextauthVerificationToken.useCreateOne();
+
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: { code: '' },
@@ -69,23 +48,20 @@ export default function SignInVerify({
       setIsSigningIn(true);
       const { code } = values;
 
-      await signIn('credentials', {
-        email,
-        code,
-        callbackUrl: next || defaultCallbackUrl,
-      })
+      await clientFunctionConfig.apiClient.auth
+        .signIn('credentials', { email, code, callbackUrl: next || '/' })
         .catch(() => {
           form.setError('code', { message: 'Invalid code' });
         })
         .finally(() => setIsSigningIn(false));
     },
-    [isSigningIn, email, next, defaultCallbackUrl, form]
+    [email, next, isSigningIn, form]
   );
 
   const handleComplete = useCallback(
     (value: string) => {
       form.setValue('code', value);
-      void form.handleSubmit(onSubmit)();
+      form.handleSubmit(onSubmit)();
     },
     [form, onSubmit]
   );
@@ -121,21 +97,19 @@ export default function SignInVerify({
               <FormItem className="mb-4 flex flex-col items-center">
                 <FormControl>
                   <InputOTP
-                    maxLength={verificationCodeLength}
+                    maxLength={5}
                     {...field}
                     className="mx-auto w-full justify-center"
                     onComplete={handleComplete}
                   >
-                    {Array.from(Array(verificationCodeLength).keys()).map(
-                      (i) => (
-                        <InputOTPGroup key={i}>
-                          <InputOTPSlot
-                            index={i}
-                            className="size-11 bg-white text-base font-semibold text-black sm:size-12"
-                          />
-                        </InputOTPGroup>
-                      )
-                    )}
+                    {Array.from(Array(5).keys()).map((i) => (
+                      <InputOTPGroup key={i}>
+                        <InputOTPSlot
+                          index={i}
+                          className="size-11 bg-white text-base font-semibold text-black sm:size-12"
+                        />
+                      </InputOTPGroup>
+                    ))}
                   </InputOTP>
                 </FormControl>
                 <FormMessage />

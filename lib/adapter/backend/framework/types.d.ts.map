@@ -1,1 +1,0 @@
-{"version":3,"file":"types.d.ts","sourceRoot":"","sources":["../../../../src/adapter/backend/framework/types.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,KAAK,SAAS,MAAM,aAAa,CAAC;AAE9C,MAAM,WAAW,gBAAgB;IAC/B,QAAQ,EAAE,CAAC,KAAK,EAAE,GAAG,EAAE,OAAO,CAAC,EAAE,MAAM,CAAC,MAAM,EAAE,GAAG,CAAC,KAAK,IAAI,CAAC;IAC9D,cAAc,EAAE,CAAC,KAAK,EAAE,GAAG,KAAK,SAAS,CAAC,eAAe,CAAC;CAC3D"}

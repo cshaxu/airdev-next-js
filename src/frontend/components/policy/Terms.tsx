@@ -1,24 +1,15 @@
-import Header from '@airdev/next/frontend/components/ui/Header';
-import { pageTitle } from '@airdev/next/frontend/utils/page';
+import { publicConfig } from '@/config/public';
+import Header from '@/package/frontend/components/ui/Header';
+import { pageTitle } from '@/package/frontend/utils/page';
 import Link from 'next/link';
 
-export const buildMetadata = () => ({ title: pageTitle('Terms of Service') });
+export const generateTermsMetadata = () => ({
+  title: pageTitle('Terms of Service'),
+});
 
-type Props = {
-  name: string;
-  email: string;
-  mainUrl: string;
-  owner: string;
-  ownerShort: string;
-};
+const { app } = publicConfig;
 
-export default function Terms({
-  name,
-  email,
-  mainUrl,
-  owner,
-  ownerShort,
-}: Props) {
+export default function Terms() {
   return (
     <>
       <Header title="Terms of Service">
@@ -30,15 +21,15 @@ export default function Terms({
         <p>
           Please read these terms of service (&apos;Agreement&apos; or
           &apos;Terms of Use&apos;) carefully before using the services offered
-          by {owner} (&apos;Company&apos;). This agreement sets forth the
+          by {app.owner} (&apos;Company&apos;). This agreement sets forth the
           legally binding terms and conditions for your and your business or
           other legal entity’s (&apos;you&apos;) use of the various websites
           owned and operated by Company, including, without limitation, the{' '}
           <a
-            href={mainUrl}
+            href={publicConfig.service.baseUrl}
             className="text-blue-600 underline hover:text-blue-800"
           >
-            {name}
+            {app.name}
           </a>{' '}
           website and domain name (&apos;Sites&apos;), and any other features,
           content, or applications offered from time to time in connection
@@ -88,19 +79,19 @@ export default function Terms({
         <p>
           Company&apos;s current privacy policy is located at{' '}
           <a
-            href={`${mainUrl}/privacy-policy`}
+            href={`${publicConfig.service.baseUrl}/privacy`}
             className="text-blue-600 underline hover:text-blue-800"
           >
-            {`${mainUrl}/privacy-policy`}
+            {`${publicConfig.service.baseUrl}/privacy`}
           </a>{' '}
           (the &apos;Privacy Policy&apos;) and is incorporated into these Terms
           of Use by this reference. For inquiries in regard to the Privacy
           Policy, or to report a privacy-related problem, please contact{' '}
           <a
-            href={`mailto:${email}`}
+            href={`mailto:${app.email}`}
             className="text-blue-600 underline hover:text-blue-800"
           >
-            {email}
+            {app.email}
           </a>{' '}
         </p>
         <h2 className="font-bold">Registration</h2>
@@ -177,10 +168,10 @@ export default function Terms({
           unsubscribe instructions contained in each communication, or by
           sending an email to{' '}
           <a
-            href={`mailto:${email}`}
+            href={`mailto:${app.email}`}
             className="text-blue-600 underline hover:text-blue-800"
           >
-            {email}
+            {app.email}
           </a>{' '}
           . You agree that these electronic communications satisfy any legal
           requirements that communications or notices to you be in writing.
@@ -335,11 +326,11 @@ export default function Terms({
           will give the other party as much notice as is reasonably practicable
           before disclosing the Confidential Information. When Customer provide
           Company with any suggestions, information, ideas, or feedback
-          concerning {ownerShort}, its functionality and features, or any model,
-          report or output, errors discovered, or any suggestions for or
-          relating to any models or output (“Feedback”) while using {name}, such
-          Feedback will be the property of Company. You agree to assign, and
-          hereby assign, all right, title and interest worldwide in the
+          concerning {app.ownerShort}, its functionality and features, or any
+          model, report or output, errors discovered, or any suggestions for or
+          relating to any models or output (“Feedback”) while using {app.name},
+          such Feedback will be the property of Company. You agree to assign,
+          and hereby assign, all right, title and interest worldwide in the
           Feedback, and the related intellectual property rights, to Company and
           agree to assist Company in perfecting and enforcing these rights.
         </p>
@@ -350,10 +341,10 @@ export default function Terms({
           Agreement, non-transferable license to access the Company websites
           (located at the following URL:{' '}
           <a
-            href={mainUrl}
+            href={publicConfig.service.baseUrl}
             className="text-blue-600 underline hover:text-blue-800"
           >
-            {mainUrl}
+            {publicConfig.service.baseUrl}
           </a>{' '}
           ), and to use the Service. No part of the Service, including the
           Website, may be reproduced, duplicated, copied, modified, sold,
@@ -528,8 +519,8 @@ export default function Terms({
         <h2 className="font-bold">Government Restrictions</h2>
         <p>
           Customer may not remove or export from the United States or allow the
-          export or re-export of {name}. As defined in FAR section 2.101, the
-          Software and documentation are “commercial items” and according to
+          export or re-export of {app.name}. As defined in FAR section 2.101,
+          the Software and documentation are “commercial items” and according to
           DFAR section 252.2277014(a)(1) and (5) are deemed to be “commercial
           computer software” and “commercial computer software documentation.”
           Consistent with DFAR section 227.7202 and FAR section 12.212, any use
@@ -570,17 +561,17 @@ export default function Terms({
         <h2 className="font-bold">Data Retention</h2>
         <p>
           Even after you have stopped using our software, all information and
-          files you&apos;ve input and uploaded on {name} will be kept for at
+          files you&apos;ve input and uploaded on {app.name} will be kept for at
           least one year. Please reach out to us at{' '}
           <a
-            href={`mailto:${email}`}
+            href={`mailto:${app.email}`}
             className="text-blue-600 underline hover:text-blue-800"
           >
-            {email}
+            {app.email}
           </a>{' '}
           if you need to access your data after cancellation. After one year of
           inactivity without payment, we may erase or delete all information
-          saved on {name}. At any point of time, if you request the account
+          saved on {app.name}. At any point of time, if you request the account
           deletion, all your information and data will be fully deleted.
         </p>
         <h2 className="font-bold">Cancellation</h2>
@@ -591,10 +582,10 @@ export default function Terms({
           paid term. If you are have questions about our services, please email
           us at{' '}
           <a
-            href={`mailto:${email}`}
+            href={`mailto:${app.email}`}
             className="text-blue-600 underline hover:text-blue-800"
           >
-            {email}
+            {app.email}
           </a>{' '}
         </p>
         <h2 className="font-bold">Geenral</h2>
@@ -622,7 +613,7 @@ export default function Terms({
         <h2 className="font-bold">Copyright and Trademark Notices</h2>
         <p>
           Unless otherwise indicated, the Terms of Use and all Content provided
-          by Company are copyright © 2026 {owner}. All rights reserved.
+          by Company are copyright © 2026 {app.owner}. All rights reserved.
         </p>
         <h2 className="font-bold">Corrections</h2>
         <p>
@@ -648,10 +639,10 @@ export default function Terms({
         <p>
           You may contact Company by email to{' '}
           <a
-            href={`mailto:${email}`}
+            href={`mailto:${app.email}`}
             className="text-blue-600 underline hover:text-blue-800"
           >
-            {email}
+            {app.email}
           </a>{' '}
         </p>
       </section>

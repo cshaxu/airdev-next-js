@@ -1,10 +1,16 @@
-import type { SearchUser } from '@airdev/next/adapter/frontend/query/types';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
+export interface BecameUser {
+  id: string;
+  name: string;
+  imageUrl: string | null;
+  isAdmin: boolean;
+}
+
 interface BecameUserState {
-  setUser: (user: SearchUser | null) => void;
-  user: SearchUser | null;
+  user: BecameUser | null;
+  setUser: (user: BecameUser | null) => void;
 }
 
 const useBecameUserStore = create<BecameUserState>()(
@@ -15,5 +21,6 @@ const useBecameUserStore = create<BecameUserState>()(
 );
 
 export const useBecameUser = () => useBecameUserStore((state) => state.user);
+
 export const useSetBecameUser = () =>
   useBecameUserStore((state) => state.setUser);

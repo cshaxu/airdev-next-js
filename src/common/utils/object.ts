@@ -1,13 +1,13 @@
 import { intersectionWith, isEqual, isNil } from 'lodash-es';
 
-export const intersect = <T>(a: T[], b: T[]) =>
-  intersectionWith(a, b, isEqual).length > 0;
-
 export type DeepNonNullable<T> = {
   [K in keyof T]: T[K] extends object
     ? DeepNonNullable<Exclude<T[K], null>> // Recursively apply the transformation
     : Exclude<T[K], null>;
 };
+
+export const intersect = <T>(a: T[], b: T[]) =>
+  intersectionWith(a, b, isEqual).length > 0;
 
 function toSnakeCase(s: string): string {
   return s

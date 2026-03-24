@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@airdev/next/frontend/lib/cn';
+import { cn } from '@/package/frontend/utils/cn';
 import { OTPInput, OTPInputContext } from 'input-otp';
 import { Minus } from 'lucide-react';
 import * as React from 'react';

@@ -1,6 +1,10 @@
-import { serverApiClientAdapter } from '@airdev/next/adapter/frontend/server-api-client';
+import { serverFunctionConfig } from '@/config/function/server';
+import { CurrentUserFieldRequest } from '@/package/common/types/context';
 
 export const currentUserServerQueryOptions = {
   queryKey: ['currentUser'],
-  queryFn: () => serverApiClientAdapter.fetchCurrentUser(),
+  queryFn: () =>
+    serverFunctionConfig.apiClient.user
+      .getOneSafe({ id: 'me' }, CurrentUserFieldRequest)
+      .then((page) => page.user),
 };

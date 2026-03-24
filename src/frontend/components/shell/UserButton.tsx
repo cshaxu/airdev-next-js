@@ -1,11 +1,11 @@
 'use client';
 
-import type { ApiClientAdapter } from '@airdev/next/adapter/frontend/api-client/types';
+import { clientFunctionConfig } from '@/config/function/client';
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from '@airdev/next/frontend/components/ui/Avatar';
+} from '@/package/frontend/components/ui/Avatar';
 import {
   BottomPopupSheet,
   BottomPopupSheetContent,
@@ -13,8 +13,8 @@ import {
   BottomPopupSheetHeader,
   BottomPopupSheetTitle,
   BottomPopupSheetTrigger,
-} from '@airdev/next/frontend/components/ui/BottomPopupSheet';
-import { Button } from '@airdev/next/frontend/components/ui/Button';
+} from '@/package/frontend/components/ui/BottomPopupSheet';
+import { Button } from '@/package/frontend/components/ui/Button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,21 +22,19 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@airdev/next/frontend/components/ui/DropdownMenu';
-import { useRequiredCurrentUser } from '@airdev/next/frontend/hooks/data/user';
-import { cn } from '@airdev/next/frontend/lib/cn';
+} from '@/package/frontend/components/ui/DropdownMenu';
+import { useRequiredCurrentUser } from '@/package/frontend/hooks/data/user';
 import {
   useBecameUser,
   useSetBecameUser,
-} from '@airdev/next/frontend/stores/becameUserStore';
+} from '@/package/frontend/stores/becameUserStore';
+import { cn } from '@/package/frontend/utils/cn';
 import {
   ChevronRightIcon,
   Cog6ToothIcon,
   EllipsisVerticalIcon,
 } from '@heroicons/react/24/outline';
-import { useQueryClient } from '@tanstack/react-query';
 import { LogOut, Wrench } from 'lucide-react';
-import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import {
   ReactNode,
@@ -55,20 +53,12 @@ type BottomNavProps = {
 };
 
 type Props = SidebarProps | BottomNavProps;
-type SharedProps = {
-  adminHref?: string;
-  becomeUser: ApiClientAdapter['becomeUser'];
-  logoutCallbackUrl: string;
-  settingsHref: string;
-};
 
 function useUserInitials() {
   const { data: user } = useRequiredCurrentUser();
   const [firstName, lastName] = user.name.split(' ') ?? [];
   const initials =
-    firstName && lastName
-      ? `${firstName[0]}${lastName[0]}`
-      : (user.email.at(0)?.toUpperCase() ?? '?');
+    firstName && lastName ? `${firstName[0]}${lastName[0]}` : 'A';
 
   return { user, initials };
 }
@@ -176,9 +166,8 @@ function AccountActionRow({
   );
 }
 
-export default function UserButton(props: Props & SharedProps) {
+export default function UserButton(props: Props) {
   const { user, initials } = useUserInitials();
-  const queryClient = useQueryClient();
   const became = useBecameUser();
   const setBecameUser = useSetBecameUser();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -193,12 +182,11 @@ export default function UserButton(props: Props & SharedProps) {
   const settleTimeoutRef = useRef<number | null>(null);
 
   const handleSignOut = async () => {
-    queryClient.clear();
-    await signOut({ callbackUrl: props.logoutCallbackUrl });
+    await clientFunctionConfig.apiClient.auth.signOut({ callbackUrl: '/' });
   };
 
   const handleRevertSelf = async () => {
-    await props.becomeUser(null);
+    await clientFunctionConfig.apiClient.auth.become(null);
     setBecameUser(null);
     window.location.reload();
   };
@@ -393,12 +381,12 @@ export default function UserButton(props: Props & SharedProps) {
   };
 
   const mobileActions: AccountAction[] = [
-    ...(user.isAdmin && props.adminHref
+    ...(user.isAdmin
       ? [
           {
             key: 'admin',
             label: 'Admin',
-            href: props.adminHref,
+            href: '/admin',
             icon: <Wrench className="size-5" />,
           },
         ]
@@ -406,7 +394,7 @@ export default function UserButton(props: Props & SharedProps) {
     {
       key: 'settings',
       label: 'Settings',
-      href: props.settingsHref,
+      href: '/settings',
       icon: <Cog6ToothIcon className="size-5" />,
     },
     became
@@ -428,7 +416,7 @@ export default function UserButton(props: Props & SharedProps) {
 
   const trigger =
     props.mode === 'sidebar'
-      ? renderSidebarTrigger(user.email, initials, user.imageUrl, props.isFull)
+      ? renderSidebarTrigger(user.name, initials, user.imageUrl, props.isFull)
       : renderBottomNavTrigger(
           user.name,
           initials,
@@ -529,30 +517,30 @@ export default function UserButton(props: Props & SharedProps) {
       >
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {user.isAdmin && props.adminHref && (
+        {user.isAdmin && (
           <DropdownMenuItem asChild>
-            <Link href={props.adminHref}>
+            <Link href="/admin">
               <Wrench className="mr-2 size-4" />
               <span>Admin</span>
             </Link>
           </DropdownMenuItem>
         )}
         <DropdownMenuItem asChild>
-          <Link href={props.settingsHref}>
+          <Link href="/settings">
             <Cog6ToothIcon className="mr-2 size-4" />
             <span>Settings</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         {became ? (
-          <button className="w-full" onClick={() => void handleRevertSelf()}>
+          <button className="w-full" onClick={handleRevertSelf}>
             <DropdownMenuItem className="w-full cursor-pointer">
               <LogOut className="mr-2 size-4" />
               <span>Revert to self</span>
             </DropdownMenuItem>
           </button>
         ) : (
-          <button className="w-full" onClick={() => void handleSignOut()}>
+          <button className="w-full" onClick={handleSignOut}>
             <DropdownMenuItem className="w-full cursor-pointer">
               <LogOut className="mr-2 size-4" />
               <span>Log out</span>

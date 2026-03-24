@@ -1,59 +1,17 @@
-import { publicConfig } from '@airdev/next/common/config';
+import { publicConfig } from '@/config/public';
 import { CookiesOptions } from 'next-auth';
 
-function buildCookieOptions() {
-  const isLocal = publicConfig.service.environment === 'local';
-  const secureCookiePrefix = isLocal ? '' : '__Secure-';
-  const hostCookiePrefix = isLocal ? '' : '__Host-';
-  const options = {
-    path: '/',
-    sameSite: (isLocal ? 'lax' : 'none') as 'lax' | 'none',
-    secure: !isLocal,
-  };
+const isServiceLocal = publicConfig.service.serviceEnvironment === 'local';
+const secureCookiePrefix = isServiceLocal ? '' : '__Secure-';
+const hostCookiePrefix = isServiceLocal ? '' : '__Host-';
+const SESSION_TOKEN_COOKIE_NAME = `${secureCookiePrefix}next-auth.session-token`;
+const CALLBACK_URL_COOKIE_NAME = `${secureCookiePrefix}next-auth.callback-url`;
+const CSRF_TOKEN_COOKIE_NAME = `${hostCookiePrefix}next-auth.csrf-token`;
 
-  return {
-    sessionToken: {
-      name: `${secureCookiePrefix}next-auth.session-token`,
-      options,
-    },
-    csrfToken: {
-      name: `${hostCookiePrefix}next-auth.csrf-token`,
-      options,
-    },
-    callbackUrl: {
-      name: `${secureCookiePrefix}next-auth.callback-url`,
-      options,
-    },
-  } satisfies Partial<CookiesOptions>;
-}
+const options = { path: '/', sameSite: 'none' as const, secure: true };
 
-export const SESSION_TOKEN_COOKIE_NAME =
-  publicConfig.service.environment === 'local'
-    ? 'next-auth.session-token'
-    : '__Secure-next-auth.session-token';
-
-export const cookies: Partial<CookiesOptions> = {};
-
-Object.defineProperties(cookies, {
-  sessionToken: {
-    enumerable: true,
-    configurable: true,
-    get() {
-      return buildCookieOptions().sessionToken;
-    },
-  },
-  csrfToken: {
-    enumerable: true,
-    configurable: true,
-    get() {
-      return buildCookieOptions().csrfToken;
-    },
-  },
-  callbackUrl: {
-    enumerable: true,
-    configurable: true,
-    get() {
-      return buildCookieOptions().callbackUrl;
-    },
-  },
-});
+export const cookies: Partial<CookiesOptions> = {
+  sessionToken: { name: SESSION_TOKEN_COOKIE_NAME, options },
+  csrfToken: { name: CSRF_TOKEN_COOKIE_NAME, options },
+  callbackUrl: { name: CALLBACK_URL_COOKIE_NAME, options },
+};

@@ -1,0 +1,25 @@
+import { HEADER_CURRENT_USER_ID_KEY } from '@/config/public';
+import { BecomeBody } from '@/package/common/types/context';
+import { CommonResponse } from '@airent/api';
+import { NextRequest, NextResponse } from 'next/server';
+
+async function become(
+  request: NextRequest
+): Promise<NextResponse<CommonResponse<BecomeBody, Error>>> {
+  const { userId } = await request.json();
+  const response = NextResponse.json(
+    { code: 200, data: { userId } },
+    { status: 200 }
+  );
+  // become user
+  if (userId === null) {
+    response.cookies.delete(HEADER_CURRENT_USER_ID_KEY);
+  } else {
+    response.cookies.set(HEADER_CURRENT_USER_ID_KEY, userId);
+  }
+  return response;
+}
+
+const AuthService = { become };
+
+export default AuthService;

@@ -1,16 +1,9 @@
-import { nextauthAdapter } from '@airdev/next/adapter/backend/nextauth';
+import { privateConfig } from '@/config/private';
 import GoogleProvider from 'next-auth/providers/google';
 
-export function getGoogleProvider() {
-  const google = nextauthAdapter.google;
-  if (google === undefined) {
-    return null;
-  }
-  return GoogleProvider({
-    allowDangerousEmailAccountLinking:
-      google.allowDangerousEmailAccountLinking ?? true,
-    authorization: { params: { include_granted_scopes: true } },
-    clientId: google.clientId,
-    clientSecret: google.clientSecret,
-  });
-}
+export const googleProvider = GoogleProvider({
+  clientId: privateConfig.google.clientId,
+  clientSecret: privateConfig.google.clientSecret,
+  allowDangerousEmailAccountLinking: true,
+  authorization: { params: { include_granted_scopes: true } },
+});

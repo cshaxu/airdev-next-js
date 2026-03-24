@@ -1,7 +1,6 @@
 'use client';
 
-import { Label } from '@airdev/next/frontend/components/ui/Label';
-import { cn } from '@airdev/next/frontend/lib/cn';
+import { cn } from '@/package/frontend/utils/cn';
 import * as LabelPrimitive from '@radix-ui/react-label';
 import { Slot } from '@radix-ui/react-slot';
 import * as React from 'react';
@@ -13,6 +12,7 @@ import {
   FormProvider,
   useFormContext,
 } from 'react-hook-form';
+import { Label } from './Label';
 
 const Form = FormProvider;
 

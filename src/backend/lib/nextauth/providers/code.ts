@@ -1,8 +1,6 @@
-import {
-  databaseAdapter,
-  type DatabaseUser,
-} from '@airdev/next/adapter/backend/data';
-import { mockContext } from '@airdev/next/backend/lib/framework';
+import { backendFunctionConfig } from '@/config/function/backend';
+import { mockContext } from '@/package/backend/lib/framework';
+import { buildNextauthUserFromPackageUser } from '@/package/backend/utils/user';
 import { pick } from 'lodash-es';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
@@ -27,31 +25,23 @@ export const codeProvider = CredentialsProvider({
     }
     const context = await mockContext();
     const nextauthVerificationToken =
-      await databaseAdapter.deleteOneNextauthVerificationTokenSafe(
-        { code: credentials.code, email: credentials.email },
+      await backendFunctionConfig.nextauthVerificationToken.deleteOneSafe(
+        pick(credentials, ['email', 'code']),
         context
       );
     if (nextauthVerificationToken === null) {
       return null;
     }
     const { identifier: email } = nextauthVerificationToken;
-    const existingUser = await databaseAdapter.getOneUserSafe(
-      { id: email },
+    const user = await backendFunctionConfig.user.getOrCreateOne(
+      email,
       context
     );
-    const user =
-      existingUser ?? (await databaseAdapter.createOneUser({ email }, context));
-    const verifiedUser = await databaseAdapter.updateOneUser(
-      user,
+    const verifiedUser = await backendFunctionConfig.user.updateOne(
+      user.id,
       { emailVerified: context.time },
       context
     );
-    return buildAdapterUser(verifiedUser, 'email');
+    return buildNextauthUserFromPackageUser(verifiedUser, 'email');
   },
-});
-
-const buildAdapterUser = (user: DatabaseUser, source: 'google' | 'email') => ({
-  source,
-  image: user.imageUrl,
-  ...pick(user, ['id', 'email', 'emailVerified', 'name', 'imageUrl']),
 });

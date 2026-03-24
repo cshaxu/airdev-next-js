@@ -1,4 +1,4 @@
-import { Button } from '@airdev/next/frontend/components/ui/Button';
+import { Button } from '@/package/frontend/components/ui/Button';
 import Link from 'next/link';
 
 export default function NotFound() {

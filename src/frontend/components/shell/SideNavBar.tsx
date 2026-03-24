@@ -1,18 +1,17 @@
 'use client';
 
-import type { ApiClientAdapter } from '@airdev/next/adapter/frontend/api-client/types';
-import type { ShellNavItem } from '@airdev/next/adapter/frontend/shell/types';
-import { buttonVariants } from '@airdev/next/frontend/components/ui/Button';
-import { PixelResizablePanel } from '@airdev/next/frontend/components/ui/PixelResizable';
-import { cn } from '@airdev/next/frontend/lib/cn';
+import { clientComponentConfig } from '@/config/component/client';
+import { publicConfig } from '@/config/public';
+import { buttonVariants } from '@/package/frontend/components/ui/Button';
+import { PixelResizablePanel } from '@/package/frontend/components/ui/PixelResizable';
+import { cn } from '@/package/frontend/utils/cn';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import UserButton from './UserButton';
 
-const defaultCollapseMatcher = (pathname: string) =>
-  pathname.startsWith('/admin');
+const adminRegex = /^\/admin(?:\/.*)?$/;
 
 type SideNavLinkProps = {
   label: string;
@@ -43,44 +42,34 @@ function SideNavLink({ label, icon, to, isFull, isActive }: SideNavLinkProps) {
   );
 }
 
-type Props = {
-  adminHref?: string;
-  appName: string;
-  becomeUser: ApiClientAdapter['becomeUser'];
-  logoSrc: string;
-  logoutCallbackUrl: string;
-  navItems: ShellNavItem[];
-  settingsHref: string;
-  shouldAutoCollapse?: (pathname: string) => boolean;
-};
-
-export default function SideNavBar({
-  adminHref,
-  appName,
-  becomeUser,
-  logoSrc,
-  logoutCallbackUrl,
-  navItems,
-  settingsHref,
-  shouldAutoCollapse,
-}: Props) {
+export default function SideNavBar() {
   const pathname = usePathname();
   const lastPathRef = useRef(pathname);
-  const collapseMatcher = shouldAutoCollapse ?? defaultCollapseMatcher;
 
-  const shouldCollapse = collapseMatcher(pathname);
+  const { navItems } = clientComponentConfig.NavContent();
+
+  const shouldCollapse = Boolean(
+    pathname.match(adminRegex) // || pathname.match(adminRegex)
+  );
   const [isCollapsed, setIsCollapsed] = useState(shouldCollapse);
 
+  // 监听路由变化，更新状态
   useEffect(() => {
-    const wasCollapsePage = collapseMatcher(lastPathRef.current);
-    const isCollapsePage = collapseMatcher(pathname);
+    const wasCollapsePage = Boolean(
+      lastPathRef.current.match(adminRegex)
+      // || lastPathRef.current.match(adminRegex)
+    );
+    const isCollapsePage = Boolean(
+      pathname.match(adminRegex) // || pathname.match(adminRegex)
+    );
 
+    // 只有在进入或离开最小化页面时才调整状态
     if (wasCollapsePage !== isCollapsePage) {
       setIsCollapsed(isCollapsePage);
     }
 
     lastPathRef.current = pathname;
-  }, [pathname, collapseMatcher]);
+  }, [pathname]);
 
   return (
     <PixelResizablePanel
@@ -99,47 +88,37 @@ export default function SideNavBar({
           )}
         >
           <Image
-            src={logoSrc}
+            src="/logo.png"
             alt="Logo"
             width={40}
             height={40}
             className="size-10"
           />
           {!isCollapsed && (
-            <span className="nav-icon text-xl font-bold">{appName}</span>
+            <span className="nav-icon text-xl font-bold">
+              {publicConfig.app.name}
+            </span>
           )}
         </div>
 
         <div className="nav-separator mx-4 h-px" />
 
         <nav className="flex flex-col gap-1">
-          {navItems.map((item) => {
-            const isActive = item.match
-              ? item.match(pathname)
-              : pathname === item.href || pathname.startsWith(`${item.href}/`);
-            return (
-              <SideNavLink
-                key={item.href}
-                label={item.label}
-                to={item.href}
-                icon={item.renderIcon('nav-icon size-4')}
-                isFull={!isCollapsed}
-                isActive={isActive}
-              />
-            );
-          })}
+          {navItems.map((item) => (
+            <SideNavLink
+              key={item.to}
+              label={item.label}
+              to={item.to}
+              icon={item.renderIcon('nav-icon size-4')}
+              isFull={!isCollapsed}
+              isActive={item.isActive(pathname)}
+            />
+          ))}
         </nav>
 
         <div className="flex-1" />
 
-        <UserButton
-          mode="sidebar"
-          isFull={!isCollapsed}
-          adminHref={adminHref}
-          becomeUser={becomeUser}
-          logoutCallbackUrl={logoutCallbackUrl}
-          settingsHref={settingsHref}
-        />
+        <UserButton mode="sidebar" isFull={!isCollapsed} />
       </div>
     </PixelResizablePanel>
   );

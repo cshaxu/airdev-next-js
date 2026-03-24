@@ -1,7 +1,7 @@
 import { max, min } from '@airent/api';
 import { addDays, subDays } from 'date-fns';
 
-function toDs(date?: Date): string {
+export function toDs(date?: Date): string {
   date = date ?? new Date();
   const year = date.getUTCFullYear();
   const options = { minimumIntegerDigits: 2, useGrouping: false };
@@ -10,14 +10,32 @@ function toDs(date?: Date): string {
   return `${year}-${motnh}-${day}`;
 }
 
-export const toStartTime = (ds: string) => new Date(`${ds}T00:00:00.000Z`);
+export const toStartTime = (dateOrDs: Date | string) =>
+  new Date(
+    `${dateOrDs instanceof Date ? toDs(dateOrDs) : dateOrDs}T00:00:00.000Z`
+  );
 
-export const toEndTime = (ds: string) => addDays(toStartTime(ds), 1);
+export const toEndTime = (dateOrDs: Date | string) =>
+  addDays(toStartTime(dateOrDs), 1);
 
-export const addDsDays = (ds: string, days: number) =>
-  toDs(addDays(toStartTime(ds), days));
+export const addDsDays = (dateOrDs: Date | string, days: number) =>
+  toDs(addDays(toStartTime(dateOrDs), days));
 
 export const getLatestDs = () => toDs(subDays(new Date(), 1));
+
+export const getCurrentDs = () => toDs(new Date());
+
+export const compareDs = (ds1: Date | string, ds2: Date | string) => {
+  const ts1 = toStartTime(ds1).getTime();
+  const ts2 = toStartTime(ds2).getTime();
+  if (ts1 < ts2) {
+    return -1;
+  } else if (ts1 > ts2) {
+    return 1;
+  } else {
+    return 0;
+  }
+};
 
 export function getDsArray(from: string, to: string): string[] {
   const minDs = min([from, to])!;

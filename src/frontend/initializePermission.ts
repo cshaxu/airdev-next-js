@@ -1,8 +1,8 @@
-import { nextauthAdapter } from '@airdev/next/adapter/backend/nextauth';
-import { currentUserServerQueryOptions } from '@airdev/next/frontend/hooks/data/user-server';
+import { publicConfig } from '@/config/public';
 import { QueryClient } from '@tanstack/react-query';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { currentUserServerQueryOptions } from './hooks/data/user-server';
 
 export async function initializePermission(queryClient: QueryClient) {
   const currentUser = await queryClient.fetchQuery(
@@ -14,7 +14,7 @@ export async function initializePermission(queryClient: QueryClient) {
 
   if (!currentUser?.id) {
     return redirect(
-      `${nextauthAdapter.signInPath}?next=${encodeURIComponent(pathname)}`
+      `${publicConfig.nextauth.signIn}?next=${encodeURIComponent(pathname)}`
     );
   }
 

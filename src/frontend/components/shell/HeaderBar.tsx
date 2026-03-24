@@ -1,9 +1,7 @@
 'use client';
 
-import { ResponsiveBreadcrumb } from '@airdev/next/frontend/components/ui/ResponsiveBreadcrumb';
+import { ResponsiveBreadcrumb } from '@/package/frontend/components/ui/ResponsiveBreadcrumb';
 import TranslateButton from './TranslateButton';
-// import useChatOpenStore from '@airdev/next/frontend/stores/useChatOpenStore';
-import { ReactNodeProps } from '@airdev/next/frontend/types/props';
 
 export type HeaderBarItem = {
   label: string;
@@ -11,17 +9,15 @@ export type HeaderBarItem = {
   icon?: React.ReactNode;
 };
 
-type Props = Partial<ReactNodeProps> & {
+type Props = React.PropsWithChildren<{
   items?: HeaderBarItem[];
   isLoading?: boolean;
-  actions?: React.ReactNode;
-};
+}>;
 
 export default function HeaderBar({
   children,
   items,
   isLoading = false,
-  actions,
 }: Props) {
   if (isLoading) {
     return (
@@ -56,7 +52,6 @@ export default function HeaderBar({
 
       {/* Right: Actions */}
       <div className="flex flex-1 items-center justify-end space-x-4 pl-8">
-        {actions}
         <TranslateButton />
       </div>
     </div>

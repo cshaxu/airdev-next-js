@@ -1,11 +1,8 @@
-import {
-  databaseAdapter,
-  DatabaseUser,
-  updateOneNextauthAccountBodyFromAdapterAccount,
-} from '@airdev/next/adapter/backend/data';
-import { nextauthAdapter } from '@airdev/next/adapter/backend/nextauth';
-import { mockContext } from '@airdev/next/backend/lib/framework';
-import { publicConfig } from '@airdev/next/common/config';
+import { backendFunctionConfig } from '@/config/function/backend';
+import { privateConfig } from '@/config/private';
+import { publicConfig } from '@/config/public';
+import { mockContext } from '@/package/backend/lib/framework';
+import { purify } from '@airent/api';
 import { addSeconds } from 'date-fns';
 import { Account, CallbacksOptions, Profile, User } from 'next-auth';
 import { GoogleProfile } from 'next-auth/providers/google';
@@ -26,18 +23,22 @@ const signIn = async (params: SignInParams) => {
   } = params;
 
   // Check if this is being called in the code auth flow.
-  // If so, create a session entry through the configured session adapter
+  // If so, use the next-auth adapter to create a session entry in the database
   // (signIn is called after authorize so we can safely assume the user is valid
   // and already authenticated).
   const isCode = 'source' in nextauthUser && nextauthUser.source === 'email';
   if (isCode) {
     const sessionToken = crypto.randomUUID();
-    const expires = addSeconds(context.time, nextauthAdapter.sessionMaxAge);
-
-    await databaseAdapter.createOneNextauthSession(
-      { expires, sessionToken, userId: nextauthUser.id },
-      context
+    const expires = addSeconds(
+      context.time,
+      privateConfig.nextauth.sessionMaxAge
     );
+
+    await backendFunctionConfig.auth.adapter.createSession!({
+      sessionToken,
+      userId: nextauthUser.id,
+      expires,
+    });
     // Hack user.email field to pass sessionToken to jwt.encode
     // because we only have id/name/email fields in the user object there
     nextauthUser.email = JSON.stringify({
@@ -59,8 +60,8 @@ const signIn = async (params: SignInParams) => {
     return true;
   }
 
-  const existingUser = await databaseAdapter.getOneUserSafe(
-    { id: email },
+  const existingUser = await backendFunctionConfig.user.getOneByEmailSafe(
+    email,
     context
   );
 
@@ -88,44 +89,27 @@ const signIn = async (params: SignInParams) => {
 
   // Automatically create user when signing in with Google
   const user =
-    existingUser ?? (await databaseAdapter.createOneUser({ email }, context));
-  const data: Partial<DatabaseUser> = {};
-  if (user.emailVerified === null && email_verified) {
-    data.emailVerified = context.time;
-  }
-  if (!user.name && name) {
-    data.name = name;
-  }
-  if (user.imageUrl === null && imageUrl) {
-    data.imageUrl = imageUrl;
-  }
-  if (Object.keys(data).length > 0) {
-    await databaseAdapter.updateOneUser(user, data, context);
-  }
+    existingUser ??
+    (await backendFunctionConfig.user.getOrCreateOne(email, context));
+  const data = purify({
+    ...(user.emailVerified === null &&
+      email_verified && { emailVerified: context.time }),
+    ...(name !== undefined &&
+      (user.name.trim().length === 0 || user.name === user.email) && { name }),
+    ...(user.imageUrl === null && { imageUrl }),
+  });
+  await backendFunctionConfig.user.updateOne(user.id, data, context);
 
   // Find and update account
   if (nextauthAccount !== null) {
-    const existingAccount = await databaseAdapter.getOneNextauthAccountSafe(
+    await backendFunctionConfig.nextauthAccount.updateOneSafe(
       {
         provider: nextauthAccount.provider,
         providerAccountId: nextauthAccount.providerAccountId,
       },
+      nextauthAccount,
       context
     );
-    if (existingAccount !== null) {
-      const account = updateOneNextauthAccountBodyFromAdapterAccount({
-        ...nextauthAccount,
-        userId: nextauthAccount.userId ?? user.id,
-        type: nextauthAccount.type,
-        provider: nextauthAccount.provider,
-        providerAccountId: nextauthAccount.providerAccountId,
-      });
-      await databaseAdapter.updateOneNextauthAccount(
-        existingAccount,
-        account,
-        context
-      );
-    }
   }
 
   return true;

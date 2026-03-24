@@ -1,4 +1,4 @@
-import { measureElementWidth } from '@airdev/next/frontend/utils/element';
+import { measureElementWidth } from '@/package/frontend/utils/element';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
@@ -185,15 +185,26 @@ export function ResponsiveBreadcrumb({ items, className, renderItem }: Props) {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="start">
                         {hiddenItems.map((hiddenItem, hiddenIndex) => (
-                          <DropdownMenuItem key={hiddenIndex} asChild>
-                            <BreadcrumbLink
-                              href={hiddenItem.href}
-                              className="text-muted-foreground hover:text-foreground w-full cursor-pointer truncate"
-                            >
-                              {renderItem
-                                ? renderItem(hiddenItem)
-                                : hiddenItem.label}
-                            </BreadcrumbLink>
+                          <DropdownMenuItem
+                            key={hiddenIndex}
+                            asChild={!!hiddenItem.href}
+                          >
+                            {hiddenItem.href ? (
+                              <BreadcrumbLink
+                                href={hiddenItem.href}
+                                className="text-muted-foreground hover:text-foreground w-full cursor-pointer truncate"
+                              >
+                                {renderItem
+                                  ? renderItem(hiddenItem)
+                                  : hiddenItem.label}
+                              </BreadcrumbLink>
+                            ) : (
+                              <span className="text-muted-foreground w-full truncate">
+                                {renderItem
+                                  ? renderItem(hiddenItem)
+                                  : hiddenItem.label}
+                              </span>
+                            )}
                           </DropdownMenuItem>
                         ))}
                       </DropdownMenuContent>

@@ -1,20 +1,16 @@
-import Header from '@airdev/next/frontend/components/ui/Header';
-import { pageTitle } from '@airdev/next/frontend/utils/page';
+import { publicConfig } from '@/config/public';
+import Header from '@/package/frontend/components/ui/Header';
+import { pageTitle } from '@/package/frontend/utils/page';
 import Link from 'next/link';
 
-export const buildMetadata = (appName: string) => ({
+const { app } = publicConfig;
+
+export const generatePrivacyMetadata = () => ({
   title: pageTitle('Privacy Policy'),
-  description: `This Privacy Policy is designed to help you understand how ${appName} collects, uses, and shares your personal information, and to help you understand and exercise your privacy rights`,
+  description: `This Privacy Policy is designed to help you understand how ${app.name} collects, uses, and shares your personal information, and to help you understand and exercise your privacy rights`,
 });
 
-type Props = {
-  email: string;
-  mainUrl: string;
-  owner: string;
-  ownerShort: string;
-};
-
-export default function Privacy({ email, mainUrl, owner, ownerShort }: Props) {
+export default function Privacy() {
   return (
     <>
       <Header title="Privacy Policy">
@@ -29,11 +25,12 @@ export default function Privacy({ email, mainUrl, owner, ownerShort }: Props) {
           entity accessing our Site or using our Services (“you” or “your”),
           including in particular information which may be used to identify you
           as a natural person (“Personal Information”). This Privacy Policy sets
-          forth the privacy practices of {owner} (“{ownerShort}”, “we” or “us”
-          or “our”) for (1) our website located at {mainUrl} (the “Site”) and
-          (2) all {ownerShort} software and applications (including, without
+          forth the privacy practices of {app.owner} (“{app.ownerShort}”, “we”
+          or “us” or “our”) for (1) our website located at{' '}
+          {publicConfig.service.baseUrl} (the “Site”) and (2) all{' '}
+          {app.ownerShort} software and applications (including, without
           limitation, mobile software and applications) (the “Software”) and all
-          other {ownerShort} products or services provided otherwise made
+          other {app.ownerShort} products or services provided otherwise made
           accessible on or through the Software or the Site (collectively
           the“Services”). This Privacy Policy does not apply to any third-party
           websites, services or applications, even if they are accessible
@@ -158,7 +155,7 @@ export default function Privacy({ email, mainUrl, owner, ownerShort }: Props) {
         <h2 className="font-bold">Limited Use Policy Compliance</h2>
         <p>
           {' '}
-          {ownerShort} rigorously adheres to Google’s API Services User Data
+          {app.ownerShort} rigorously adheres to Google’s API Services User Data
           Policy, especially the Limited Use requirements and applies it across
           our data. Our usage and handling of data obtained via Google’s
           Restricted and Sensitive Scopes are governed by these stringent
@@ -369,12 +366,12 @@ export default function Privacy({ email, mainUrl, owner, ownerShort }: Props) {
           Privacy Act or “CCPA” (Cal. Civ. Code § 1798.100 et seq.), including
           to request access to and deletion of your Personal Information (as
           defined in the CCPA). You may exercise these rights by contacting us
-          at {email}. We do not sell your Personal Information, but we may allow
-          our advertising partners to collect certain device identifiers and
-          electronic network activity that allows them to show ads within their
-          systems that are targeted to your interests. To opt out of having your
-          Personal Information used for targeted advertising purposes, please
-          visit{' '}
+          at {app.email}. We do not sell your Personal Information, but we may
+          allow our advertising partners to collect certain device identifiers
+          and electronic network activity that allows them to show ads within
+          their systems that are targeted to your interests. To opt out of
+          having your Personal Information used for targeted advertising
+          purposes, please visit{' '}
           <a
             href="http://www.aboutads.info/choices"
             className="text-blue-600 underline hover:text-blue-800"
@@ -391,10 +388,10 @@ export default function Privacy({ email, mainUrl, owner, ownerShort }: Props) {
           personal information in violation of this Privacy Policy, then you may
           alert us at{' '}
           <a
-            href={`mailto:${email}`}
+            href={`mailto:${app.email}`}
             className="text-blue-600 underline hover:text-blue-800"
           >
-            {email}
+            {app.email}
           </a>{' '}
           .
         </p>
@@ -405,10 +402,10 @@ export default function Privacy({ email, mainUrl, owner, ownerShort }: Props) {
           comments about any privacy concerns. Please direct them to us by an
           email to{' '}
           <a
-            href={`mailto:${email}`}
+            href={`mailto:${app.email}`}
             className="text-blue-600 underline hover:text-blue-800"
           >
-            {email}
+            {app.email}
           </a>{' '}
           with the following information: Your name; Your company; Your title;
           Your country; Your state of residence; Your contact information.

@@ -1,6 +1,6 @@
-import { frameworkAdapter } from '@airdev/next/adapter/backend/framework';
-import { publicConfig } from '@airdev/next/common/config';
-import { NextPageResponse } from '@airdev/next/frontend/types/props';
+import { commonFunctionConfig } from '@/config/function/common';
+import { publicConfig } from '@/config/public';
+import { NextPageResponse } from '@/package/frontend/types/props';
 import { NextSearchParams } from '@airent/api-next';
 import { Awaitable } from 'airent';
 import { Metadata } from 'next';
@@ -19,9 +19,10 @@ function generateDefaultMetadata(defaultTitle: string): Metadata {
 }
 
 export function pageTitle(title?: string, showProduction?: boolean): string {
-  const { app, service } = publicConfig;
-  const prefix = `${service.environment !== 'production' || showProduction ? `[${service.titlePrefix}] ` : ''}`;
-  const name = title?.length ? `${title} | ${app.name}` : app.name;
+  const prefix = `${publicConfig.service.serviceEnvironment !== 'production' || showProduction ? `[${publicConfig.service.titlePrefix}] ` : ''}`;
+  const name = title?.length
+    ? `${title} | ${publicConfig.app.name}`
+    : publicConfig.app.name;
   return `${prefix}${name}`;
 }
 
@@ -35,7 +36,7 @@ export function withError<
       if (error.message === 'NEXT_REDIRECT') {
         throw error;
       }
-      frameworkAdapter.logError(error);
+      commonFunctionConfig.logError(error);
       if (onError) {
         return onError(error);
       } else if (error.status === 404) {

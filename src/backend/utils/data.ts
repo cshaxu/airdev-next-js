@@ -1,5 +1,6 @@
-import { privateConfig } from '@airdev/next/backend/config';
-import { Context } from '@airdev/next/framework/context';
+import { privateConfig } from '@/config/private';
+import { publicConfig } from '@/config/public';
+import { Context } from '@/package/framework/context';
 import { CommonResponse, buildInvalidErrorMessage, logInfo } from '@airent/api';
 import { Awaitable, sequential } from 'airent';
 import createHttpError from 'http-errors';
@@ -11,7 +12,7 @@ export async function batchExecuteByPageParam<ENTITY, RESULT, PAGE_PARAM>(
   ) => Promise<ENTITY[]>,
   executor: (array: ENTITY[], previousResults: RESULT[]) => Promise<RESULT[]>,
   pageParamMapper: (entity: ENTITY) => PAGE_PARAM,
-  batchSize: number = privateConfig.defaultDbBatchSize,
+  batchSize: number = privateConfig.database.dbBatchSize,
   initialPageParam: PAGE_PARAM | undefined = undefined
 ): Promise<RESULT[]> {
   let pageParam = initialPageParam;
@@ -45,7 +46,7 @@ export async function batchFindFilteredMany<ENTITY, PAGE_PARAM>(
   filter: (entity: ENTITY) => Promise<boolean>,
   initialPageParam: PAGE_PARAM | undefined,
   pageSize: number,
-  batchSize: number = privateConfig.defaultApiBatchSize
+  batchSize: number = publicConfig.defaults.apiBatchSize
 ): Promise<ENTITY[]> {
   const result = [];
   let batch: ENTITY[] = [];
@@ -66,7 +67,7 @@ export async function batchFindFilteredMany<ENTITY, PAGE_PARAM>(
 export async function filterAsync<T>(
   array: T[],
   filter: (object: T) => Promise<boolean>,
-  batchSize: number = privateConfig.defaultDbBatchSize
+  batchSize: number = privateConfig.database.dbBatchSize
 ): Promise<T[]> {
   const result = [];
   for (let i = 0; i < array.length; i += batchSize) {
@@ -138,7 +139,7 @@ export async function batchExecuteOneByPageParam<ENTITY, RESULT, PAGE_PARAM>(
   reducer: (results: RESULT[]) => Awaitable<CommonResponse>,
   options: BatchExecuteOneOptions = {}
 ): Promise<CommonResponse> {
-  const batchSize = options.batchSize ?? privateConfig.defaultDbBatchSize;
+  const batchSize = options.batchSize ?? privateConfig.database.dbBatchSize;
   const isSequential = options.isSequential ?? false;
   const isVerbose = options.isVerbose ?? true;
   const executor = async (array: ENTITY[], previous: RESULT[]) => {

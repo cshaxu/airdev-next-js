@@ -1,7 +1,5 @@
 import { Provider } from 'next-auth/providers/index';
 import { codeProvider } from './code';
-import { getGoogleProvider } from './google';
+import { googleProvider } from './google';
 
-export function getProviders(): Provider[] {
-  return [codeProvider, ...[getGoogleProvider()].filter(Boolean)] as Provider[];
-}
+export const providers: Provider[] = [googleProvider, codeProvider];

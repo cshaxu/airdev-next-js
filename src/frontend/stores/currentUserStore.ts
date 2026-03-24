@@ -1,10 +1,10 @@
-import type { CurrentUser } from '@airdev/next/common/types/context';
+import { CurrentUser } from '@/package/common/types/context';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface CurrentUserState {
-  setUser: (user: CurrentUser) => void;
   user: CurrentUser | undefined;
+  setUser: (user: CurrentUser | undefined) => void;
 }
 
 const useCurrentUserStore = create<CurrentUserState>()(
@@ -15,4 +15,5 @@ const useCurrentUserStore = create<CurrentUserState>()(
 );
 
 export const useCurrentUser = () => useCurrentUserStore((state) => state.user);
+
 export const useSetUser = () => useCurrentUserStore((state) => state.setUser);

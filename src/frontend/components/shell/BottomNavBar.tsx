@@ -1,30 +1,17 @@
 'use client';
 
-import type { ApiClientAdapter } from '@airdev/next/adapter/frontend/api-client/types';
-import type { ShellNavItem } from '@airdev/next/adapter/frontend/shell/types';
-import { useRequiredCurrentUser } from '@airdev/next/frontend/hooks/data/user';
-import { cn } from '@airdev/next/frontend/lib/cn';
+import { clientComponentConfig } from '@/config/component/client';
+import { useRequiredCurrentUser } from '@/package/frontend/hooks/data/user';
+import { cn } from '@/package/frontend/utils/cn';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import UserButton from './UserButton';
 
-type Props = {
-  adminHref?: string;
-  becomeUser: ApiClientAdapter['becomeUser'];
-  logoutCallbackUrl: string;
-  navItems: ShellNavItem[];
-  settingsHref: string;
-};
-
-export default function BottomNavBar({
-  adminHref,
-  becomeUser,
-  logoutCallbackUrl,
-  navItems,
-  settingsHref,
-}: Props) {
+export default function BottomNavBar() {
   const pathname = usePathname();
+  const { navItems } = clientComponentConfig.NavContent();
+
   useRequiredCurrentUser();
   const navItemsRef = useRef<HTMLDivElement>(null);
   const [showLabels, setShowLabels] = useState(true);
@@ -37,7 +24,7 @@ export default function BottomNavBar({
 
     const updateLabelVisibility = () => {
       const minTabWidthForLabel = 74;
-      const tabCount = navItems.length + 1;
+      const tabCount = navItems.length + 1; // +1 for account tab
       const shouldShow = element.clientWidth >= tabCount * minTabWidthForLabel;
       setShowLabels(shouldShow);
     };
@@ -52,7 +39,7 @@ export default function BottomNavBar({
     <nav
       className={cn(
         'mobile-bottom-nav bg-background/95 border-border fixed right-0 bottom-0 left-0 z-40 border-t backdrop-blur',
-        'md:hidden'
+        'md:hidden [@media(orientation:portrait)]:block'
       )}
       style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 0px)' }}
     >
@@ -61,16 +48,14 @@ export default function BottomNavBar({
         className="mx-auto flex h-16 max-w-xl items-center px-2"
       >
         {navItems.map((item) => {
-          const isActive = item.match
-            ? item.match(pathname)
-            : pathname === item.href || pathname.startsWith(`${item.href}/`);
+          const active = item.isActive(pathname);
           return (
             <Link
-              key={item.href}
-              href={item.href}
+              key={item.to}
+              href={item.to}
               className={cn(
                 'flex flex-1 flex-col items-center gap-1 rounded-lg py-1 text-[11px] transition-colors',
-                isActive ? 'text-foreground' : 'text-muted-foreground'
+                active ? 'text-foreground' : 'text-muted-foreground'
               )}
             >
               {item.renderIcon('size-5')}
@@ -80,14 +65,7 @@ export default function BottomNavBar({
             </Link>
           );
         })}
-        <UserButton
-          mode="bottom-nav"
-          showLabel={showLabels}
-          adminHref={adminHref}
-          becomeUser={becomeUser}
-          logoutCallbackUrl={logoutCallbackUrl}
-          settingsHref={settingsHref}
-        />
+        <UserButton mode="bottom-nav" showLabel={showLabels} />
       </div>
     </nav>
   );

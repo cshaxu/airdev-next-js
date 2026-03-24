@@ -1,1 +1,0 @@
-{"version":3,"file":"adapter.d.ts","sourceRoot":"","sources":["../../../../src/adapter/frontend/query/adapter.ts"],"names":[],"mappings":"AACA,OAAO,KAAK,EAAE,kBAAkB,EAAE,MAAM,SAAS,CAAC;AAElD,eAAO,IAAI,kBAAkB,EAAE,kBAA8C,CAAC;AAE9E,wBAAgB,qBAAqB,CAAC,OAAO,EAAE,kBAAkB,GAAG,IAAI,CAEvE"}
