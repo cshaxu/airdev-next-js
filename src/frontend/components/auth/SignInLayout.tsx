@@ -42,6 +42,7 @@ export default function SignInLayout({ children }: ReactNodeProps) {
             alt="math-symbols"
             width={209}
             height={209}
+            loading="eager"
             className="h-24 w-24 sm:h-36 sm:w-36 lg:h-[209px] lg:w-[209px]"
           />
         </div>
