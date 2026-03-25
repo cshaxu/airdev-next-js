@@ -27,8 +27,6 @@ module.exports = [
       'src/app/api/inngest/route.ts',
       'src/app/api/jobs/**/*.ts',
       'src/app/api/webhooks/**/*.ts',
-      'src/frontend/stores/**/*.ts',
-      'airdev/**',
     ],
   },
   ...require('eslint-config-next/core-web-vitals'),
@@ -38,18 +36,16 @@ module.exports = [
       'unused-imports': unusedImports,
       airdev: airdevPlugin,
     },
-
     rules: {
       '@next/next/no-img-element': 'off',
-      'react-hooks/globals': 'off',
-      'react-hooks/immutability': 'off',
-      'react-hooks/incompatible-library': 'off',
+      'react-hooks/exhaustive-deps': 'error',
+      'react-hooks/globals': 'error',
+      'react-hooks/immutability': 'error',
+      'react-hooks/incompatible-library': 'error',
       'react-hooks/preserve-manual-memoization': 'off',
       'react-hooks/refs': 'off',
-      'unused-imports/no-unused-imports': 'error',
-      'react-hooks/exhaustive-deps': 'error',
       'react-hooks/set-state-in-effect': 'off',
-
+      'unused-imports/no-unused-imports': 'error',
       'unused-imports/no-unused-vars': [
         'error',
         {
@@ -77,7 +73,6 @@ module.exports = [
       'airdev/require-relative-child-imports': 'error',
       'airdev/no-specific-paths': ['error', ['src/app/api']],
       'airdev/next-require-export-default-function': 'error',
-
       'airdev/no-specific-string': [
         'error',
         [
