@@ -4,9 +4,15 @@
   "type": "module",
   "files": [
     "lib",
+    "resources",
+    "scripts",
     "README.md"
   ],
+  "bin": {
+    "airdev-next": "./scripts/generate.mjs"
+  },
   "scripts": {
+    "generate": "node ./scripts/generate.mjs",
     "lint": "eslint . --max-warnings=0",
     "build": "node ./scripts/build.mjs",
     "prepublishOnly": "npm run build"
