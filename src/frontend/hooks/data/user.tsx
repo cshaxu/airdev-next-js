@@ -26,7 +26,7 @@ const currentUserQueryOptions = {
 const getNullableCurrentUser = () =>
   clientFunctionConfig.apiClient.user
     .getOneSafe({ id: 'me' }, CurrentUserFieldRequest)
-    .then((page: { user: CurrentUser | null }) => page.user);
+    .then((page) => page.user);
 
 const requiredCurrentUserQueryOptions = queryOptions({
   ...currentUserQueryOptions,
@@ -59,7 +59,7 @@ export function useUpdateCurrentUser(
   const mutationFn = ({ params, body }: UpdateOneUserMutationParams) =>
     clientFunctionConfig.apiClient.user
       .updateOne(params, body, CurrentUserFieldRequest)
-      .then((page: { user: CurrentUser | null }) => page.user);
+      .then((page) => page.user);
 
   const queryClient = useQueryClient();
 

@@ -30,8 +30,8 @@ copyIfExists(
   path.join(libRoot, 'frontend', 'assets')
 );
 copyIfExists(
-  path.join(srcRoot, 'config-contracts.d.ts'),
-  path.join(libRoot, 'config-contracts.d.ts')
+  path.join(srcRoot, 'ambient.d.ts'),
+  path.join(libRoot, 'ambient.d.ts')
 );
 
 rewritePackageAliases(libRoot);

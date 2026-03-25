@@ -1,5 +1,5 @@
 import { defineConfig } from 'prisma/config';
-import { privateConfig } from './src/config/private';
+import { privateAppConfig } from './src/config/private-app';
 
 export default defineConfig({
   schema: './prisma/schema.prisma',
@@ -7,5 +7,5 @@ export default defineConfig({
     path: './prisma/migrations',
     seed: 'ts-node --compiler-options {"module":"CommonJS"} prisma/seed.ts',
   },
-  datasource: { url: privateConfig.database.url },
+  datasource: { url: privateAppConfig.database.url },
 });

@@ -18,6 +18,6 @@
   "include": [
     "next-env.d.ts",
     "src",
-    "src/config-contracts.d.ts"
+    "src/ambient.d.ts"
   ]
 }

@@ -3,38 +3,38 @@ import { ReactNodeProps } from '../../types/props.js';
 export declare function generateRootLayoutMetadata(): {
     metadataBase: URL;
     title: string;
-    description: any;
-    applicationName: any;
+    description: string;
+    applicationName: string;
     authors: {
-        name: any;
+        name: string;
     }[];
-    creator: any;
-    publisher: any;
-    keywords: any;
+    creator: string;
+    publisher: string;
+    keywords: string[];
     robots: {
         index: boolean;
         follow: boolean;
     };
     openGraph: {
         type: string;
-        url: any;
-        siteName: any;
+        url: string;
+        siteName: string;
         title: string;
-        description: any;
+        description: string;
         images: {
-            url: any;
-            alt: any;
+            url: string;
+            alt: string;
         }[];
     };
     twitter: {
         card: string;
         title: string;
-        description: any;
-        images: any[];
+        description: string;
+        images: string[];
     };
     icons: {
-        icon: any;
-        apple: any;
+        icon: string;
+        apple: string;
     };
 };
 export default function RootLayout({ children }: ReactNodeProps): import("react/jsx-runtime").JSX.Element;

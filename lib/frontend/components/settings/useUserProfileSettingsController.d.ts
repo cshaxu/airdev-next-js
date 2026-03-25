@@ -1,18 +1,18 @@
 import type { HeaderBarItem } from '../shell/HeaderBar.js';
 import { KeyboardEvent } from 'react';
 export declare function useUserProfileSettingsController(): {
-    currentUser: any;
+    currentUser: import("../../../common/types/context").CurrentUser;
     breadcrumbs: HeaderBarItem[];
     deleteOpen: boolean;
     isEditingName: boolean;
-    draftName: any;
+    draftName: string;
     nameInputRef: import("react").RefObject<HTMLInputElement | null>;
-    isDeleting: any;
+    isDeleting: boolean;
     isUpdatingUser: boolean;
-    displayName: any;
-    nameInitials: any;
+    displayName: string;
+    nameInitials: string;
     setDeleteOpen: import("react").Dispatch<import("react").SetStateAction<boolean>>;
-    setDraftName: import("react").Dispatch<any>;
+    setDraftName: import("react").Dispatch<import("react").SetStateAction<string>>;
     handleDeleteAccount: () => void;
     handleStartEditingName: () => void;
     handleCancelEditingName: () => void;
