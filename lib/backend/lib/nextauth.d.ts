@@ -1,1 +1,1 @@
-export * from './nextauth/index';
+export * from './nextauth/index.js';

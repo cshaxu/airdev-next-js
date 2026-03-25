@@ -1,6 +1,6 @@
 import { DispatcherConfig } from '@airent/api';
 import { HandlerConfig } from '@airent/api-next';
-import { Context } from './context';
+import { Context } from './context.js';
 export type DispatcherOptions = {
     requireLogin?: boolean;
     requireAdmin?: boolean;

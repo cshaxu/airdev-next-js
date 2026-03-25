@@ -1,5 +1,5 @@
 import { clientFunctionConfig } from '@/config/function/client';
-import { CurrentUser } from '../../../common/types/context';
+import { CurrentUser } from '../../../common/types/context.js';
 import { UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
 type UpdateOneUserMutationParams = {
     params: Parameters<typeof clientFunctionConfig.apiClient.user.updateOne>[0];

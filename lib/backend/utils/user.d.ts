@@ -1,5 +1,5 @@
-import { PackageUser } from '../types/data';
-import { ContextUser } from '../../framework/context';
+import { PackageUser } from '../types/data.js';
+import { ContextUser } from '../../framework/context.js';
 import { AdapterUser } from 'next-auth/adapters';
 export type PackageNextauthUser = AdapterUser & {
     source: 'email' | 'google';

@@ -1,4 +1,4 @@
-import { NextPageResponse } from '../types/props';
+import { NextPageResponse } from '../types/props.js';
 import { NextSearchParams } from '@airent/api-next';
 import { Awaitable } from 'airent';
 import { Metadata } from 'next';

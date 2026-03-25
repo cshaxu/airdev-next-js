@@ -1,4 +1,4 @@
-import { Context } from '../../framework/context';
+import { Context } from '../../framework/context.js';
 import { CommonResponse } from '@airent/api';
 import { Awaitable } from 'airent';
 export declare function batchExecuteByPageParam<ENTITY, RESULT, PAGE_PARAM>(loader: (pageParam: PAGE_PARAM | undefined, batchSize: number) => Promise<ENTITY[]>, executor: (array: ENTITY[], previousResults: RESULT[]) => Promise<RESULT[]>, pageParamMapper: (entity: ENTITY) => PAGE_PARAM, batchSize?: number, initialPageParam?: PAGE_PARAM | undefined): Promise<RESULT[]>;

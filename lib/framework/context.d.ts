@@ -1,4 +1,4 @@
-import { CurrentUser } from '../common/types/context';
+import { CurrentUser } from '../common/types/context.js';
 export declare const ContextUserFieldRequest: {
     id: boolean;
     email: boolean;

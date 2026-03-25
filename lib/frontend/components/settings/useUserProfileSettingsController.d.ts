@@ -1,4 +1,4 @@
-import type { HeaderBarItem } from '../shell/HeaderBar';
+import type { HeaderBarItem } from '../shell/HeaderBar.js';
 import { KeyboardEvent } from 'react';
 export declare function useUserProfileSettingsController(): {
     currentUser: any;

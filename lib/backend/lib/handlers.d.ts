@@ -1,5 +1,5 @@
-import { DispatcherOptions } from '../../framework/callbacks';
-import { Context } from '../../framework/context';
+import { DispatcherOptions } from '../../framework/callbacks.js';
+import { Context } from '../../framework/context.js';
 import { DispatcherConfig } from '@airent/api';
 import * as z from 'zod';
 export declare const handleBackendAnyAnyWith: <PARSED, RESULT, ERROR>(config: Pick<DispatcherConfig<DispatcherOptions, Context, Request, PARSED, RESULT, ERROR>, "parser" | "executor" | "options">) => import("@airent/api-next").Handler;

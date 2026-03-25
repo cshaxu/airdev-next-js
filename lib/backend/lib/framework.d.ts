@@ -1,5 +1,5 @@
-import { DispatcherOptions } from '../../framework/callbacks';
-import { Context, ContextUser } from '../../framework/context';
+import { DispatcherOptions } from '../../framework/callbacks.js';
+import { Context, ContextUser } from '../../framework/context.js';
 import { DispatcherConfig } from '@airent/api';
 import { HandlerConfig } from '@airent/api-next';
 export declare const dispatcherConfig: Pick<DispatcherConfig<DispatcherOptions, Context, any, any, any, any>, 'authorizer' | 'parserWrapper' | 'executorWrapper' | 'errorHandler'>;

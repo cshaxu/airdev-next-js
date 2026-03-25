@@ -1,5 +1,5 @@
 import '../../styles/globals.css';
-import { ReactNodeProps } from '../../types/props';
+import { ReactNodeProps } from '../../types/props.js';
 export declare function generateRootLayoutMetadata(): {
     metadataBase: URL;
     title: string;

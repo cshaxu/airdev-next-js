@@ -1,4 +1,4 @@
-import { ContextUser } from '../../framework/context';
+import { ContextUser } from '../../framework/context.js';
 export type PackageNextauthAccount = {
     id: string;
     userId: string;
