@@ -6,89 +6,49 @@ import url from 'node:url';
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(__dirname, '..');
-const resourceRoot = path.join(packageRoot, 'resources', 'root');
+const requiredResourceRoot = path.join(packageRoot, 'resources', 'required');
+const optionalResourceRoot = path.join(packageRoot, 'resources', 'optional');
 
 main();
 
 function main() {
-  const { command, scope, options } = parseArgs(process.argv.slice(2));
-  if (command === 'help') {
-    printHelp();
-    return;
-  }
+  assertNoArgs(process.argv.slice(2));
 
-  if (command !== 'generate' || scope !== 'root') {
-    printHelp();
-    process.exitCode = 1;
-    return;
-  }
-
-  if (!fs.existsSync(resourceRoot)) {
-    throw new Error(`Resource root not found: ${resourceRoot}`);
-  }
-
-  const targetRoot = path.resolve(options.cwd ?? process.cwd());
-  if (targetRoot === packageRoot) {
+  if (!fs.existsSync(requiredResourceRoot)) {
     throw new Error(
-      'Refusing to generate root files into the package repo itself. Run this from a consumer app root or pass --cwd <app-root>.'
+      `resources/required not found: ${requiredResourceRoot}`
     );
   }
 
-  const results = syncDirectory(resourceRoot, targetRoot, options);
-  reportResults(results, options.check === true);
+  if (!fs.existsSync(optionalResourceRoot)) {
+    throw new Error(
+      `resources/optional not found: ${optionalResourceRoot}`
+    );
+  }
 
-  const hasFailures = results.some((result) => result.status === 'needs_update');
-  if (hasFailures) {
-    process.exitCode = 1;
+  const targetRoot = path.resolve(process.cwd());
+  if (targetRoot === packageRoot) {
+    throw new Error(
+      'Refusing to generate project files into the package repo itself. Run this from a consumer app root.'
+    );
+  }
+
+  const results = [
+    ...syncRequiredDirectory(requiredResourceRoot, targetRoot),
+    ...syncOptionalDirectory(optionalResourceRoot, targetRoot),
+  ];
+  reportResults(results);
+}
+
+function assertNoArgs(args) {
+  if (args.length > 0) {
+    throw new Error(
+      `This script does not take arguments. Run it with no arguments from the target app root. Received: ${args.join(' ')}`
+    );
   }
 }
 
-function parseArgs(args) {
-  const options = {
-    check: false,
-    cwd: null,
-  };
-
-  const [command = 'help', scope, ...rest] = args;
-
-  for (let index = 0; index < rest.length; index += 1) {
-    const arg = rest[index];
-    if (arg === '--check') {
-      options.check = true;
-      continue;
-    }
-    if (arg === '--cwd') {
-      options.cwd = rest[index + 1] ?? null;
-      index += 1;
-      continue;
-    }
-    if (arg.startsWith('--cwd=')) {
-      options.cwd = arg.slice('--cwd='.length);
-      continue;
-    }
-    throw new Error(`Unknown argument: ${arg}`);
-  }
-
-  return { command, scope, options };
-}
-
-function printHelp() {
-  const scriptPath = path.relative(process.cwd(), path.join(__dirname, 'generate.mjs'));
-  console.log(
-    [
-      'Usage:',
-      `  node ${scriptPath} generate root [--check] [--cwd <path>]`,
-      '',
-      'Behavior:',
-      '  Copies the contents of resources/root into the consumer app root.',
-      '  Existing files are overwritten to match the package resources.',
-      '  --check  Report drift without writing files.',
-      '  --cwd    Generate into a specific app root. Defaults to the current working directory.',
-    ].join('\n')
-  );
-}
-
-function syncDirectory(sourceDir, targetDir, options) {
+function syncRequiredDirectory(sourceDir, targetDir) {
   const results = [];
 
   for (const sourcePath of walkFiles(sourceDir)) {
@@ -98,13 +58,11 @@ function syncDirectory(sourceDir, targetDir, options) {
     const targetExists = fs.existsSync(targetPath);
     const targetContent = targetExists ? fs.readFileSync(targetPath) : null;
 
-    if (targetContent !== null && Buffer.compare(sourceContent, targetContent) === 0) {
+    if (
+      targetContent !== null &&
+      Buffer.compare(sourceContent, targetContent) === 0
+    ) {
       results.push({ status: 'unchanged', targetPath });
-      continue;
-    }
-
-    if (options.check === true) {
-      results.push({ status: 'needs_update', targetPath });
       continue;
     }
 
@@ -119,12 +77,32 @@ function syncDirectory(sourceDir, targetDir, options) {
   return results;
 }
 
-function reportResults(results, isCheck) {
+function syncOptionalDirectory(sourceDir, targetDir) {
+  const results = [];
+
+  for (const sourcePath of walkFiles(sourceDir)) {
+    const relativePath = path.relative(sourceDir, sourcePath);
+    const targetPath = path.join(targetDir, relativePath);
+
+    if (fs.existsSync(targetPath)) {
+      results.push({ status: 'skipped', targetPath });
+      continue;
+    }
+
+    fs.mkdirSync(path.dirname(targetPath), { recursive: true });
+    fs.copyFileSync(sourcePath, targetPath);
+    results.push({ status: 'created', targetPath });
+  }
+
+  return results;
+}
+
+function reportResults(results) {
   const groups = [
     ['created', 'Created'],
     ['updated', 'Updated'],
     ['unchanged', 'Unchanged'],
-    ['needs_update', isCheck ? 'Needs update' : 'Needs update'],
+    ['skipped', 'Skipped'],
   ];
 
   for (const [status, label] of groups) {

@@ -2,7 +2,6 @@
 
 import { clientComponentConfig } from '@/config/component/client';
 import { publicConfig } from '@/config/public';
-import { shellConfig } from '@/config/shell';
 import { buttonVariants } from '@/frontend/components/ui/Button';
 import { PixelResizablePanel } from '@/frontend/components/ui/PixelResizable';
 import { cn } from '@/frontend/utils/cn';
@@ -91,7 +90,7 @@ export default function SideNavBar() {
           )}
         >
           <Image
-            src={shellConfig.assets.logoSrc}
+            src={publicConfig.shell.assets.logoSrc}
             alt="Logo"
             width={40}
             height={40}

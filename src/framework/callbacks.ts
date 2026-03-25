@@ -1,4 +1,3 @@
-import { CRON_SECRET, INTERNAL_SECRET } from '@/config/edge';
 import {
   HEADER_AUTHORIZATION_KEY,
   HEADER_COOKIE_KEY,
@@ -6,6 +5,7 @@ import {
   HEADER_REFERER_KEY,
   HEADER_USER_AGENT_KEY,
 } from '@/common/constant';
+import { edgeConfig } from '@/config/edge';
 import { commonFunctionConfig } from '@/config/function/common';
 import { publicConfig } from '@/config/public';
 import {
@@ -48,7 +48,8 @@ function authorizer(context: Context, options?: DispatcherOptions): void {
   // require cron
   if (options?.requireCron === true) {
     if (
-      context.headers.get(HEADER_AUTHORIZATION_KEY) === `Bearer ${CRON_SECRET}`
+      context.headers.get(HEADER_AUTHORIZATION_KEY) ===
+      `Bearer ${edgeConfig.cronSecret}`
     ) {
       return;
     }
@@ -57,7 +58,10 @@ function authorizer(context: Context, options?: DispatcherOptions): void {
 
   // require internal
   if (options?.requireInternal === true) {
-    if (context.headers.get(HEADER_INTERNAL_SECRET_KEY) === INTERNAL_SECRET) {
+    if (
+      context.headers.get(HEADER_INTERNAL_SECRET_KEY) ===
+      edgeConfig.internalSecret
+    ) {
       return;
     }
     throw createHttpError.Unauthorized(buildInvalidErrorMessage('access'));

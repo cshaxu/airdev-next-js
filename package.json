@@ -37,6 +37,10 @@
       "types": "./lib/common/*.d.ts",
       "default": "./lib/common/*.js"
     },
+    "./edge/*": {
+      "types": "./lib/edge/*.d.ts",
+      "default": "./lib/edge/*.js"
+    },
     "./framework/*": {
       "types": "./lib/framework/*.d.ts",
       "default": "./lib/framework/*.js"

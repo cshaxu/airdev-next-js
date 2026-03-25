@@ -1,6 +1,5 @@
 import { clientComponentConfig } from '@/config/component/client';
 import { publicConfig } from '@/config/public';
-import { shellConfig } from '@/config/shell';
 import { currentUserServerQueryOptions } from '@/frontend/hooks/data/user-server';
 import { pageTitle, withError } from '@/frontend/utils/page';
 import { QueryClient } from '@tanstack/react-query';
@@ -21,7 +20,7 @@ async function RootPage() {
     currentUserServerQueryOptions
   );
   if (currentUser !== null) {
-    redirect(shellConfig.routes.homeHref);
+    redirect(publicConfig.shell.routes.homeHref);
   }
 
   const { LandingPage } = clientComponentConfig;

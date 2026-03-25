@@ -19,7 +19,7 @@ Required host-side config modules currently include:
 - `@/config/function/common`
 - `@/config/function/server`
 
-The shared frontend currently expects these `shellConfig` fields:
+The shared frontend currently expects these `publicConfig.shell` fields:
 
 - `routes.homeHref`
 - `assets.logoSrc`
@@ -65,13 +65,12 @@ export { config, proxy } from '@airdev/next/frontend/proxy';
 
 ## Route Generation
 
-This package includes a root scaffold generator that copies the contents of `resources/root` into a consuming app.
+This package includes a root scaffold generator that copies the contents of `resources/required` and `resources/optional` into a consuming app.
 
 From a consuming app root:
 
 ```bash
-airdev-next generate root --check
-airdev-next generate root
+airdev-next
 ```
 
 The copied files currently include package-owned thin wrappers and shared project config like:
@@ -106,4 +105,7 @@ The copied files currently include package-owned thin wrappers and shared projec
 - `components.json`
 - `plugins/airent-api-next/*`
 
-The generator performs a straight 1:1 copy from `resources/root` into the consumer app root and overwrites existing files to match the package resources. Use `--check` to report drift without writing.
+The generator performs two passes into the current working directory and does not take any arguments.
+
+- Files in `resources/required` are copied 1:1 and overwrite existing files to match the package resources.
+- Files in `resources/optional` are only created when missing. If the target path already exists, the file is skipped.

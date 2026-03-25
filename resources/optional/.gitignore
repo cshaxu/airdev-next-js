@@ -1,0 +1,87 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# airdev - required
+/package-local.json
+/components.json
+/knip.json
+/next.config.js
+/postcss.config.mjs
+/prettier.config.js
+/prisma.config.ts
+/tsconfig.json
+/vitest.config.mts
+/src/proxy.ts
+/src/app/error.tsx
+/src/app/layout.tsx
+/src/app/loading.tsx
+/src/app/manifest.ts
+/src/app/not-found.tsx
+/src/app/page.tsx
+/src/app/robots.ts
+/src/app/sitemap.ts
+/src/app/(policy)
+/src/app/(protected)/layout.tsx
+/src/app/(protected)/admin/layout.tsx
+/src/app/(protected)/admin/page.tsx
+/src/app/(protected)/admin/api
+/src/app/(protected)/admin/users
+/src/app/(protected)/settings/loading.tsx
+/src/app/(protected)/settings/page.tsx
+/src/app/(protected)/not-found.tsx
+/src/app/auth
+/src/app/api/auth/\[...nextauth\]
+/src/app/api/auth/become
+
+/.vscode
+
+# airent
+/src/generated
+/src/app/api/data
+/src/app/api/debug
+/src/app/api/inngest
+/src/app/api/jobs
+/src/app/api/webhooks
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+# /.vscode
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+env.lock
+.env*.local
+*.env
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# temporary data files
+tmp
+certificates
+
+# claude
+.claude

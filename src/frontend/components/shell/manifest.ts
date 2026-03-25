@@ -1,5 +1,4 @@
 import { publicConfig } from '@/config/public';
-import { shellConfig } from '@/config/shell';
 import type { MetadataRoute } from 'next';
 
 export function generateRootManifest(): MetadataRoute.Manifest {
@@ -7,6 +6,7 @@ export function generateRootManifest(): MetadataRoute.Manifest {
     name: publicConfig.app.name,
     short_name: publicConfig.app.name,
     description: publicConfig.app.description,
+    categories: publicConfig.app.categories,
     id: '/',
     scope: '/',
     start_url: '/',
@@ -18,13 +18,12 @@ export function generateRootManifest(): MetadataRoute.Manifest {
     launch_handler: { client_mode: 'focus-existing' },
     icons: [
       {
-        src: shellConfig.assets.iconSrc,
+        src: publicConfig.shell.assets.iconSrc,
         sizes: 'any',
         type: 'image/x-icon',
       },
     ],
     theme_color: '#fff',
     background_color: '#fff',
-    categories: shellConfig.manifest.categories,
   };
 }

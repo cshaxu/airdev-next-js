@@ -1,7 +1,7 @@
 'use client';
 
 import { ADMIN_API_HREF, ADMIN_USERS_HREF } from '@/common/constant';
-import { shellConfig } from '@/config/shell';
+import { publicConfig } from '@/config/public';
 import HeaderBar from '@/frontend/components/shell/HeaderBar';
 import { cn } from '@/frontend/utils/cn';
 import Link from 'next/link';
@@ -14,7 +14,7 @@ export default function AdminNav() {
   const adminTabs: AdminTab[] = [
     { label: 'API', href: ADMIN_API_HREF },
     { label: 'Users', href: ADMIN_USERS_HREF },
-    ...shellConfig.adminTabs,
+    ...publicConfig.shell.adminTabs,
   ];
 
   return (

@@ -2,7 +2,7 @@
 
 import { ROOT_HREF } from '@/common/constant';
 import { clientFunctionConfig } from '@/config/function/client';
-import { shellConfig } from '@/config/shell';
+import { publicConfig } from '@/config/public';
 import type { HeaderBarItem } from '@/frontend/components/shell/HeaderBar';
 import {
   useRequiredCurrentUser,
@@ -34,7 +34,7 @@ export function useUserProfileSettingsController() {
   const breadcrumbs: HeaderBarItem[] = [
     {
       label: '',
-      href: shellConfig.routes.homeHref,
+      href: publicConfig.shell.routes.homeHref,
       icon: createElement(Home, { className: 'size-4' }),
     },
     { label: 'Settings' },

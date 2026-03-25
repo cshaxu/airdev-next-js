@@ -1,9 +1,8 @@
 import { publicConfig } from '@/config/public';
-import { shellConfig } from '@/config/shell';
-import { Toaster } from '@/frontend/components/ui/Toaster';
 import ErrorBoundary from '@/frontend/components/ErrorBoundary';
 import ReactQueryProvider from '@/frontend/components/ReactQueryProvider';
 import ThemeProvider from '@/frontend/components/theme/ThemeProvider';
+import { Toaster } from '@/frontend/components/ui/Toaster';
 import '@/frontend/styles/globals.css';
 import { ReactNodeProps } from '@/frontend/types/props';
 import { pageTitle } from '@/frontend/utils/page';
@@ -32,17 +31,19 @@ export function generateRootLayoutMetadata() {
       siteName: publicConfig.app.name,
       title: pageTitle(),
       description: publicConfig.app.description,
-      images: [{ url: shellConfig.assets.logoSrc, alt: publicConfig.app.name }],
+      images: [
+        { url: publicConfig.shell.assets.logoSrc, alt: publicConfig.app.name },
+      ],
     },
     twitter: {
       card: 'summary',
       title: pageTitle(),
       description: publicConfig.app.description,
-      images: [shellConfig.assets.logoSrc],
+      images: [publicConfig.shell.assets.logoSrc],
     },
     icons: {
-      icon: shellConfig.assets.logoSrc,
-      apple: shellConfig.assets.logoSrc,
+      icon: publicConfig.shell.assets.logoSrc,
+      apple: publicConfig.shell.assets.logoSrc,
     },
   };
 }

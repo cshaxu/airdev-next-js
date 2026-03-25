@@ -1,0 +1,8 @@
+name: NextauthVerificationToken
+api:
+  methods:
+    getOneSafe: '{ requireLogin: false }'
+    createOne: '{ requireLogin: false }'
+prisma:
+  internalFields:
+    - token

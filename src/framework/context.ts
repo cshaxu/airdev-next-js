@@ -2,6 +2,14 @@ import { CurrentUser } from '@/common/types/context';
 import { buildInvalidErrorMessage } from '@airent/api';
 import createHttpError from 'http-errors';
 
+export const ContextUserFieldRequest = {
+  id: true,
+  email: true,
+  name: true,
+  isAdmin: true,
+  createdAt: true,
+};
+
 export type ContextUser = Pick<
   CurrentUser,
   'id' | 'email' | 'name' | 'isAdmin' | 'createdAt'
