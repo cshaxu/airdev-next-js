@@ -131,7 +131,7 @@ function executorWrapper<PARSED, RESULT>(
           } else {
             return response as RESULT;
           }
-        } while (delay < privateConfig.database.dbDelaySeconds * 1000);
+        } while (delay < privateConfig.database.delaySeconds * 1000);
         throw createHttpError.RequestTimeout();
       } else {
         // key acquired

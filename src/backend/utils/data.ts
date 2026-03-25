@@ -12,7 +12,7 @@ export async function batchExecuteByPageParam<ENTITY, RESULT, PAGE_PARAM>(
   ) => Promise<ENTITY[]>,
   executor: (array: ENTITY[], previousResults: RESULT[]) => Promise<RESULT[]>,
   pageParamMapper: (entity: ENTITY) => PAGE_PARAM,
-  batchSize: number = privateConfig.database.dbBatchSize,
+  batchSize: number = privateConfig.database.batchSize,
   initialPageParam: PAGE_PARAM | undefined = undefined
 ): Promise<RESULT[]> {
   let pageParam = initialPageParam;
@@ -67,7 +67,7 @@ export async function batchFindFilteredMany<ENTITY, PAGE_PARAM>(
 export async function filterAsync<T>(
   array: T[],
   filter: (object: T) => Promise<boolean>,
-  batchSize: number = privateConfig.database.dbBatchSize
+  batchSize: number = privateConfig.database.batchSize
 ): Promise<T[]> {
   const result = [];
   for (let i = 0; i < array.length; i += batchSize) {
@@ -139,7 +139,7 @@ export async function batchExecuteOneByPageParam<ENTITY, RESULT, PAGE_PARAM>(
   reducer: (results: RESULT[]) => Awaitable<CommonResponse>,
   options: BatchExecuteOneOptions = {}
 ): Promise<CommonResponse> {
-  const batchSize = options.batchSize ?? privateConfig.database.dbBatchSize;
+  const batchSize = options.batchSize ?? privateConfig.database.batchSize;
   const isSequential = options.isSequential ?? false;
   const isVerbose = options.isVerbose ?? true;
   const executor = async (array: ENTITY[], previous: RESULT[]) => {
