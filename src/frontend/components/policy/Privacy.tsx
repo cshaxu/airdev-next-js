@@ -1,6 +1,7 @@
 import { publicConfig } from '@/config/public';
-import Header from '@/package/frontend/components/ui/Header';
-import { pageTitle } from '@/package/frontend/utils/page';
+import { shellConfig } from '@/config/shell';
+import Header from '@/frontend/components/ui/Header';
+import { pageTitle } from '@/frontend/utils/page';
 import Link from 'next/link';
 
 const { app } = publicConfig;
@@ -14,11 +15,11 @@ export default function Privacy() {
   return (
     <>
       <Header title="Privacy Policy">
-        <Link href="/" />
+        <Link href={shellConfig.routes.rootHref} />
       </Header>
 
       <section className="mb-6 flex flex-col gap-y-3">
-        <p>Last Updated: February 26, 2026</p>
+        <p>Last Updated: March 25, 2026</p>
         <p>
           This privacy policy explains our practices regarding the collection,
           use and disclosure of information that we receive from the person or
@@ -68,9 +69,9 @@ export default function Privacy() {
           </li>
           <li>
             Information that you provide in connection with your purchase or
-            license of Services, including credit card information (card number,
-            expiration date, verification code) or bank information (account
-            number, account type, bank name, and routing numbers).
+            license of Services, including payment card information (card
+            number, expiration date, verification code) or other billing
+            information needed to process your purchase.
           </li>
           <li>
             Personal information contained in legal agreements (such as invoices
@@ -184,7 +185,8 @@ export default function Privacy() {
           </li>
           <li>
             Prohibition of Misuse: We do not transfer, sell, or use user data
-            for advertising, credit assessments, or any unauthorized purposes.
+            for advertising, eligibility assessments, or any unauthorized
+            purposes.
           </li>
           <li>
             Compliance Across the Board: All our employees, agents, contractors,

@@ -1,5 +1,5 @@
-import { DispatcherOptions } from '@/package/framework/callbacks';
-import { Context } from '@/package/framework/context';
+import { DispatcherOptions } from '@/framework/callbacks';
+import { Context } from '@/framework/context';
 import { DispatcherConfig, dispatchWith, parseBodyWith } from '@airent/api';
 import { handleWith } from '@airent/api-next';
 import * as z from 'zod';

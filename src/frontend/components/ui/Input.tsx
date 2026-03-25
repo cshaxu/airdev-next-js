@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/package/frontend/utils/cn';
+import { cn } from '@/frontend/utils/cn';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 

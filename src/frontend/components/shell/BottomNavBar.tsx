@@ -1,8 +1,8 @@
 'use client';
 
 import { clientComponentConfig } from '@/config/component/client';
-import { useRequiredCurrentUser } from '@/package/frontend/hooks/data/user';
-import { cn } from '@/package/frontend/utils/cn';
+import { useRequiredCurrentUser } from '@/frontend/hooks/data/user';
+import { cn } from '@/frontend/utils/cn';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';

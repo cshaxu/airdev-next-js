@@ -1,4 +1,5 @@
 import { publicConfig } from '@/config/public';
+import { shellConfig } from '@/config/shell';
 import type { MetadataRoute } from 'next';
 
 export function generateRootManifest(): MetadataRoute.Manifest {
@@ -15,9 +16,15 @@ export function generateRootManifest(): MetadataRoute.Manifest {
     prefer_related_applications: false,
     display_override: ['window-controls-overlay'],
     launch_handler: { client_mode: 'focus-existing' },
-    icons: [{ src: '/favicon.ico', sizes: 'any', type: 'image/x-icon' }],
+    icons: [
+      {
+        src: shellConfig.assets.iconSrc,
+        sizes: 'any',
+        type: 'image/x-icon',
+      },
+    ],
     theme_color: '#fff',
     background_color: '#fff',
-    categories: ['financial'],
+    categories: shellConfig.manifest.categories,
   };
 }

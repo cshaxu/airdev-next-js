@@ -26,6 +26,10 @@ copyIfExists(
   path.join(libRoot, 'frontend', 'fonts')
 );
 copyIfExists(
+  path.join(srcRoot, 'frontend', 'assets'),
+  path.join(libRoot, 'frontend', 'assets')
+);
+copyIfExists(
   path.join(srcRoot, 'config-contracts.d.ts'),
   path.join(libRoot, 'config-contracts.d.ts')
 );
@@ -67,13 +71,27 @@ function rewritePackageAliases(rootDir) {
       continue;
     }
 
-    const content = fs.readFileSync(filePath, 'utf8');
-    const rewritten = content.replace(
-      /(['"])@\/package\/([^'"\r\n]+)\1/g,
-      (_match, quote, target) => {
-        const resolvedTarget = resolvePackageTarget(rootDir, target);
+    let rewritten = fs.readFileSync(filePath, 'utf8');
+    const pattern = /(['"])@\/([^'"\r\n]+)(['"])/g;
+    rewritten = rewritten.replace(
+      pattern,
+      (_match, openQuote, target, closeQuote) => {
+        if (openQuote !== closeQuote) {
+          return _match;
+        }
+
+        const sourceTarget = resolveSourceTarget(srcRoot, target);
+        if (sourceTarget === null) {
+          // Leave host-app aliases like @/config/* untouched.
+          return _match;
+        }
+
+        const relativeSourcePath = path
+          .relative(srcRoot, sourceTarget)
+          .replace(/\.(d\.ts|ts|tsx|js|jsx)$/i, '');
+        const resolvedTarget = resolvePackageTarget(rootDir, relativeSourcePath);
         if (resolvedTarget === null) {
-          throw new Error(`Unable to resolve @/package/${target} from ${filePath}`);
+          throw new Error(`Unable to resolve @/${target} from ${filePath}`);
         }
 
         let relative = path.relative(path.dirname(filePath), resolvedTarget);
@@ -83,12 +101,31 @@ function rewritePackageAliases(rootDir) {
         if (!relative.startsWith('.')) {
           relative = `./${relative}`;
         }
-        return `${quote}${relative}${quote}`;
+        return `${openQuote}${relative}${closeQuote}`;
       }
     );
 
     fs.writeFileSync(filePath, rewritten, 'utf8');
   }
+}
+
+function resolveSourceTarget(rootDir, target) {
+  const basePath = path.join(rootDir, target);
+  const candidates = [
+    basePath,
+    `${basePath}.ts`,
+    `${basePath}.tsx`,
+    `${basePath}.js`,
+    `${basePath}.jsx`,
+    `${basePath}.d.ts`,
+    path.join(basePath, 'index.ts'),
+    path.join(basePath, 'index.tsx'),
+    path.join(basePath, 'index.js'),
+    path.join(basePath, 'index.jsx'),
+    path.join(basePath, 'index.d.ts'),
+  ];
+
+  return candidates.find((candidate) => fs.existsSync(candidate)) ?? null;
 }
 
 function resolvePackageTarget(rootDir, target) {

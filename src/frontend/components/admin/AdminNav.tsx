@@ -1,8 +1,8 @@
 'use client';
 
 import { shellConfig } from '@/config/shell';
-import HeaderBar from '@/package/frontend/components/shell/HeaderBar';
-import { cn } from '@/package/frontend/utils/cn';
+import HeaderBar from '@/frontend/components/shell/HeaderBar';
+import { cn } from '@/frontend/utils/cn';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 

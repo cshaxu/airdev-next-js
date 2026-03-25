@@ -4,9 +4,9 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from '@/package/frontend/components/ui/Avatar';
-import { Button } from '@/package/frontend/components/ui/Button';
-import { Input } from '@/package/frontend/components/ui/Input';
+} from '@/frontend/components/ui/Avatar';
+import { Button } from '@/frontend/components/ui/Button';
+import { Input } from '@/frontend/components/ui/Input';
 import { Pencil, Trash2 } from 'lucide-react';
 import type { ChangeEvent } from 'react';
 import type { UserProfileSettingsViewModel } from './useUserProfileSettingsController';

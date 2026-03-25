@@ -22,7 +22,7 @@ export declare function generateRootLayoutMetadata(): {
         title: string;
         description: any;
         images: {
-            url: string;
+            url: any;
             alt: any;
         }[];
     };
@@ -30,11 +30,11 @@ export declare function generateRootLayoutMetadata(): {
         card: string;
         title: string;
         description: any;
-        images: string[];
+        images: any[];
     };
     icons: {
-        icon: string;
-        apple: string;
+        icon: any;
+        apple: any;
     };
 };
 export default function RootLayout({ children }: ReactNodeProps): import("react/jsx-runtime").JSX.Element;

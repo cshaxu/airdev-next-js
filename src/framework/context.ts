@@ -1,4 +1,4 @@
-import { CurrentUser } from '@/package/common/types/context';
+import { CurrentUser } from '@/common/types/context';
 import { buildInvalidErrorMessage } from '@airent/api';
 import createHttpError from 'http-errors';
 

@@ -1,11 +1,13 @@
 'use client';
 
+import { ADMIN_HREF, SETTINGS_HREF } from '@/common/constant';
 import { clientFunctionConfig } from '@/config/function/client';
+import { shellConfig } from '@/config/shell';
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from '@/package/frontend/components/ui/Avatar';
+} from '@/frontend/components/ui/Avatar';
 import {
   BottomPopupSheet,
   BottomPopupSheetContent,
@@ -13,8 +15,8 @@ import {
   BottomPopupSheetHeader,
   BottomPopupSheetTitle,
   BottomPopupSheetTrigger,
-} from '@/package/frontend/components/ui/BottomPopupSheet';
-import { Button } from '@/package/frontend/components/ui/Button';
+} from '@/frontend/components/ui/BottomPopupSheet';
+import { Button } from '@/frontend/components/ui/Button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,13 +24,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/package/frontend/components/ui/DropdownMenu';
-import { useRequiredCurrentUser } from '@/package/frontend/hooks/data/user';
+} from '@/frontend/components/ui/DropdownMenu';
+import { useRequiredCurrentUser } from '@/frontend/hooks/data/user';
 import {
   useBecameUser,
   useSetBecameUser,
-} from '@/package/frontend/stores/becameUserStore';
-import { cn } from '@/package/frontend/utils/cn';
+} from '@/frontend/stores/becameUserStore';
+import { cn } from '@/frontend/utils/cn';
 import {
   ChevronRightIcon,
   Cog6ToothIcon,
@@ -182,7 +184,9 @@ export default function UserButton(props: Props) {
   const settleTimeoutRef = useRef<number | null>(null);
 
   const handleSignOut = async () => {
-    await clientFunctionConfig.apiClient.auth.signOut({ callbackUrl: '/' });
+    await clientFunctionConfig.apiClient.auth.signOut({
+      callbackUrl: shellConfig.routes.rootHref,
+    });
   };
 
   const handleRevertSelf = async () => {
@@ -386,7 +390,7 @@ export default function UserButton(props: Props) {
           {
             key: 'admin',
             label: 'Admin',
-            href: '/admin',
+            href: ADMIN_HREF,
             icon: <Wrench className="size-5" />,
           },
         ]
@@ -394,7 +398,7 @@ export default function UserButton(props: Props) {
     {
       key: 'settings',
       label: 'Settings',
-      href: '/settings',
+      href: SETTINGS_HREF,
       icon: <Cog6ToothIcon className="size-5" />,
     },
     became
@@ -519,14 +523,14 @@ export default function UserButton(props: Props) {
         <DropdownMenuSeparator />
         {user.isAdmin && (
           <DropdownMenuItem asChild>
-            <Link href="/admin">
+            <Link href={ADMIN_HREF}>
               <Wrench className="mr-2 size-4" />
               <span>Admin</span>
             </Link>
           </DropdownMenuItem>
         )}
         <DropdownMenuItem asChild>
-          <Link href="/settings">
+          <Link href={SETTINGS_HREF}>
             <Cog6ToothIcon className="mr-2 size-4" />
             <span>Settings</span>
           </Link>

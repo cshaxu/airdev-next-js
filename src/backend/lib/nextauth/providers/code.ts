@@ -1,6 +1,6 @@
 import { backendFunctionConfig } from '@/config/function/backend';
-import { mockContext } from '@/package/backend/lib/framework';
-import { buildNextauthUserFromPackageUser } from '@/package/backend/utils/user';
+import { mockContext } from '@/backend/lib/framework';
+import { buildNextauthUserFromPackageUser } from '@/backend/utils/user';
 import { pick } from 'lodash-es';
 import CredentialsProvider from 'next-auth/providers/credentials';
 

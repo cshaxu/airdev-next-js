@@ -1,9 +1,11 @@
 'use client';
 
 import { publicConfig } from '@/config/public';
-import { ReactNodeProps } from '@/package/frontend/types/props';
+import { ReactNodeProps } from '@/frontend/types/props';
 import { Sparkles } from 'lucide-react';
 import Image from 'next/image';
+import clipboardIllustration from '../../assets/clipboard.svg';
+import mathSymbolsIllustration from '../../assets/math.svg';
 
 export default function SignInLayout({ children }: ReactNodeProps) {
   return (
@@ -17,7 +19,7 @@ export default function SignInLayout({ children }: ReactNodeProps) {
         <div className="flex w-full max-w-md flex-col gap-y-4">
           <div className="flex w-full justify-start">
             <Image
-              src="/clipboard.svg"
+              src={clipboardIllustration}
               alt="clipboard"
               width={72}
               height={72}
@@ -31,12 +33,12 @@ export default function SignInLayout({ children }: ReactNodeProps) {
             Welcome to {publicConfig.app.name}
           </h1>
           <p className="text-sm leading-6 text-white sm:text-base">
-            Join us to learn æ¼¢å­— today!
+            {publicConfig.app.welcomeText}
           </p>
         </div>
         <div className="mt-6 flex w-full justify-start lg:mt-10">
           <Image
-            src="/math-symbols.svg"
+            src={mathSymbolsIllustration}
             alt="math-symbols"
             width={209}
             height={209}

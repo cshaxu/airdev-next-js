@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import './colors.css';
 @plugin '@tailwindcss/typography';
+@source "../**/*.{js,jsx,ts,tsx}";
 
 @variant dark (&:where(.dark, .dark *));
 
@@ -70,13 +71,13 @@
     overflow-y: auto;
   }
 
-  body[data-quiz-session-active='true'] .mobile-bottom-nav,
-  html[data-quiz-session-active='true'] .mobile-bottom-nav {
+  body[data-mobile-fullscreen='true'] .mobile-bottom-nav,
+  html[data-mobile-fullscreen='true'] .mobile-bottom-nav {
     display: none !important;
   }
 
-  body[data-quiz-session-active='true'] .protected-mobile-main,
-  html[data-quiz-session-active='true'] .protected-mobile-main {
+  body[data-mobile-fullscreen='true'] .protected-mobile-main,
+  html[data-mobile-fullscreen='true'] .protected-mobile-main {
     padding-bottom: 0 !important;
   }
 

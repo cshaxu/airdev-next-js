@@ -1,19 +1,19 @@
 'use client';
 
 import { clientFunctionConfig } from '@/config/function/client';
-import { Button } from '@/package/frontend/components/ui/Button';
+import { Button } from '@/frontend/components/ui/Button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from '@/package/frontend/components/ui/Form';
+} from '@/frontend/components/ui/Form';
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-} from '@/package/frontend/components/ui/InputOTP';
+} from '@/frontend/components/ui/InputOTP';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { parseAsString, useQueryState } from 'nuqs';
 import { useCallback, useState } from 'react';

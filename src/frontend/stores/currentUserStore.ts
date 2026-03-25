@@ -1,4 +1,4 @@
-import { CurrentUser } from '@/package/common/types/context';
+import { CurrentUser } from '@/common/types/context';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 

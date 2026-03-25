@@ -1,4 +1,4 @@
-# @airdev/next-js
+# @airdev/next
 
 Shared frontend, backend, common, and framework source for Airdev-style Next.js projects.
 
@@ -18,6 +18,30 @@ Required host-side config modules currently include:
 - `@/config/function/client`
 - `@/config/function/common`
 - `@/config/function/server`
+
+The shared frontend currently expects these `shellConfig` fields:
+
+- `routes.rootHref`
+- `routes.homeHref`
+- `routes.termsHref`
+- `routes.privacyHref`
+- `assets.logoSrc`
+- `assets.iconSrc`
+- `manifest.categories`
+
+The shared auth sign-in illustrations are bundled inside this package, so consuming apps do not need to add the auth artwork files to their own `public/` folders.
+
+The shared frontend also expects:
+
+- `publicConfig.app.welcomeText`
+
+The package hard-codes these shared route constants and does not read them from the consuming app config:
+
+- `/auth`
+- `/auth/signin`
+- `/auth/error`
+- `/admin`
+- `/settings`
 
 ## Source Layout
 

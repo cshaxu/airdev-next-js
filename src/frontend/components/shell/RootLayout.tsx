@@ -1,11 +1,12 @@
 import { publicConfig } from '@/config/public';
-import { Toaster } from '@/package/frontend/components/ui/Toaster';
-import ErrorBoundary from '@/package/frontend/components/ErrorBoundary';
-import ReactQueryProvider from '@/package/frontend/components/ReactQueryProvider';
-import ThemeProvider from '@/package/frontend/components/theme/ThemeProvider';
-import '@/package/frontend/styles/globals.css';
-import { ReactNodeProps } from '@/package/frontend/types/props';
-import { pageTitle } from '@/package/frontend/utils/page';
+import { shellConfig } from '@/config/shell';
+import { Toaster } from '@/frontend/components/ui/Toaster';
+import ErrorBoundary from '@/frontend/components/ErrorBoundary';
+import ReactQueryProvider from '@/frontend/components/ReactQueryProvider';
+import ThemeProvider from '@/frontend/components/theme/ThemeProvider';
+import '@/frontend/styles/globals.css';
+import { ReactNodeProps } from '@/frontend/types/props';
+import { pageTitle } from '@/frontend/utils/page';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import localFont from 'next/font/local';
@@ -31,20 +32,23 @@ export function generateRootLayoutMetadata() {
       siteName: publicConfig.app.name,
       title: pageTitle(),
       description: publicConfig.app.description,
-      images: [{ url: '/logo.png', alt: publicConfig.app.name }],
+      images: [{ url: shellConfig.assets.logoSrc, alt: publicConfig.app.name }],
     },
     twitter: {
       card: 'summary',
       title: pageTitle(),
       description: publicConfig.app.description,
-      images: ['/logo.png'],
+      images: [shellConfig.assets.logoSrc],
     },
-    icons: { icon: '/logo.png', apple: '/logo.png' },
+    icons: {
+      icon: shellConfig.assets.logoSrc,
+      apple: shellConfig.assets.logoSrc,
+    },
   };
 }
 
 const frutiger = localFont({
-  src: '../../fonts/Frutiger55Roman.woff2',
+  src: '../../assets/Frutiger55Roman.woff2',
   display: 'swap',
 });
 

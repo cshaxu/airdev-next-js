@@ -1,14 +1,18 @@
 import { backendFunctionConfig } from '@/config/function/backend';
 import { commonFunctionConfig } from '@/config/function/common';
 import { privateConfig } from '@/config/private';
-import { HEADER_CURRENT_USER_ID_KEY, publicConfig } from '@/config/public';
-import { buildContextUserFromPackageUser } from '@/package/backend/utils/user';
+import {
+  HEADER_COOKIE_KEY,
+  HEADER_CURRENT_USER_ID_KEY,
+} from '@/common/constant';
+import { publicConfig } from '@/config/public';
+import { buildContextUserFromPackageUser } from '@/backend/utils/user';
 import {
   DispatcherOptions,
   commonDispatcherConfig,
   commonHandlerConfig,
-} from '@/package/framework/callbacks';
-import { Context, ContextUser } from '@/package/framework/context';
+} from '@/framework/callbacks';
+import { Context, ContextUser } from '@/framework/context';
 import { DispatcherConfig, Executor, wait } from '@airent/api';
 import { HandlerConfig } from '@airent/api-next';
 import createHttpError from 'http-errors';
@@ -92,7 +96,7 @@ async function getNullableUserSafe(id: string): Promise<ContextUser | null> {
 
 function getCookieHeaderKey(headers: Headers, key: string): string | null {
   const cookierUserId =
-    (headers.get('cookie') ?? '')
+    (headers.get(HEADER_COOKIE_KEY) ?? '')
       .split(';')
       .map((s) => s.trim().split('='))
       .filter(([k, _v]) => k === key)

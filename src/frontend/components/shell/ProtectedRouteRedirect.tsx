@@ -1,7 +1,8 @@
 'use client';
 
-import { useNullableCurrentUser } from '@/package/frontend/hooks/data/user';
-import { useSetUser } from '@/package/frontend/stores/currentUserStore';
+import { shellConfig } from '@/config/shell';
+import { useNullableCurrentUser } from '@/frontend/hooks/data/user';
+import { useSetUser } from '@/frontend/stores/currentUserStore';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -16,7 +17,7 @@ export default function ProtectedRouteRedirect() {
     }
 
     setUser(undefined);
-    router.replace('/');
+    router.replace(shellConfig.routes.rootHref);
   }, [currentUser, isFetched, isFetching, router, setUser]);
 
   return null;

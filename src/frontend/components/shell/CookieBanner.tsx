@@ -1,5 +1,6 @@
 'use client';
 
+import { COOKIE_CONSENT_COOKIE_KEY } from '@/common/constant';
 import { useEffect, useState } from 'react';
 
 export default function CookieBanner() {
@@ -13,12 +14,13 @@ export default function CookieBanner() {
 
   const addCookie = () => {
     document.cookie =
-      'cookie_consent=true; path=/; max-age=' + 60 * 60 * 24 * 365;
+      `${COOKIE_CONSENT_COOKIE_KEY}=true; path=/; max-age=` +
+      60 * 60 * 24 * 365;
     setShowCookieBanner(false);
   };
 
   useEffect(() => {
-    const accepted = getCookie('cookie_consent');
+    const accepted = getCookie(COOKIE_CONSENT_COOKIE_KEY);
     if (!accepted) {
       setShowCookieBanner(true);
     }

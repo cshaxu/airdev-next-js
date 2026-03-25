@@ -1,6 +1,6 @@
 'use client';
 
-import { ResponsiveBreadcrumb } from '@/package/frontend/components/ui/ResponsiveBreadcrumb';
+import { ResponsiveBreadcrumb } from '@/frontend/components/ui/ResponsiveBreadcrumb';
 import TranslateButton from './TranslateButton';
 
 export type HeaderBarItem = {

@@ -1,8 +1,8 @@
 'use client';
 
 import { clientComponentConfig } from '@/config/component/client';
-import DeleteDialog from '@/package/frontend/components/shell/DeleteDialog';
-import HeaderBar from '@/package/frontend/components/shell/HeaderBar';
+import DeleteDialog from '@/frontend/components/shell/DeleteDialog';
+import HeaderBar from '@/frontend/components/shell/HeaderBar';
 import EditUserProfileTile from './EditUserProfileTile';
 import { useUserProfileSettingsController } from './useUserProfileSettingsController';
 

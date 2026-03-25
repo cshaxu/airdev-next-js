@@ -1,4 +1,4 @@
-import { publicConfig } from '@/config/public';
+import { AUTH_SIGNIN_HREF, HEADER_URL_KEY } from '@/common/constant';
 import { QueryClient } from '@tanstack/react-query';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -10,11 +10,11 @@ export async function initializePermission(queryClient: QueryClient) {
   );
 
   const headersList = await headers();
-  const pathname = headersList.get('x-url') || '';
+  const pathname = headersList.get(HEADER_URL_KEY) || '';
 
   if (!currentUser?.id) {
     return redirect(
-      `${publicConfig.nextauth.signIn}?next=${encodeURIComponent(pathname)}`
+      `${AUTH_SIGNIN_HREF}?next=${encodeURIComponent(pathname)}`
     );
   }
 

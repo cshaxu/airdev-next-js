@@ -1,12 +1,17 @@
 'use client';
 
 import { clientFunctionConfig } from '@/config/function/client';
-import { Button } from '@/package/frontend/components/ui/Button';
-import { Input } from '@/package/frontend/components/ui/Input';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@/frontend/components/ui/Avatar';
+import { Button } from '@/frontend/components/ui/Button';
+import { Input } from '@/frontend/components/ui/Input';
 import {
   useBecameUser,
   useSetBecameUser,
-} from '@/package/frontend/stores/becameUserStore';
+} from '@/frontend/stores/becameUserStore';
 import { Drama, Smile, User, UserKey } from 'lucide-react';
 import { useState } from 'react';
 
@@ -73,19 +78,15 @@ export default function UserSearch() {
     <div className="space-y-6">
       {became && (
         <div className="flex items-center gap-3 rounded-lg border p-4">
-          <div className="size-10 overflow-hidden rounded-full">
+          <Avatar className="size-10">
             {became.imageUrl ? (
-              <img
-                src={became.imageUrl}
-                alt={became.name}
-                className="size-full object-cover"
-              />
+              <AvatarImage src={became.imageUrl} alt={became.name} />
             ) : (
-              <div className="bg-primary text-primary-foreground flex size-full items-center justify-center text-sm font-bold">
+              <AvatarFallback className="bg-primary text-primary-foreground text-sm font-bold">
                 {became.name.charAt(0)?.toUpperCase() ?? '?'}
-              </div>
+              </AvatarFallback>
             )}
-          </div>
+          </Avatar>
           <div className="flex-1">
             <p className="text-sm font-medium">
               Impersonating: {became.name ?? became.id}
@@ -121,19 +122,15 @@ export default function UserSearch() {
               key={user.id}
               className="flex items-center gap-3 rounded-lg border p-3"
             >
-              <div className="size-9 overflow-hidden rounded-full">
+              <Avatar className="size-9">
                 {user.imageUrl ? (
-                  <img
-                    src={user.imageUrl}
-                    alt={user.name}
-                    className="size-full object-cover"
-                  />
+                  <AvatarImage src={user.imageUrl} alt={user.name} />
                 ) : (
-                  <div className="bg-muted flex size-full items-center justify-center text-xs font-bold">
+                  <AvatarFallback className="text-xs font-bold">
                     {user.name.charAt(0).toUpperCase() || '?'}
-                  </div>
+                  </AvatarFallback>
                 )}
-              </div>
+              </Avatar>
               <div className="flex-1">
                 <p className="text-sm font-medium">{user.name ?? '-'}</p>
                 <p className="text-muted-foreground text-xs">{user.id}</p>

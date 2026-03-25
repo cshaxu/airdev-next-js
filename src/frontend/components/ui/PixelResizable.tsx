@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/package/frontend/utils/cn';
+import { cn } from '@/frontend/utils/cn';
 import * as React from 'react';
 
 interface PixelResizablePanelProps {

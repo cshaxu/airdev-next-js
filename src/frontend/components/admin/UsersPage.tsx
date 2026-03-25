@@ -1,4 +1,4 @@
-import { withError } from '@/package/frontend/utils/page';
+import { withError } from '@/frontend/utils/page';
 import UserSearch from './UserSearch';
 
 function Page() {

@@ -1,6 +1,6 @@
 import { privateConfig } from '@/config/private';
 import { publicConfig } from '@/config/public';
-import { Context } from '@/package/framework/context';
+import { Context } from '@/framework/context';
 import { CommonResponse, buildInvalidErrorMessage, logInfo } from '@airent/api';
 import { Awaitable, sequential } from 'airent';
 import createHttpError from 'http-errors';

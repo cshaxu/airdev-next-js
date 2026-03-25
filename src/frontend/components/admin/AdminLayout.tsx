@@ -1,6 +1,7 @@
-import { getRealCurrentUser } from '@/package/backend/lib/framework';
-import { initializePermission } from '@/package/frontend/initializePermission';
-import { ReactNodeProps } from '@/package/frontend/types/props';
+import { shellConfig } from '@/config/shell';
+import { getRealCurrentUser } from '@/backend/lib/framework';
+import { initializePermission } from '@/frontend/initializePermission';
+import { ReactNodeProps } from '@/frontend/types/props';
 import { QueryClient } from '@tanstack/react-query';
 import { redirect } from 'next/navigation';
 import AdminNav from './AdminNav';
@@ -10,7 +11,7 @@ export default async function AdminLayout({ children }: ReactNodeProps) {
   await initializePermission(queryClient);
   const realCurrentUser = await getRealCurrentUser();
   if (!realCurrentUser?.isAdmin) {
-    return redirect('/');
+    return redirect(shellConfig.routes.rootHref);
   }
 
   return (

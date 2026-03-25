@@ -1,4 +1,4 @@
-import HeaderBar from '@/package/frontend/components/shell/HeaderBar';
+import HeaderBar from '@/frontend/components/shell/HeaderBar';
 
 export default function SettingsLoading() {
   return (

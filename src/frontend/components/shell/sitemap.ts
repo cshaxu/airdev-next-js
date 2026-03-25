@@ -1,4 +1,5 @@
 import { publicConfig } from '@/config/public';
+import { shellConfig } from '@/config/shell';
 import { MetadataRoute } from 'next';
 
 export function generateRootSitemap(): MetadataRoute.Sitemap {
@@ -12,13 +13,19 @@ export function generateRootSitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${publicConfig.service.baseUrl}/privacy`,
+      url: new URL(
+        shellConfig.routes.privacyHref,
+        publicConfig.service.baseUrl
+      ).toString(),
       lastModified,
       changeFrequency: 'yearly',
       priority: 0.3,
     },
     {
-      url: `${publicConfig.service.baseUrl}/terms`,
+      url: new URL(
+        shellConfig.routes.termsHref,
+        publicConfig.service.baseUrl
+      ).toString(),
       lastModified,
       changeFrequency: 'yearly',
       priority: 0.3,

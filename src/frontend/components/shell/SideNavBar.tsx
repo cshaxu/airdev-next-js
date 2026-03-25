@@ -2,9 +2,10 @@
 
 import { clientComponentConfig } from '@/config/component/client';
 import { publicConfig } from '@/config/public';
-import { buttonVariants } from '@/package/frontend/components/ui/Button';
-import { PixelResizablePanel } from '@/package/frontend/components/ui/PixelResizable';
-import { cn } from '@/package/frontend/utils/cn';
+import { shellConfig } from '@/config/shell';
+import { buttonVariants } from '@/frontend/components/ui/Button';
+import { PixelResizablePanel } from '@/frontend/components/ui/PixelResizable';
+import { cn } from '@/frontend/utils/cn';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -57,22 +58,15 @@ export default function SideNavBar() {
     navItems: NavItem[];
   };
 
-  const shouldCollapse = Boolean(
-    pathname.match(adminRegex) // || pathname.match(adminRegex)
-  );
+  const shouldCollapse = Boolean(pathname.match(adminRegex));
   const [isCollapsed, setIsCollapsed] = useState(shouldCollapse);
 
-  // 监听路由变化，更新状态
+  // Keep the collapsed state in sync when routing into or out of admin pages.
   useEffect(() => {
-    const wasCollapsePage = Boolean(
-      lastPathRef.current.match(adminRegex)
-      // || lastPathRef.current.match(adminRegex)
-    );
-    const isCollapsePage = Boolean(
-      pathname.match(adminRegex) // || pathname.match(adminRegex)
-    );
+    const wasCollapsePage = Boolean(lastPathRef.current.match(adminRegex));
+    const isCollapsePage = Boolean(pathname.match(adminRegex));
 
-    // 只有在进入或离开最小化页面时才调整状态
+    // Only adjust the state when entering or leaving a collapsed page.
     if (wasCollapsePage !== isCollapsePage) {
       setIsCollapsed(isCollapsePage);
     }
@@ -97,7 +91,7 @@ export default function SideNavBar() {
           )}
         >
           <Image
-            src="/logo.png"
+            src={shellConfig.assets.logoSrc}
             alt="Logo"
             width={40}
             height={40}

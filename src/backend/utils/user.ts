@@ -1,5 +1,5 @@
-import { PackageUser } from '@/package/backend/types/data';
-import { ContextUser } from '@/package/framework/context';
+import { PackageUser } from '@/backend/types/data';
+import { ContextUser } from '@/framework/context';
 import { pick } from 'lodash-es';
 import { AdapterUser } from 'next-auth/adapters';
 

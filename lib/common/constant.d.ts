@@ -1,0 +1,14 @@
+export declare const MOBILE_FULLSCREEN_DATASET_KEY = "mobileFullscreen";
+export declare const ADMIN_HREF = "/admin";
+export declare const SETTINGS_HREF = "/settings";
+export declare const AUTH_HREF = "/auth";
+export declare const AUTH_SIGNIN_HREF = "/auth/signin";
+export declare const AUTH_ERROR_HREF = "/auth/error";
+export declare const HEADER_AUTHORIZATION_KEY = "authorization";
+export declare const HEADER_COOKIE_KEY = "cookie";
+export declare const HEADER_CURRENT_USER_ID_KEY = "X-CURRENT-USER-ID";
+export declare const HEADER_INTERNAL_SECRET_KEY = "X-INTERNAL-SECRET";
+export declare const HEADER_REFERER_KEY = "referer";
+export declare const HEADER_URL_KEY = "x-url";
+export declare const HEADER_USER_AGENT_KEY = "user-agent";
+export declare const COOKIE_CONSENT_COOKIE_KEY = "cookie_consent";

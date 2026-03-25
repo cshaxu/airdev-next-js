@@ -1,5 +1,5 @@
-import { HEADER_CURRENT_USER_ID_KEY } from '@/config/public';
-import { BecomeBody } from '@/package/common/types/context';
+import { HEADER_CURRENT_USER_ID_KEY } from '@/common/constant';
+import { BecomeBody } from '@/common/types/context';
 import { CommonResponse } from '@airent/api';
 import { NextRequest, NextResponse } from 'next/server';
 

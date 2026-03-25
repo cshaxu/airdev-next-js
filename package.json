@@ -13,13 +13,26 @@
   },
   "sideEffects": [
     "./lib/frontend/styles/*.css",
-    "./lib/frontend/fonts/*"
+    "./lib/frontend/fonts/*",
+    "./lib/frontend/assets/*"
   ],
   "exports": {
-    "./frontend/*": "./lib/frontend/*",
-    "./backend/*": "./lib/backend/*",
-    "./common/*": "./lib/common/*",
-    "./framework/*": "./lib/framework/*"
+    "./frontend/*": {
+      "types": "./lib/frontend/*.d.ts",
+      "default": "./lib/frontend/*.js"
+    },
+    "./backend/*": {
+      "types": "./lib/backend/*.d.ts",
+      "default": "./lib/backend/*.js"
+    },
+    "./common/*": {
+      "types": "./lib/common/*.d.ts",
+      "default": "./lib/common/*.js"
+    },
+    "./framework/*": {
+      "types": "./lib/framework/*.d.ts",
+      "default": "./lib/framework/*.js"
+    }
   },
   "peerDependencies": {
     "@airent/api": "github:cshaxu/airent-api-js#ffd93b193d2a846fba2ff4bfb09d569d9871bb86",

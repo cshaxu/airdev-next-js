@@ -1,5 +1,5 @@
-import { currentUserServerQueryOptions } from '@/package/frontend/hooks/data/user-server';
-import { pageTitle, withError } from '@/package/frontend/utils/page';
+import { currentUserServerQueryOptions } from '@/frontend/hooks/data/user-server';
+import { pageTitle, withError } from '@/frontend/utils/page';
 import { NextPageProps } from '@airent/api-next';
 import { QueryClient } from '@tanstack/react-query';
 import { Metadata } from 'next';

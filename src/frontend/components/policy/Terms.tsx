@@ -1,6 +1,7 @@
 import { publicConfig } from '@/config/public';
-import Header from '@/package/frontend/components/ui/Header';
-import { pageTitle } from '@/package/frontend/utils/page';
+import { shellConfig } from '@/config/shell';
+import Header from '@/frontend/components/ui/Header';
+import { pageTitle } from '@/frontend/utils/page';
 import Link from 'next/link';
 
 export const generateTermsMetadata = () => ({
@@ -13,17 +14,17 @@ export default function Terms() {
   return (
     <>
       <Header title="Terms of Service">
-        <Link href="/" />
+        <Link href={shellConfig.routes.rootHref} />
       </Header>
 
       <section className="mb-6 flex flex-col gap-y-3">
-        <p>Last Updated: February 26, 2026</p>
+        <p>Last Updated: March 25, 2026</p>
         <p>
-          Please read these terms of service (&apos;Agreement&apos; or
-          &apos;Terms of Use&apos;) carefully before using the services offered
-          by {app.owner} (&apos;Company&apos;). This agreement sets forth the
+          Please read these terms of service (“Agreement” or “Terms of Use”)
+          carefully before using the services offered by {app.owner}
+          (“Company”). This agreement sets forth the
           legally binding terms and conditions for your and your business or
-          other legal entity’s (&apos;you&apos;) use of the various websites
+          other legal entity’s (“you”) use of the various websites
           owned and operated by Company, including, without limitation, the{' '}
           <a
             href={publicConfig.service.baseUrl}
@@ -31,9 +32,9 @@ export default function Terms() {
           >
             {app.name}
           </a>{' '}
-          website and domain name (&apos;Sites&apos;), and any other features,
+          website and domain name (“Sites”), and any other features,
           content, or applications offered from time to time in connection
-          therewith (collectively, the &apos;Service&apos;). By using the sites
+          therewith (collectively, the “Service”). By using the sites
           or service in any manner, including but not limited to visiting or
           browsing the sites, you agree to be bound by this agreement.
         </p>
@@ -77,14 +78,14 @@ export default function Terms() {
         </p>
         <h2 className="font-bold">Privacy</h2>
         <p>
-          Company&apos;s current privacy policy is located at{' '}
+          Company’s current privacy policy is located at{' '}
           <a
-            href={`${publicConfig.service.baseUrl}/privacy`}
+            href={`${publicConfig.service.baseUrl}${shellConfig.routes.privacyHref}`}
             className="text-blue-600 underline hover:text-blue-800"
           >
-            {`${publicConfig.service.baseUrl}/privacy`}
+            {`${publicConfig.service.baseUrl}${shellConfig.routes.privacyHref}`}
           </a>{' '}
-          (the &apos;Privacy Policy&apos;) and is incorporated into these Terms
+          (the “Privacy Policy”) and is incorporated into these Terms
           of Use by this reference. For inquiries in regard to the Privacy
           Policy, or to report a privacy-related problem, please contact{' '}
           <a
@@ -107,12 +108,12 @@ export default function Terms() {
           account in its sole discretion. You are solely responsible for
           activity that occurs on your account and shall be responsible for
           maintaining the confidentiality of your Company password. You shall
-          never use another&apos;s account without such other user&apos;s
+          never use another’s account without such other user’s
           express permission. You will immediately notify Company in writing of
           any unauthorized use of your account, or other account related
           security breach of which you are aware. Company shall have the right
-          to use Customer&apos;s name in a factual manner for marketing or
-          promotional purposes on Company&apos;s website and in other
+          to use Customer’s name in a factual manner for marketing or
+          promotional purposes on Company’s website and in other
           communication with existing or potential customers. To refuse Company
           this right, Customer must email Company (at the email address provided
           in the Service) stating that Customer does not wish to grant Company
@@ -125,29 +126,29 @@ export default function Terms() {
         <p>
           Customer shall have the right to grant users, including its employees,
           investors, vendors, advisors and agents, access to its account for use
-          of the Services in accordance with this Agreement (&apos;Authorized
-          Users&apos;) and designate which Authorized Users shall have
+          of the Services in accordance with this Agreement (“Authorized
+          Users”) and designate which Authorized Users shall have
           administrative privileges. Customer is solely responsible for ensuring
           Authorized Users comply with the Agreement. Customer shall be
-          responsible for all activities occurring under Customer&apos;s
+          responsible for all activities occurring under Customer’s
           account, including all activities of its Authorized Users, and for
           obtaining and maintaining any equipment and ancillary services needed
           to connect to, access or otherwise use the Services, including,
           without limitation, modems, hardware, servers, software, operating
           systems, networking, web servers and the like (collectively,
-          &apos;Equipment&apos;). Customer shall also be responsible for
+          “Equipment”). Customer shall also be responsible for
           maintaining the security of the Equipment, Customer account, passwords
           (including but not limited to administrative and Authorized User
           passwords) and files, and for all uses of Customer account or the
-          Equipment with or without Customer&apos;s knowledge or consent.
+          Equipment with or without Customer’s knowledge or consent.
           Company may invite Customer to try certain services at no charge for a
           free trial or assessment or if such services are not widely available
-          to customers (collectively, &apos;Evaluation Services&apos;).
+          to customers (collectively, “Evaluation Services”).
           Evaluation Services will be identified as alpha, beta, trial, early
           access, limited release, pilot, evaluation, or similar. Evaluation
-          Services are for Company&apos;s internal analytical purposes only and
-          not for production use, are not considered &apos;Services&apos; under
-          this Agreement, are not supported, are provided &apos;as is&apos;
+          Services are for Company’s internal analytical purposes only and
+          not for production use, are not considered “Services” under
+          this Agreement, are not supported, are provided “as is”
           without warranty of any kind, and may be subject to additional terms.
           Company may discontinue Evaluation Services at any time in its sole
           discretion and may never make them generally available. Company will
@@ -181,13 +182,13 @@ export default function Terms() {
         </h2>
         <p>
           Through the service, you may direct Company to retrieve certain
-          information maintained online by third-party financial institutions or
-          providers with which you have a customer relationship, maintain
-          accounts or engage in financial transactions (&ldquo;account
-          information&rdquo;). You agree to provide your username, password, pin
+          information maintained online by third-party services or providers
+          with which you have a customer relationship, maintain accounts or
+          engage in transactions (“account
+          information”). You agree to provide your username, password, pin
           and other log-in information and credentials necessary to access your
-          account with such institutions or providers (&apos;access
-          information&apos;), and you hereby grant company permission to use the
+          account with such institutions or providers (“access
+          information”), and you hereby grant company permission to use the
           access information and account information for the purposes
           contemplated by this agreement. By using the service, you expressly
           authorize Company to access, store and use your account information
@@ -206,7 +207,7 @@ export default function Terms() {
           store and use your account information with the full power and
           authority to do and perform each thing necessary in connection with
           such activities, as you could do in person solely in connection with
-          company&apos;s provision of the service. You acknowledge and agree
+          company’s provision of the service. You acknowledge and agree
           that when Company accesses and retrieves account information from
           third party sites, Company is acting as your agent, and not as the
           agent of or on behalf of the third party. You acknowledge and agree
@@ -239,12 +240,12 @@ export default function Terms() {
           </li>
           <li>
             is unlawful, threatening, abusive, harassing, defamatory, libelous,
-            deceptive, fraudulent, invasive of another&apos;s privacy, tortious,
+            deceptive, fraudulent, invasive of another’s privacy, tortious,
             obscene, offensive, or profane;
           </li>
           <li>
             constitutes unauthorized or unsolicited advertising, junk or bulk
-            e-mail (&apos;spamming&apos;);
+            e-mail (“spamming”);
           </li>
           <li>
             involves commercial activities and/or sales without Company’s prior
@@ -314,7 +315,7 @@ export default function Terms() {
           portion of any Content in any form. Copying or storing of any Content
           for other than for your internal business use is expressly prohibited
           without prior written permission from Company, or from the copyright
-          holder identified in such Content&apos;s copyright notice.
+          holder identified in such Content’s copyright notice.
         </p>
         <h2 className="font-bold">Confidentiality and Feedback</h2>
         <p>
@@ -393,8 +394,8 @@ export default function Terms() {
           or any other person takes or fails to take based on any content or
           otherwise as a result of your use of the service. Your use of or
           reliance on any content is at your own risk. The service (including,
-          without limitation, any content) is provided &apos;As is&apos; and
-          &apos;As &apos;As available&apos; and is without warranty of any kind,
+          without limitation, any content) is provided “As is” and
+          “As available” and is without warranty of any kind,
           express or including, but not limited to, the implied warranties of
           title, non-infringement, merchantability and fitness for a particular
           purpose, and any warranties implied by any course of performance or
@@ -429,7 +430,7 @@ export default function Terms() {
           You shall defend, indemnify, and hold harmless Company, its affiliates
           and each of its, and its affiliates employees, contractors, directors,
           suppliers and representatives from all liabilities, claims, and
-          expenses, including reasonable attorneys&apos; fees, that arise from
+          expenses, including reasonable attorneys’ fees, that arise from
           or relate to (i) your use or misuse of, or access to, the Sites,
           Service, Content, or otherwise from any content that you post to the
           Sites, (ii) your violation of the Terms of Use, or (iii) infringement
@@ -482,13 +483,13 @@ export default function Terms() {
           this Agreement shall be finally settled by arbitration in San
           Francisco County, California, using the English language in accordance
           with the Arbitration Rules and Procedures of Judicial Arbitration and
-          Mediation Services, Inc. (&apos;JAMS&apos;) then in effect, by one
+          Mediation Services, Inc. (“JAMS”) then in effect, by one
           commercial arbitrator with substantial experience in resolving
           intellectual property and commercial contract disputes, who shall be
           selected from the appropriate list of JAMS arbitrators in accordance
           with the Arbitration Rules and Procedures of JAMS. The prevailing
           party in the arbitration shall be entitled to receive reimbursement of
-          its reasonable expenses (including reasonable attorneys&apos; fees,
+          its reasonable expenses (including reasonable attorneys’ fees,
           expert witness fees and all other expenses) incurred in connection
           therewith. Judgment upon the award so rendered may be entered in a
           court having jurisdiction or application may be made to such court for
@@ -561,7 +562,7 @@ export default function Terms() {
         <h2 className="font-bold">Data Retention</h2>
         <p>
           Even after you have stopped using our software, all information and
-          files you&apos;ve input and uploaded on {app.name} will be kept for at
+          files you’ve input and uploaded on {app.name} will be kept for at
           least one year. Please reach out to us at{' '}
           <a
             href={`mailto:${app.email}`}
@@ -594,16 +595,16 @@ export default function Terms() {
           hereunder where such failure results from any cause beyond Company’s
           reasonable control, including, without limitation, mechanical,
           electronic or communications failure or degradation (including
-          &apos;line-noise&apos; interference). The Terms of Use are personal to
+          “line-noise” interference). The Terms of Use are personal to
           you, and you, and are not assignable, transferable or sub-licensable
-          by you except with Company&apos;s prior written consent. Company may
+          by you except with Company’s prior written consent. Company may
           assign, transfer or delegate any of its rights and obligations
           hereunder without consent. No agency, partnership, joint venture, or
           employment relationship is created as a result of the Terms of Use and
           neither party has any authority of any kind to bind the other in any
           respect. In any action or proceeding to enforce rights under the Terms
           of Use, the prevailing party will be entitled to recover costs and
-          attorneys&apos; fees. All notices under the Terms of Use will be in
+          attorneys’ fees. All notices under the Terms of Use will be in
           writing and will be deemed to have been duly given when received, if
           personally delivered or sent by certified or registered mail, return
           receipt requested; when receipt is electronically confirmed, if

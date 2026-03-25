@@ -1,5 +1,5 @@
 import { serverComponentConfig } from '@/config/component/server';
-import { withError } from '@/package/frontend/utils/page';
+import { withError } from '@/frontend/utils/page';
 
 async function Page() {
   const { AdminApiPage } = serverComponentConfig;

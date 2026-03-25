@@ -1,10 +1,13 @@
 import { CRON_SECRET, INTERNAL_SECRET } from '@/config/edge';
-import { commonFunctionConfig } from '@/config/function/common';
 import {
   HEADER_AUTHORIZATION_KEY,
+  HEADER_COOKIE_KEY,
   HEADER_INTERNAL_SECRET_KEY,
-  publicConfig,
-} from '@/config/public';
+  HEADER_REFERER_KEY,
+  HEADER_USER_AGENT_KEY,
+} from '@/common/constant';
+import { commonFunctionConfig } from '@/config/function/common';
+import { publicConfig } from '@/config/public';
 import {
   CommonResponse,
   DispatcherConfig,
@@ -117,7 +120,7 @@ function errorHandler<DATA, PARSED, RESULT>(
   return { code: normalizedError.status, error: normalizedError };
 }
 
-const selectedHeaderKeys = ['referer', 'user-agent'];
+const selectedHeaderKeys = [HEADER_REFERER_KEY, HEADER_USER_AGENT_KEY];
 
 const selectHeaders = (headers?: Headers) =>
   headers === undefined
@@ -134,8 +137,8 @@ const selectHeaders = (headers?: Headers) =>
 
 const excludedHeaderKeys = [
   ...selectedHeaderKeys,
-  'cookie',
-  'X-INTERNAL-SECRET',
+  HEADER_COOKIE_KEY,
+  HEADER_INTERNAL_SECRET_KEY.toLowerCase(),
 ];
 
 const redactHeaders = (headers?: Headers) =>

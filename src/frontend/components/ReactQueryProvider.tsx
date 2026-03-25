@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNodeProps } from '@/package/frontend/types/props';
+import { ReactNodeProps } from '@/frontend/types/props';
 import {
   isServer,
   QueryClient,

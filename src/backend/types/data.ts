@@ -1,4 +1,4 @@
-import { ContextUser } from '@/package/framework/context';
+import { ContextUser } from '@/framework/context';
 
 export type PackageNextauthAccount = {
   id: string;

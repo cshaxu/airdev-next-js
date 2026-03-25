@@ -1,4 +1,4 @@
-import { cn } from '@/package/frontend/utils/cn';
+import { cn } from '@/frontend/utils/cn';
 
 type Props = { className?: string };
 

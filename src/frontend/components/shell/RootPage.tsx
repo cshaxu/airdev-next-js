@@ -1,8 +1,8 @@
 import { clientComponentConfig } from '@/config/component/client';
 import { publicConfig } from '@/config/public';
 import { shellConfig } from '@/config/shell';
-import { currentUserServerQueryOptions } from '@/package/frontend/hooks/data/user-server';
-import { pageTitle, withError } from '@/package/frontend/utils/page';
+import { currentUserServerQueryOptions } from '@/frontend/hooks/data/user-server';
+import { pageTitle, withError } from '@/frontend/utils/page';
 import { QueryClient } from '@tanstack/react-query';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';

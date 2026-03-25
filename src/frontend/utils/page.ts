@@ -1,6 +1,6 @@
 import { commonFunctionConfig } from '@/config/function/common';
 import { publicConfig } from '@/config/public';
-import { NextPageResponse } from '@/package/frontend/types/props';
+import { NextPageResponse } from '@/frontend/types/props';
 import { NextSearchParams } from '@airent/api-next';
 import { Awaitable } from 'airent';
 import { Metadata } from 'next';

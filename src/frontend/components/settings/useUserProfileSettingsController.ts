@@ -1,11 +1,12 @@
 'use client';
 
 import { clientFunctionConfig } from '@/config/function/client';
-import type { HeaderBarItem } from '@/package/frontend/components/shell/HeaderBar';
+import { shellConfig } from '@/config/shell';
+import type { HeaderBarItem } from '@/frontend/components/shell/HeaderBar';
 import {
   useRequiredCurrentUser,
   useUpdateCurrentUser,
-} from '@/package/frontend/hooks/data/user';
+} from '@/frontend/hooks/data/user';
 import { useQueryClient } from '@tanstack/react-query';
 import { Home } from 'lucide-react';
 import {
@@ -32,7 +33,7 @@ export function useUserProfileSettingsController() {
   const breadcrumbs: HeaderBarItem[] = [
     {
       label: '',
-      href: '/dashboard',
+      href: shellConfig.routes.homeHref,
       icon: createElement(Home, { className: 'size-4' }),
     },
     { label: 'Settings' },
@@ -58,7 +59,7 @@ export function useUserProfileSettingsController() {
         onSuccess: async () => {
           toast.success('Account deleted');
           await clientFunctionConfig.apiClient.auth.signOut({
-            callbackUrl: '/',
+            callbackUrl: shellConfig.routes.rootHref,
           });
         },
       }
