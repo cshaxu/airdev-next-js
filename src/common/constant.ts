@@ -1,10 +1,15 @@
 export const MOBILE_FULLSCREEN_DATASET_KEY = 'mobileFullscreen';
 
 export const ADMIN_HREF = '/admin';
-export const SETTINGS_HREF = '/settings';
+export const ADMIN_API_HREF = '/admin/api';
+export const ADMIN_USERS_HREF = '/admin/users';
 export const AUTH_HREF = '/auth';
 export const AUTH_SIGNIN_HREF = '/auth/signin';
 export const AUTH_ERROR_HREF = '/auth/error';
+export const PRIVACY_HREF = '/privacy';
+export const ROOT_HREF = '/';
+export const SETTINGS_HREF = '/settings';
+export const TERMS_HREF = '/terms';
 
 export const HEADER_AUTHORIZATION_KEY = 'authorization';
 export const HEADER_COOKIE_KEY = 'cookie';

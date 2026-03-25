@@ -1,23 +1,26 @@
 'use client';
 
+import { ADMIN_API_HREF, ADMIN_USERS_HREF } from '@/common/constant';
 import { shellConfig } from '@/config/shell';
 import HeaderBar from '@/frontend/components/shell/HeaderBar';
 import { cn } from '@/frontend/utils/cn';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-type AdminTab = {
-  href: string;
-  label: string;
-};
+type AdminTab = { href: string; label: string };
 
 export default function AdminNav() {
   const pathname = usePathname();
+  const adminTabs: AdminTab[] = [
+    { label: 'API', href: ADMIN_API_HREF },
+    { label: 'Users', href: ADMIN_USERS_HREF },
+    ...shellConfig.adminTabs,
+  ];
 
   return (
     <HeaderBar>
       <div className="flex gap-1">
-        {(shellConfig.adminTabs as AdminTab[]).map((tab: AdminTab) => (
+        {adminTabs.map((tab) => (
           <Link
             key={tab.href}
             href={tab.href}

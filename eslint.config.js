@@ -86,10 +86,7 @@ module.exports = [
           {
             name: 'console.log',
             description: 'Add comment on why we need it for fe',
-            includedFiles: [
-              'src/frontend/**/*.ts',
-              'src/frontend/**/*.tsx',
-            ],
+            includedFiles: ['src/frontend/**/*.ts', 'src/frontend/**/*.tsx'],
           },
           {
             name: 'console.log',

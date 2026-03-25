@@ -13,9 +13,7 @@ export async function initializePermission(queryClient: QueryClient) {
   const pathname = headersList.get(HEADER_URL_KEY) || '';
 
   if (!currentUser?.id) {
-    return redirect(
-      `${AUTH_SIGNIN_HREF}?next=${encodeURIComponent(pathname)}`
-    );
+    return redirect(`${AUTH_SIGNIN_HREF}?next=${encodeURIComponent(pathname)}`);
   }
 
   return { currentUser };

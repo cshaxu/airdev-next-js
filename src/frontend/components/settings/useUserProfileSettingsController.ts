@@ -1,5 +1,6 @@
 'use client';
 
+import { ROOT_HREF } from '@/common/constant';
 import { clientFunctionConfig } from '@/config/function/client';
 import { shellConfig } from '@/config/shell';
 import type { HeaderBarItem } from '@/frontend/components/shell/HeaderBar';
@@ -59,7 +60,7 @@ export function useUserProfileSettingsController() {
         onSuccess: async () => {
           toast.success('Account deleted');
           await clientFunctionConfig.apiClient.auth.signOut({
-            callbackUrl: shellConfig.routes.rootHref,
+            callbackUrl: ROOT_HREF,
           });
         },
       }

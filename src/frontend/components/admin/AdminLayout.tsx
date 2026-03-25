@@ -1,5 +1,5 @@
-import { shellConfig } from '@/config/shell';
 import { getRealCurrentUser } from '@/backend/lib/framework';
+import { ROOT_HREF } from '@/common/constant';
 import { initializePermission } from '@/frontend/initializePermission';
 import { ReactNodeProps } from '@/frontend/types/props';
 import { QueryClient } from '@tanstack/react-query';
@@ -11,7 +11,7 @@ export default async function AdminLayout({ children }: ReactNodeProps) {
   await initializePermission(queryClient);
   const realCurrentUser = await getRealCurrentUser();
   if (!realCurrentUser?.isAdmin) {
-    return redirect(shellConfig.routes.rootHref);
+    return redirect(ROOT_HREF);
   }
 
   return (

@@ -1,8 +1,8 @@
 'use client';
 
-import { publicConfig } from '@/config/public';
-import { shellConfig } from '@/config/shell';
+import { PRIVACY_HREF, ROOT_HREF, TERMS_HREF } from '@/common/constant';
 import { clientFunctionConfig } from '@/config/function/client';
+import { publicConfig } from '@/config/public';
 import GoogleLogo from '@/frontend/components/GoogleLogo';
 import { Button } from '@/frontend/components/ui/Button';
 import {
@@ -58,7 +58,7 @@ export default function SignInStart({ setEmail }: Props) {
         className="flex h-12 w-full items-center gap-2 rounded-[12px] px-4 sm:h-11 [&_svg]:size-5"
         onClick={() =>
           clientFunctionConfig.apiClient.auth.signIn('google', {
-            callbackUrl: next || shellConfig.routes.rootHref,
+            callbackUrl: next || ROOT_HREF,
           })
         }
       >
@@ -112,19 +112,11 @@ export default function SignInStart({ setEmail }: Props) {
           <small className="text-muted-foreground mx-auto block w-full max-w-sm text-center text-xs leading-5">
             Powered by {publicConfig.app.ownerShort}. By signing up, you agree
             to the{' '}
-            <Link
-              href={shellConfig.routes.termsHref}
-              prefetch={false}
-              className="underline"
-            >
+            <Link href={TERMS_HREF} prefetch={false} className="underline">
               Terms of Service
             </Link>{' '}
             and{' '}
-            <Link
-              href={shellConfig.routes.privacyHref}
-              prefetch={false}
-              className="underline"
-            >
+            <Link href={PRIVACY_HREF} prefetch={false} className="underline">
               Privacy Policy
             </Link>
             , including Cookie Use.

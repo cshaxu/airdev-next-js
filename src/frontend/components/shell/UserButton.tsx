@@ -1,8 +1,7 @@
 'use client';
 
-import { ADMIN_HREF, SETTINGS_HREF } from '@/common/constant';
+import { ADMIN_HREF, ROOT_HREF, SETTINGS_HREF } from '@/common/constant';
 import { clientFunctionConfig } from '@/config/function/client';
-import { shellConfig } from '@/config/shell';
 import {
   Avatar,
   AvatarFallback,
@@ -185,7 +184,7 @@ export default function UserButton(props: Props) {
 
   const handleSignOut = async () => {
     await clientFunctionConfig.apiClient.auth.signOut({
-      callbackUrl: shellConfig.routes.rootHref,
+      callbackUrl: ROOT_HREF,
     });
   };
 

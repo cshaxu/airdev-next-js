@@ -1,4 +1,4 @@
-import { ReactNodeProps } from "../../types/props";
+import { ReactNodeProps } from '../../types/props';
 export declare function generateProtectedLayoutMetadata(): {
     robots: {
         index: boolean;

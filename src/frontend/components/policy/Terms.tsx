@@ -1,5 +1,5 @@
+import { PRIVACY_HREF, ROOT_HREF } from '@/common/constant';
 import { publicConfig } from '@/config/public';
-import { shellConfig } from '@/config/shell';
 import Header from '@/frontend/components/ui/Header';
 import { pageTitle } from '@/frontend/utils/page';
 import Link from 'next/link';
@@ -14,7 +14,7 @@ export default function Terms() {
   return (
     <>
       <Header title="Terms of Service">
-        <Link href={shellConfig.routes.rootHref} />
+        <Link href={ROOT_HREF} />
       </Header>
 
       <section className="mb-6 flex flex-col gap-y-3">
@@ -22,21 +22,21 @@ export default function Terms() {
         <p>
           Please read these terms of service (“Agreement” or “Terms of Use”)
           carefully before using the services offered by {app.owner}
-          (“Company”). This agreement sets forth the
-          legally binding terms and conditions for your and your business or
-          other legal entity’s (“you”) use of the various websites
-          owned and operated by Company, including, without limitation, the{' '}
+          (“Company”). This agreement sets forth the legally binding terms and
+          conditions for your and your business or other legal entity’s (“you”)
+          use of the various websites owned and operated by Company, including,
+          without limitation, the{' '}
           <a
             href={publicConfig.service.baseUrl}
             className="text-blue-600 underline hover:text-blue-800"
           >
             {app.name}
           </a>{' '}
-          website and domain name (“Sites”), and any other features,
-          content, or applications offered from time to time in connection
-          therewith (collectively, the “Service”). By using the sites
-          or service in any manner, including but not limited to visiting or
-          browsing the sites, you agree to be bound by this agreement.
+          website and domain name (“Sites”), and any other features, content, or
+          applications offered from time to time in connection therewith
+          (collectively, the “Service”). By using the sites or service in any
+          manner, including but not limited to visiting or browsing the sites,
+          you agree to be bound by this agreement.
         </p>
         <p>
           This agreement applies to all users of the sites or service, including
@@ -80,14 +80,14 @@ export default function Terms() {
         <p>
           Company’s current privacy policy is located at{' '}
           <a
-            href={`${publicConfig.service.baseUrl}${shellConfig.routes.privacyHref}`}
+            href={`${publicConfig.service.baseUrl}${PRIVACY_HREF}`}
             className="text-blue-600 underline hover:text-blue-800"
           >
-            {`${publicConfig.service.baseUrl}${shellConfig.routes.privacyHref}`}
+            {`${publicConfig.service.baseUrl}${PRIVACY_HREF}`}
           </a>{' '}
-          (the “Privacy Policy”) and is incorporated into these Terms
-          of Use by this reference. For inquiries in regard to the Privacy
-          Policy, or to report a privacy-related problem, please contact{' '}
+          (the “Privacy Policy”) and is incorporated into these Terms of Use by
+          this reference. For inquiries in regard to the Privacy Policy, or to
+          report a privacy-related problem, please contact{' '}
           <a
             href={`mailto:${app.email}`}
             className="text-blue-600 underline hover:text-blue-800"
@@ -108,52 +108,51 @@ export default function Terms() {
           account in its sole discretion. You are solely responsible for
           activity that occurs on your account and shall be responsible for
           maintaining the confidentiality of your Company password. You shall
-          never use another’s account without such other user’s
-          express permission. You will immediately notify Company in writing of
-          any unauthorized use of your account, or other account related
-          security breach of which you are aware. Company shall have the right
-          to use Customer’s name in a factual manner for marketing or
-          promotional purposes on Company’s website and in other
-          communication with existing or potential customers. To refuse Company
-          this right, Customer must email Company (at the email address provided
-          in the Service) stating that Customer does not wish to grant Company
-          this right. If any provision of this Agreement is found to be
-          unenforceable or invalid, that provision will be limited or eliminated
-          to the minimum extent necessary so that this Agreement will otherwise
-          remain in effect and enforceable.
+          never use another’s account without such other user’s express
+          permission. You will immediately notify Company in writing of any
+          unauthorized use of your account, or other account related security
+          breach of which you are aware. Company shall have the right to use
+          Customer’s name in a factual manner for marketing or promotional
+          purposes on Company’s website and in other communication with existing
+          or potential customers. To refuse Company this right, Customer must
+          email Company (at the email address provided in the Service) stating
+          that Customer does not wish to grant Company this right. If any
+          provision of this Agreement is found to be unenforceable or invalid,
+          that provision will be limited or eliminated to the minimum extent
+          necessary so that this Agreement will otherwise remain in effect and
+          enforceable.
         </p>
         <h2 className="font-bold">Services</h2>
         <p>
           Customer shall have the right to grant users, including its employees,
           investors, vendors, advisors and agents, access to its account for use
-          of the Services in accordance with this Agreement (“Authorized
-          Users”) and designate which Authorized Users shall have
-          administrative privileges. Customer is solely responsible for ensuring
-          Authorized Users comply with the Agreement. Customer shall be
-          responsible for all activities occurring under Customer’s
-          account, including all activities of its Authorized Users, and for
-          obtaining and maintaining any equipment and ancillary services needed
-          to connect to, access or otherwise use the Services, including,
-          without limitation, modems, hardware, servers, software, operating
-          systems, networking, web servers and the like (collectively,
-          “Equipment”). Customer shall also be responsible for
-          maintaining the security of the Equipment, Customer account, passwords
-          (including but not limited to administrative and Authorized User
-          passwords) and files, and for all uses of Customer account or the
-          Equipment with or without Customer’s knowledge or consent.
-          Company may invite Customer to try certain services at no charge for a
-          free trial or assessment or if such services are not widely available
-          to customers (collectively, “Evaluation Services”).
+          of the Services in accordance with this Agreement (“Authorized Users”)
+          and designate which Authorized Users shall have administrative
+          privileges. Customer is solely responsible for ensuring Authorized
+          Users comply with the Agreement. Customer shall be responsible for all
+          activities occurring under Customer’s account, including all
+          activities of its Authorized Users, and for obtaining and maintaining
+          any equipment and ancillary services needed to connect to, access or
+          otherwise use the Services, including, without limitation, modems,
+          hardware, servers, software, operating systems, networking, web
+          servers and the like (collectively, “Equipment”). Customer shall also
+          be responsible for maintaining the security of the Equipment, Customer
+          account, passwords (including but not limited to administrative and
+          Authorized User passwords) and files, and for all uses of Customer
+          account or the Equipment with or without Customer’s knowledge or
+          consent. Company may invite Customer to try certain services at no
+          charge for a free trial or assessment or if such services are not
+          widely available to customers (collectively, “Evaluation Services”).
           Evaluation Services will be identified as alpha, beta, trial, early
           access, limited release, pilot, evaluation, or similar. Evaluation
-          Services are for Company’s internal analytical purposes only and
-          not for production use, are not considered “Services” under
-          this Agreement, are not supported, are provided “as is”
-          without warranty of any kind, and may be subject to additional terms.
-          Company may discontinue Evaluation Services at any time in its sole
-          discretion and may never make them generally available. Company will
-          have no liability for any harm or damage arising out of or in
-          connection with any Evaluation Services.
+          Services are for Company’s internal analytical purposes only and not
+          for production use, are not considered “Services” under this
+          Agreement, are not supported, are provided “as is” without warranty of
+          any kind, and may be subject to additional terms. Company may
+          discontinue Evaluation Services at any time in its sole discretion and
+          may never make them generally available. Company will have no
+          liability for any harm or damage arising out of or in connection with
+          any Evaluation Services.
         </p>
         <h2 className="font-bold">
           Consent to Receive Electronic Communications from Company
@@ -184,39 +183,38 @@ export default function Terms() {
           Through the service, you may direct Company to retrieve certain
           information maintained online by third-party services or providers
           with which you have a customer relationship, maintain accounts or
-          engage in transactions (“account
-          information”). You agree to provide your username, password, pin
-          and other log-in information and credentials necessary to access your
-          account with such institutions or providers (“access
-          information”), and you hereby grant company permission to use the
-          access information and account information for the purposes
-          contemplated by this agreement. By using the service, you expressly
-          authorize Company to access, store and use your account information
-          maintained by identified third parties, on your behalf as your agent.
-          You hereby authorize Company to store and use your access information
-          to accomplish the foregoing and to configure the service so that it is
-          compatible with the third party sites for which you submit account
-          information. This may include, without limitation, monitoring your
-          usage (including the location of relevant clicks and links) of such
-          third party sites (when accessed through the service) solely to
-          facilitate such compatibility and our contemplated access to your
-          relevant account information in connection with the service. For
+          engage in transactions (“account information”). You agree to provide
+          your username, password, pin and other log-in information and
+          credentials necessary to access your account with such institutions or
+          providers (“access information”), and you hereby grant company
+          permission to use the access information and account information for
+          the purposes contemplated by this agreement. By using the service, you
+          expressly authorize Company to access, store and use your account
+          information maintained by identified third parties, on your behalf as
+          your agent. You hereby authorize Company to store and use your access
+          information to accomplish the foregoing and to configure the service
+          so that it is compatible with the third party sites for which you
+          submit account information. This may include, without limitation,
+          monitoring your usage (including the location of relevant clicks and
+          links) of such third party sites (when accessed through the service)
+          solely to facilitate such compatibility and our contemplated access to
+          your relevant account information in connection with the service. For
           purposes of this agreement, you grant company a limited power of
           attorney, and appoint Company as your attorney-in-fact and agent, to
           access third party sites using access information, and to retrieve,
           store and use your account information with the full power and
           authority to do and perform each thing necessary in connection with
           such activities, as you could do in person solely in connection with
-          company’s provision of the service. You acknowledge and agree
-          that when Company accesses and retrieves account information from
-          third party sites, Company is acting as your agent, and not as the
-          agent of or on behalf of the third party. You acknowledge and agree
-          that the foregoing does not imply sponsorship or endorsement by any
-          third party services accessible through the service. You represent and
-          warrant that neither the foregoing (or anything else in this
-          agreement) nor your use of the services will violate any agreement or
-          terms to which you are subject, including without limitation, those
-          with respect to any third party site or service.
+          company’s provision of the service. You acknowledge and agree that
+          when Company accesses and retrieves account information from third
+          party sites, Company is acting as your agent, and not as the agent of
+          or on behalf of the third party. You acknowledge and agree that the
+          foregoing does not imply sponsorship or endorsement by any third party
+          services accessible through the service. You represent and warrant
+          that neither the foregoing (or anything else in this agreement) nor
+          your use of the services will violate any agreement or terms to which
+          you are subject, including without limitation, those with respect to
+          any third party site or service.
         </p>
         <h2 className="font-bold">Rules and Conduct</h2>
         <p>
@@ -394,47 +392,46 @@ export default function Terms() {
           or any other person takes or fails to take based on any content or
           otherwise as a result of your use of the service. Your use of or
           reliance on any content is at your own risk. The service (including,
-          without limitation, any content) is provided “As is” and
-          “As available” and is without warranty of any kind,
-          express or including, but not limited to, the implied warranties of
-          title, non-infringement, merchantability and fitness for a particular
-          purpose, and any warranties implied by any course of performance or
-          usage of trade, all of which are expressly disclaimed. Company, and
-          its directors, employees, agents, suppliers, partners and content
-          providers do not warrant that: (a) the service will be secure or
-          available at any particular time or location; (b) the use of the
-          service will be secure, timely, uninterrupted or error-free, or
-          operate in combination with any other hardware, software, system or
-          data; (b) any defects or errors will be corrected; (c) any content or
-          software available at or through the service is free of viruses or
-          other harmful components; or (d) the results of using the service will
-          meet your requirements or expectations. Your use of the service is
-          solely at your own risk. The services may be subject to limitations,
-          delays, and other problems inherent in the use of the internet and
-          electronic communications, and Company is not responsible for any
-          delays, delivery failures, or other damage resulting from such
-          problems. Some states do not allow limitations on how long an implied
-          warranty lasts, so the above limitations may not apply to you.
-          Electronic communications privacy act notice (18 usc 2701-2711):
-          company makes no guaranty of confidentiality or privacy of any
-          communication or information transmitted on the sites or any website
-          linked to the sites.Company will not be liable for the privacy of
-          email addresses, registration and identification information, disk
-          space, communications, confidential or trade-secret information, or
-          any other content stored on company’s equipment, transmitted over
-          networks accessed by the sites, or otherwise connected with your use
-          of the service.
+          without limitation, any content) is provided “As is” and “As
+          available” and is without warranty of any kind, express or including,
+          but not limited to, the implied warranties of title, non-infringement,
+          merchantability and fitness for a particular purpose, and any
+          warranties implied by any course of performance or usage of trade, all
+          of which are expressly disclaimed. Company, and its directors,
+          employees, agents, suppliers, partners and content providers do not
+          warrant that: (a) the service will be secure or available at any
+          particular time or location; (b) the use of the service will be
+          secure, timely, uninterrupted or error-free, or operate in combination
+          with any other hardware, software, system or data; (b) any defects or
+          errors will be corrected; (c) any content or software available at or
+          through the service is free of viruses or other harmful components; or
+          (d) the results of using the service will meet your requirements or
+          expectations. Your use of the service is solely at your own risk. The
+          services may be subject to limitations, delays, and other problems
+          inherent in the use of the internet and electronic communications, and
+          Company is not responsible for any delays, delivery failures, or other
+          damage resulting from such problems. Some states do not allow
+          limitations on how long an implied warranty lasts, so the above
+          limitations may not apply to you. Electronic communications privacy
+          act notice (18 usc 2701-2711): company makes no guaranty of
+          confidentiality or privacy of any communication or information
+          transmitted on the sites or any website linked to the sites.Company
+          will not be liable for the privacy of email addresses, registration
+          and identification information, disk space, communications,
+          confidential or trade-secret information, or any other content stored
+          on company’s equipment, transmitted over networks accessed by the
+          sites, or otherwise connected with your use of the service.
         </p>
         <h2 className="font-bold">Indemnification</h2>
         <p>
           You shall defend, indemnify, and hold harmless Company, its affiliates
           and each of its, and its affiliates employees, contractors, directors,
           suppliers and representatives from all liabilities, claims, and
-          expenses, including reasonable attorneys’ fees, that arise from
-          or relate to (i) your use or misuse of, or access to, the Sites,
-          Service, Content, or otherwise from any content that you post to the
-          Sites, (ii) your violation of the Terms of Use, or (iii) infringement
-          by you, or any third party using the your account, of any intellectual
+          expenses, including reasonable attorneys’ fees, that arise from or
+          relate to (i) your use or misuse of, or access to, the Sites, Service,
+          Content, or otherwise from any content that you post to the Sites,
+          (ii) your violation of the Terms of Use, or (iii) infringement by you,
+          or any third party using the your account, of any intellectual
           property or other right of any person or entity. Company reserves the
           right to assume the exclusive defense and control of any matter
           otherwise subject to indemnification by you, in which event you will
@@ -483,24 +480,24 @@ export default function Terms() {
           this Agreement shall be finally settled by arbitration in San
           Francisco County, California, using the English language in accordance
           with the Arbitration Rules and Procedures of Judicial Arbitration and
-          Mediation Services, Inc. (“JAMS”) then in effect, by one
-          commercial arbitrator with substantial experience in resolving
-          intellectual property and commercial contract disputes, who shall be
-          selected from the appropriate list of JAMS arbitrators in accordance
-          with the Arbitration Rules and Procedures of JAMS. The prevailing
-          party in the arbitration shall be entitled to receive reimbursement of
-          its reasonable expenses (including reasonable attorneys’ fees,
-          expert witness fees and all other expenses) incurred in connection
-          therewith. Judgment upon the award so rendered may be entered in a
-          court having jurisdiction or application may be made to such court for
-          judicial acceptance of any award and an order of enforcement, as the
-          case may be. Notwithstanding the foregoing, each party shall have the
-          right to institute an action in a court of proper jurisdiction for
-          injunctive or other equitable relief pending a final decision by the
-          arbitrator. For all purposes of this Agreement, the parties consent to
-          exclusive jurisdiction and venue in the United States Federal Courts
-          located in the Northern District of California. Use of the Service is
-          not authorized in any jurisdiction that does not give effect to all
+          Mediation Services, Inc. (“JAMS”) then in effect, by one commercial
+          arbitrator with substantial experience in resolving intellectual
+          property and commercial contract disputes, who shall be selected from
+          the appropriate list of JAMS arbitrators in accordance with the
+          Arbitration Rules and Procedures of JAMS. The prevailing party in the
+          arbitration shall be entitled to receive reimbursement of its
+          reasonable expenses (including reasonable attorneys’ fees, expert
+          witness fees and all other expenses) incurred in connection therewith.
+          Judgment upon the award so rendered may be entered in a court having
+          jurisdiction or application may be made to such court for judicial
+          acceptance of any award and an order of enforcement, as the case may
+          be. Notwithstanding the foregoing, each party shall have the right to
+          institute an action in a court of proper jurisdiction for injunctive
+          or other equitable relief pending a final decision by the arbitrator.
+          For all purposes of this Agreement, the parties consent to exclusive
+          jurisdiction and venue in the United States Federal Courts located in
+          the Northern District of California. Use of the Service is not
+          authorized in any jurisdiction that does not give effect to all
           provisions of the Terms of Use, including without limitation, this
           section.
         </p>
@@ -595,21 +592,21 @@ export default function Terms() {
           hereunder where such failure results from any cause beyond Company’s
           reasonable control, including, without limitation, mechanical,
           electronic or communications failure or degradation (including
-          “line-noise” interference). The Terms of Use are personal to
-          you, and you, and are not assignable, transferable or sub-licensable
-          by you except with Company’s prior written consent. Company may
-          assign, transfer or delegate any of its rights and obligations
-          hereunder without consent. No agency, partnership, joint venture, or
-          employment relationship is created as a result of the Terms of Use and
-          neither party has any authority of any kind to bind the other in any
-          respect. In any action or proceeding to enforce rights under the Terms
-          of Use, the prevailing party will be entitled to recover costs and
-          attorneys’ fees. All notices under the Terms of Use will be in
-          writing and will be deemed to have been duly given when received, if
-          personally delivered or sent by certified or registered mail, return
-          receipt requested; when receipt is electronically confirmed, if
-          transmitted by facsimile or e-mail; or the day after it is sent, if
-          sent for next day delivery by recognized overnight delivery service.
+          “line-noise” interference). The Terms of Use are personal to you, and
+          you, and are not assignable, transferable or sub-licensable by you
+          except with Company’s prior written consent. Company may assign,
+          transfer or delegate any of its rights and obligations hereunder
+          without consent. No agency, partnership, joint venture, or employment
+          relationship is created as a result of the Terms of Use and neither
+          party has any authority of any kind to bind the other in any respect.
+          In any action or proceeding to enforce rights under the Terms of Use,
+          the prevailing party will be entitled to recover costs and attorneys’
+          fees. All notices under the Terms of Use will be in writing and will
+          be deemed to have been duly given when received, if personally
+          delivered or sent by certified or registered mail, return receipt
+          requested; when receipt is electronically confirmed, if transmitted by
+          facsimile or e-mail; or the day after it is sent, if sent for next day
+          delivery by recognized overnight delivery service.
         </p>
         <h2 className="font-bold">Copyright and Trademark Notices</h2>
         <p>

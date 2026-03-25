@@ -1,8 +1,8 @@
-import CurrentUserProvider from "@/frontend/providers/CurrentUserProvider";
-import { ReactNodeProps } from "@/frontend/types/props";
-import BottomNavBar from "./BottomNavBar";
-import ProtectedRouteRedirect from "./ProtectedRouteRedirect";
-import SideNavBar from "./SideNavBar";
+import CurrentUserProvider from '@/frontend/providers/CurrentUserProvider';
+import { ReactNodeProps } from '@/frontend/types/props';
+import BottomNavBar from './BottomNavBar';
+import ProtectedRouteRedirect from './ProtectedRouteRedirect';
+import SideNavBar from './SideNavBar';
 
 export function generateProtectedLayoutMetadata() {
   return { robots: { index: false, follow: false, nocache: true } };

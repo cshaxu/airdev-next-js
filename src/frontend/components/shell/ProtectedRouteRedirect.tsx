@@ -1,6 +1,6 @@
 'use client';
 
-import { shellConfig } from '@/config/shell';
+import { ROOT_HREF } from '@/common/constant';
 import { useNullableCurrentUser } from '@/frontend/hooks/data/user';
 import { useSetUser } from '@/frontend/stores/currentUserStore';
 import { useRouter } from 'next/navigation';
@@ -17,7 +17,7 @@ export default function ProtectedRouteRedirect() {
     }
 
     setUser(undefined);
-    router.replace(shellConfig.routes.rootHref);
+    router.replace(ROOT_HREF);
   }, [currentUser, isFetched, isFetching, router, setUser]);
 
   return null;

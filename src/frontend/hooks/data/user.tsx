@@ -1,10 +1,7 @@
 'use client';
 
 import { clientFunctionConfig } from '@/config/function/client';
-import {
-  CurrentUser,
-  CurrentUserFieldRequest,
-} from '@/common/types/context';
+import { CurrentUser, CurrentUserFieldRequest } from '@/common/types/context';
 import {
   queryOptions,
   useMutation,

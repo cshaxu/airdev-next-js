@@ -1,5 +1,5 @@
+import { PRIVACY_HREF, TERMS_HREF } from '@/common/constant';
 import { publicConfig } from '@/config/public';
-import { shellConfig } from '@/config/shell';
 import { MetadataRoute } from 'next';
 
 export function generateRootSitemap(): MetadataRoute.Sitemap {
@@ -13,19 +13,13 @@ export function generateRootSitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: new URL(
-        shellConfig.routes.privacyHref,
-        publicConfig.service.baseUrl
-      ).toString(),
+      url: new URL(PRIVACY_HREF, publicConfig.service.baseUrl).toString(),
       lastModified,
       changeFrequency: 'yearly',
       priority: 0.3,
     },
     {
-      url: new URL(
-        shellConfig.routes.termsHref,
-        publicConfig.service.baseUrl
-      ).toString(),
+      url: new URL(TERMS_HREF, publicConfig.service.baseUrl).toString(),
       lastModified,
       changeFrequency: 'yearly',
       priority: 0.3,

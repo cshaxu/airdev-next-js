@@ -15,7 +15,9 @@
     "generate": "node ./scripts/generate.mjs",
     "lint": "eslint . --max-warnings=0",
     "build": "node ./scripts/build.mjs",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "format": "prettier --check --ignore-path .gitignore src",
+    "format:fix": "prettier --write --ignore-path .gitignore src"
   },
   "sideEffects": [
     "./lib/frontend/styles/*.css",
@@ -43,6 +45,7 @@
   "peerDependencies": {
     "@airent/api": "github:cshaxu/airent-api-js#ffd93b193d2a846fba2ff4bfb09d569d9871bb86",
     "@airent/api-next": "github:cshaxu/airent-api-next-js#c33e412c6df895e92d7d254bcc127035d208b4e5",
+    "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": ">=3",
     "@radix-ui/react-alert-dialog": ">=1",
     "@radix-ui/react-avatar": ">=1",
@@ -73,30 +76,31 @@
     "sonner": ">=2",
     "tailwind-merge": ">=3",
     "zod": ">=4",
-    "zustand": ">=5",
-    "@heroicons/react": "^2.2.0"
+    "zustand": ">=5"
   },
   "devDependencies": {
     "@airdev/eslint": "github:cshaxu/airdev-eslint-js#90a2e03cc2d3231fae3ee228a021c87dfcc4d1f7",
+    "@airent/api": "github:cshaxu/airent-api-js#ffd93b193d2a846fba2ff4bfb09d569d9871bb86",
+    "@airent/api-next": "github:cshaxu/airent-api-next-js#c33e412c6df895e92d7d254bcc127035d208b4e5",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.39.1",
+    "@heroicons/react": "^2.2.0",
+    "@types/http-errors": "^2.0.5",
+    "@types/lodash-es": "^4.17.8",
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.0.3",
     "@typescript-eslint/parser": "^8.57.1",
+    "airent": "github:cshaxu/airent-js#3ed460e82f66ceb038ab833116f1201830a7d161",
+    "crlf": "^1.1.1",
     "eslint": "^9.39.1",
     "eslint-config-next": "^16.2.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-unused-imports": "^4.4.1",
     "prettier": "^3.8.1",
-    "typescript": "^5.9.3",
-    "@airent/api": "github:cshaxu/airent-api-js#ffd93b193d2a846fba2ff4bfb09d569d9871bb86",
-    "@airent/api-next": "github:cshaxu/airent-api-next-js#c33e412c6df895e92d7d254bcc127035d208b4e5",
-    "airent": "github:cshaxu/airent-js#3ed460e82f66ceb038ab833116f1201830a7d161",
-    "@types/node": "^25.5.0",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.0.3",
-    "@heroicons/react": "^2.2.0",
-    "@types/http-errors": "^2.0.5",
-    "@types/lodash-es": "^4.17.8",
-    "crlf": "^1.1.1"
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "typescript": "^5.9.3"
   }
 }

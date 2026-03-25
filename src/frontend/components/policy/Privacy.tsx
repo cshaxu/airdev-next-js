@@ -1,5 +1,5 @@
+import { ROOT_HREF } from '@/common/constant';
 import { publicConfig } from '@/config/public';
-import { shellConfig } from '@/config/shell';
 import Header from '@/frontend/components/ui/Header';
 import { pageTitle } from '@/frontend/utils/page';
 import Link from 'next/link';
@@ -15,7 +15,7 @@ export default function Privacy() {
   return (
     <>
       <Header title="Privacy Policy">
-        <Link href={shellConfig.routes.rootHref} />
+        <Link href={ROOT_HREF} />
       </Header>
 
       <section className="mb-6 flex flex-col gap-y-3">

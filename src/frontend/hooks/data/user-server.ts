@@ -1,8 +1,5 @@
 import { serverFunctionConfig } from '@/config/function/server';
-import {
-  CurrentUser,
-  CurrentUserFieldRequest,
-} from '@/common/types/context';
+import { CurrentUser, CurrentUserFieldRequest } from '@/common/types/context';
 
 export const currentUserServerQueryOptions = {
   queryKey: ['currentUser'],

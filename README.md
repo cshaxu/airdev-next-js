@@ -21,10 +21,7 @@ Required host-side config modules currently include:
 
 The shared frontend currently expects these `shellConfig` fields:
 
-- `routes.rootHref`
 - `routes.homeHref`
-- `routes.termsHref`
-- `routes.privacyHref`
 - `assets.logoSrc`
 - `assets.iconSrc`
 - `manifest.categories`
@@ -37,11 +34,15 @@ The shared frontend also expects:
 
 The package hard-codes these shared route constants and does not read them from the consuming app config:
 
+- `/admin`
+- `/admin/api`
+- `/admin/users`
 - `/auth`
 - `/auth/signin`
 - `/auth/error`
-- `/admin`
+- `/privacy`
 - `/settings`
+- `/terms`
 
 The app-level Next entrypoint file `src/proxy.ts` can be a thin wrapper around the shared package module:
 
