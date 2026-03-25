@@ -1,12 +1,13 @@
-import { backendFunctionConfig } from '@/config/function/backend';
-import { commonFunctionConfig } from '@/config/function/common';
-import { privateConfig } from '@/config/private';
+import { mockContext } from '@/backend/utils/context';
+import { buildContextUserFromPackageUser } from '@/backend/utils/user';
 import {
   HEADER_COOKIE_KEY,
   HEADER_CURRENT_USER_ID_KEY,
 } from '@/common/constant';
+import { backendFunctionConfig } from '@/config/function/backend';
+import { commonFunctionConfig } from '@/config/function/common';
+import { privateConfig } from '@/config/private';
 import { publicConfig } from '@/config/public';
-import { buildContextUserFromPackageUser } from '@/backend/utils/user';
 import {
   DispatcherOptions,
   commonDispatcherConfig,
@@ -17,21 +18,7 @@ import { DispatcherConfig, Executor, wait } from '@airent/api';
 import { HandlerConfig } from '@airent/api-next';
 import createHttpError from 'http-errors';
 import { getServerSession } from 'next-auth';
-import { headers as getHeaders } from 'next/headers';
 import { authOptions } from './nextauth';
-
-export async function mockContext(
-  context?: Partial<Context>
-): Promise<Context> {
-  const headers = context?.headers ?? (await getHeaders());
-  return {
-    time: context?.time ?? new Date(),
-    method: context?.method ?? '',
-    url: context?.url ?? '',
-    headers,
-    currentUser: context?.currentUser ?? null,
-  };
-}
 
 export const dispatcherConfig: Pick<
   DispatcherConfig<DispatcherOptions, Context, any, any, any, any>,
