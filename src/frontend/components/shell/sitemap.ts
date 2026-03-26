@@ -1,5 +1,5 @@
 import { PRIVACY_HREF, TERMS_HREF } from '@/common/constant';
-import { publicConfig } from '@/config/public';
+import { publicConfig } from '@/config/json/public';
 import { MetadataRoute } from 'next';
 
 export function generateRootSitemap(): MetadataRoute.Sitemap {

@@ -1,5 +1,5 @@
 import { backendFunctionConfig } from '@/config/function/backend';
-import { privateConfig } from '@/config/private';
+import { privateConfig } from '@/config/json/private';
 import { AuthOptions } from 'next-auth';
 import { callbacks } from './callbacks';
 import { cookies } from './cookies';

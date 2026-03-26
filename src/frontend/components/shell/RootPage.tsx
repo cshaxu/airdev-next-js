@@ -1,5 +1,5 @@
 import { clientComponentConfig } from '@/config/component/client';
-import { publicConfig } from '@/config/public';
+import { publicConfig } from '@/config/json/public';
 import { currentUserServerQueryOptions } from '@/frontend/hooks/data/user-server';
 import { pageTitle, withError } from '@/frontend/utils/page';
 import { QueryClient } from '@tanstack/react-query';

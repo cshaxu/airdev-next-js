@@ -1,5 +1,5 @@
-import { privateConfig } from '@/config/private';
-import { publicConfig } from '@/config/public';
+import { privateConfig } from '@/config/json/private';
+import { publicConfig } from '@/config/json/public';
 import { Context } from '@/framework/context';
 import { CommonResponse, buildInvalidErrorMessage, logInfo } from '@airent/api';
 import { Awaitable, sequential } from 'airent';

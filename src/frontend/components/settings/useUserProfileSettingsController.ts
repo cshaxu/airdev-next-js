@@ -2,7 +2,7 @@
 
 import { ROOT_HREF } from '@/common/constant';
 import { clientFunctionConfig } from '@/config/function/client';
-import { publicConfig } from '@/config/public';
+import { publicConfig } from '@/config/json/public';
 import type { HeaderBarItem } from '@/frontend/components/shell/HeaderBar';
 import {
   useRequiredCurrentUser,

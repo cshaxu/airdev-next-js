@@ -1,5 +1,5 @@
 import { PRIVACY_HREF, ROOT_HREF } from '@/common/constant';
-import { publicConfig } from '@/config/public';
+import { publicConfig } from '@/config/json/public';
 import Header from '@/frontend/components/ui/Header';
 import { pageTitle } from '@/frontend/utils/page';
 import Link from 'next/link';

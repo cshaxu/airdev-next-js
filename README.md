@@ -8,9 +8,9 @@ This package is internally self-contained. The only project-local imports it exp
 
 Required host-side config modules currently include:
 
-- `@/config/public`
-- `@/config/private`
-- `@/config/edge`
+- `@/config/json/public`
+- `@/config/json/private`
+- `@/config/json/edge`
 - `@/config/shell`
 - `@/config/component/client`
 - `@/config/component/server`

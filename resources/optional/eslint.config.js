@@ -88,12 +88,12 @@ module.exports = [
             name: 'process.env.',
             notFollowedBy: 'NEXT_PUBLIC_',
             description: 'It must be followed by NEXT_PUBLIC here.',
-            includedFiles: ['src/config/public.ts'],
+            includedFiles: ['src/config/json/public.ts'],
           },
           {
             name: 'process.env.NEXT_PUBLIC_',
-            description: 'Move it to src/config/public.ts.',
-            includedFiles: ['src/config/private.ts', 'src/config.edge.ts'],
+            description: 'Move it to src/config/json/public.ts.',
+            includedFiles: ['src/config/json/private.ts', 'src/config/json/edge.ts'],
           },
           {
             name: 'prisma.',

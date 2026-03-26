@@ -5,9 +5,9 @@ import {
   HEADER_REFERER_KEY,
   HEADER_USER_AGENT_KEY,
 } from '@/common/constant';
-import { edgeConfig } from '@/config/edge';
+import { edgeConfig } from '@/config/json/edge';
 import { commonFunctionConfig } from '@/config/function/common';
-import { publicConfig } from '@/config/public';
+import { publicConfig } from '@/config/json/public';
 import {
   CommonResponse,
   DispatcherConfig,

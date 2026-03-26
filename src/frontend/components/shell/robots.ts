@@ -1,5 +1,5 @@
 import { ADMIN_HREF, AUTH_HREF, SETTINGS_HREF } from '@/common/constant';
-import { publicConfig } from '@/config/public';
+import { publicConfig } from '@/config/json/public';
 import { MetadataRoute } from 'next';
 
 export function generateRootRobots(): MetadataRoute.Robots {

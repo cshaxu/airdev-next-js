@@ -1,4 +1,4 @@
-import { publicConfig } from '@/config/public';
+import { publicConfig } from '@/config/json/public';
 import { CookiesOptions } from 'next-auth';
 
 const isServiceLocal = publicConfig.service.serviceEnvironment === 'local';

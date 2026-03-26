@@ -1,6 +1,6 @@
 'use client';
 
-import { publicConfig } from '@/config/public';
+import { publicConfig } from '@/config/json/public';
 import { ReactNodeProps } from '@/frontend/types/props';
 import { Sparkles } from 'lucide-react';
 import Image from 'next/image';

@@ -1,4 +1,4 @@
-import { publicConfig } from '@/config/public';
+import { publicConfig } from '@/config/json/public';
 import ErrorBoundary from '@/frontend/components/ErrorBoundary';
 import ReactQueryProvider from '@/frontend/components/ReactQueryProvider';
 import ThemeProvider from '@/frontend/components/theme/ThemeProvider';

@@ -1,7 +1,7 @@
 'use client';
 
 import { ADMIN_API_HREF, ADMIN_USERS_HREF } from '@/common/constant';
-import { publicConfig } from '@/config/public';
+import { publicConfig } from '@/config/json/public';
 import HeaderBar from '@/frontend/components/shell/HeaderBar';
 import { cn } from '@/frontend/utils/cn';
 import Link from 'next/link';

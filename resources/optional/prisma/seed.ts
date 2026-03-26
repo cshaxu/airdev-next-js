@@ -1,5 +1,5 @@
 import prisma from '../src/backend/lib/prisma';
-import { publicConfig } from '../src/config/public';
+import { publicConfig } from '../src/config/json/public';
 
 // For instructions, see
 // https://www.prisma.io/docs/guides/migrate/seed-database#how-to-seed-your-database-in-prisma

@@ -6,8 +6,8 @@ import {
 } from '@/common/constant';
 import { backendFunctionConfig } from '@/config/function/backend';
 import { commonFunctionConfig } from '@/config/function/common';
-import { privateConfig } from '@/config/private';
-import { publicConfig } from '@/config/public';
+import { privateConfig } from '@/config/json/private';
+import { publicConfig } from '@/config/json/public';
 import {
   DispatcherOptions,
   commonDispatcherConfig,

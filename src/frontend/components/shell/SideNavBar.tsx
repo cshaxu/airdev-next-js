@@ -1,7 +1,7 @@
 'use client';
 
 import { clientComponentConfig } from '@/config/component/client';
-import { publicConfig } from '@/config/public';
+import { publicConfig } from '@/config/json/public';
 import { buttonVariants } from '@/frontend/components/ui/Button';
 import { PixelResizablePanel } from '@/frontend/components/ui/PixelResizable';
 import { cn } from '@/frontend/utils/cn';

@@ -2,7 +2,7 @@
 
 import { PRIVACY_HREF, ROOT_HREF, TERMS_HREF } from '@/common/constant';
 import { clientFunctionConfig } from '@/config/function/client';
-import { publicConfig } from '@/config/public';
+import { publicConfig } from '@/config/json/public';
 import GoogleLogo from '@/frontend/components/GoogleLogo';
 import { Button } from '@/frontend/components/ui/Button';
 import {

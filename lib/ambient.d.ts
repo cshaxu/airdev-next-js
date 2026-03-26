@@ -1,12 +1,12 @@
-declare module '@/config/public' {
+declare module '@/config/json/public' {
   export const publicConfig: import('./common/types/config').PublicConfig;
 }
 
-declare module '@/config/private' {
+declare module '@/config/json/private' {
   export const privateConfig: import('./common/types/config').PrivateConfig;
 }
 
-declare module '@/config/edge' {
+declare module '@/config/json/edge' {
   export const edgeConfig: import('./common/types/config').EdgeConfig;
 }
 

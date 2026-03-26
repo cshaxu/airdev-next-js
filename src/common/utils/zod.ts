@@ -1,4 +1,4 @@
-import { publicConfig } from '@/config/public';
+import { publicConfig } from '@/config/json/public';
 import * as z from 'zod';
 
 export const DEFAULT_TAKE = z

@@ -1,6 +1,6 @@
 'use client';
 
-import { publicConfig } from '@/config/public';
+import { publicConfig } from '@/config/json/public';
 import { parseAsBoolean, useQueryState } from 'nuqs';
 import posthog from 'posthog-js';
 import { useEffect } from 'react';

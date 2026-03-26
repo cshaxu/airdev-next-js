@@ -1,4 +1,4 @@
-import { publicConfig } from '@/config/public';
+import { publicConfig } from '@/config/json/public';
 import type { MetadataRoute } from 'next';
 
 export function generateRootManifest(): MetadataRoute.Manifest {

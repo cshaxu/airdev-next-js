@@ -1,4 +1,4 @@
-import { edgeConfig } from '@/config/edge';
+import { edgeConfig } from '@/config/json/edge';
 import { buildHeaders, getCurrentUser } from '@/edge/sdks/backend';
 import { commonHandlerConfig } from '@/framework/callbacks';
 import { Context } from '@/framework/context';
