@@ -77,35 +77,50 @@ export type CurrentUserPage<TUser> = { user: TUser | null };
 
 export type ClientUserUpdateBody = { name?: string; setAdmin?: boolean };
 
+export type ClientFunctionConfigTypes = {
+  currentUser: CurrentUser;
+  searchUser: unknown;
+  fieldRequest: FieldRequest;
+  updateUser: CurrentUser;
+  updateBody: ClientUserUpdateBody;
+};
+
+export type ServerFunctionConfigTypes = {
+  user: CurrentUser;
+  fieldRequest: FieldRequest;
+};
+
+export type EdgeFunctionConfigTypes = {
+  user: ContextUser;
+  fieldRequest: FieldRequest;
+};
+
 export type ClientUserApiClientConfig<
-  TUser = CurrentUser,
-  TFieldRequest extends FieldRequest = FieldRequest,
+  TTypes extends Pick<ClientFunctionConfigTypes, 'currentUser' | 'fieldRequest'> = ClientFunctionConfigTypes,
 > = {
   getOneSafe(
     params: { id: string },
-    fields: TFieldRequest
-  ): Promise<CurrentUserPage<TUser>>;
+    fields: TTypes['fieldRequest']
+  ): Promise<CurrentUserPage<TTypes['currentUser']>>;
 };
 
 export type ServerUserApiClientConfig<
-  TUser = CurrentUser,
-  TFieldRequest extends FieldRequest = FieldRequest,
+  TTypes extends ServerFunctionConfigTypes = ServerFunctionConfigTypes,
 > = {
   getOneSafe(
     params: { id: string },
-    fields: TFieldRequest
-  ): Promise<CurrentUserPage<TUser>>;
+    fields: TTypes['fieldRequest']
+  ): Promise<CurrentUserPage<TTypes['user']>>;
 };
 
 export type EdgeUserApiClientConfig<
-  TUser = ContextUser,
-  TFieldRequest extends FieldRequest = FieldRequest,
+  TTypes extends EdgeFunctionConfigTypes = EdgeFunctionConfigTypes,
 > = {
   getOneSafe(
     params: { id: string },
-    fields: TFieldRequest,
+    fields: TTypes['fieldRequest'],
     headers?: Headers
-  ): Promise<CurrentUserPage<TUser>>;
+  ): Promise<CurrentUserPage<TTypes['user']>>;
 };
 
 export type MutationHookOptions<TData = unknown> = {
@@ -130,47 +145,42 @@ export type NextauthVerificationTokenQueryConfig = {
 };
 
 export type UserQueryConfig<
-  TSearchUser = unknown,
-  TUpdateUser = CurrentUser,
-  TUpdateBody = ClientUserUpdateBody,
+  TTypes extends Pick<
+    ClientFunctionConfigTypes,
+    'searchUser' | 'updateUser' | 'updateBody'
+  > = ClientFunctionConfigTypes,
 > = {
-  useMutationSearch(): MutationHookResult<{ q: string }, TSearchUser[]>;
+  useMutationSearch(): MutationHookResult<{ q: string }, TTypes['searchUser'][]>;
   useUpdateOne(): MutationHookResult<
-    { params: { id: string }; body: TUpdateBody },
-    TUpdateUser
+    { params: { id: string }; body: TTypes['updateBody'] },
+    TTypes['updateUser']
   >;
   useDeleteOne(): MutationHookResult<{ id: string }, unknown>;
 };
 
 export type ClientFunctionConfig<
-  TCurrentUser = CurrentUser,
-  TSearchUser = unknown,
-  TFieldRequest extends FieldRequest = FieldRequest,
-  TUpdateUser = TCurrentUser,
-  TUpdateBody = ClientUserUpdateBody,
+  TTypes extends ClientFunctionConfigTypes = ClientFunctionConfigTypes,
 > = {
   apiClient: {
     auth: AuthApiClientConfig;
-    user: ClientUserApiClientConfig<TCurrentUser, TFieldRequest>;
+    user: ClientUserApiClientConfig<TTypes>;
   };
   query: {
     nextauthVerificationToken: NextauthVerificationTokenQueryConfig;
-    user: UserQueryConfig<TSearchUser, TUpdateUser, TUpdateBody>;
+    user: UserQueryConfig<TTypes>;
   };
 };
 
 export type ServerFunctionConfig<
-  TUser = CurrentUser,
-  TFieldRequest extends FieldRequest = FieldRequest,
+  TTypes extends ServerFunctionConfigTypes = ServerFunctionConfigTypes,
 > = {
-  apiClient: { user: ServerUserApiClientConfig<TUser, TFieldRequest> };
+  apiClient: { user: ServerUserApiClientConfig<TTypes> };
 };
 
 export type EdgeFunctionConfig<
-  TUser = ContextUser,
-  TFieldRequest extends FieldRequest = FieldRequest,
+  TTypes extends EdgeFunctionConfigTypes = EdgeFunctionConfigTypes,
 > = {
-  apiClient: { user: EdgeUserApiClientConfig<TUser, TFieldRequest> };
+  apiClient: { user: EdgeUserApiClientConfig<TTypes> };
 };
 
 export type BackendUserUpdate = Partial<
