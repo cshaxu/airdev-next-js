@@ -47,8 +47,8 @@
     }
   },
   "peerDependencies": {
-    "@airent/api": "github:cshaxu/airent-api-js#ffd93b193d2a846fba2ff4bfb09d569d9871bb86",
-    "@airent/api-next": "github:cshaxu/airent-api-next-js#c33e412c6df895e92d7d254bcc127035d208b4e5",
+    "@airent/api": "github:cshaxu/airent-api-js#ee8cea6f134851f3bff4f8b41db04101a765f3b1",
+    "@airent/api-next": "github:cshaxu/airent-api-next-js#5d7ce750b0aae44feac78996992db211bddc9b8e",
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": ">=3",
     "@radix-ui/react-alert-dialog": ">=1",
@@ -84,8 +84,8 @@
   },
   "devDependencies": {
     "@airdev/eslint": "github:cshaxu/airdev-eslint-js#90a2e03cc2d3231fae3ee228a021c87dfcc4d1f7",
-    "@airent/api": "github:cshaxu/airent-api-js#ffd93b193d2a846fba2ff4bfb09d569d9871bb86",
-    "@airent/api-next": "github:cshaxu/airent-api-next-js#c33e412c6df895e92d7d254bcc127035d208b4e5",
+    "@airent/api": "github:cshaxu/airent-api-js#ee8cea6f134851f3bff4f8b41db04101a765f3b1",
+    "@airent/api-next": "github:cshaxu/airent-api-next-js#5d7ce750b0aae44feac78996992db211bddc9b8e",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.39.1",
     "@heroicons/react": "^2.2.0",
