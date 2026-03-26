@@ -1,5 +1,6 @@
 'use client';
 
+import { CurrentUser } from '@/common/types/context';
 import { clientFunctionConfig } from '@/config/function/client';
 import {
   Avatar,
@@ -15,42 +16,34 @@ import {
 import { Drama, Smile, User, UserKey } from 'lucide-react';
 import { useState } from 'react';
 
-type SearchUser = {
-  id: string;
-  name: string;
-  imageUrl: string | null;
-  isAdmin: boolean;
-};
-
 export default function UserSearch() {
   const { become } = clientFunctionConfig.apiClient.auth;
   const [inputQ, setInputQ] = useState('');
-  const [searchQ, setSearchQ] = useState('');
+  const [users, setUsers] = useState<CurrentUser[]>([]);
   const [adminTargetUserId, setAdminTargetUserId] = useState<string | null>(
     null
   );
   const became = useBecameUser();
   const setBecameUser = useSetBecameUser();
+  const { mutateAsync: searchUsers, isPending: isSearching } =
+    clientFunctionConfig.query.user.useMutationSearch();
   const { mutateAsync: updateUser, isPending: isUpdatingUser } =
     clientFunctionConfig.query.user.useUpdateOne();
 
-  const { data: users = [], isFetching } =
-    clientFunctionConfig.query.user.useGetMany({ q: searchQ }) as {
-      data?: SearchUser[];
-      isFetching: boolean;
-    };
-
-  function handleSearch() {
-    setSearchQ(inputQ.trim());
+  async function handleSearch() {
+    const nextUsers = (await searchUsers({
+      q: inputQ.trim(),
+    })) as CurrentUser[];
+    setUsers(nextUsers);
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
-      handleSearch();
+      void handleSearch();
     }
   }
 
-  async function handleBecome(user: SearchUser) {
+  async function handleBecome(user: CurrentUser) {
     await become(user.id);
     setBecameUser(user);
     window.location.reload();
@@ -62,13 +55,20 @@ export default function UserSearch() {
     window.location.reload();
   }
 
-  async function handleToggleAdmin(user: SearchUser) {
+  async function handleToggleAdmin(user: CurrentUser) {
     setAdminTargetUserId(user.id);
     try {
       await updateUser({
         params: { id: user.id },
         body: { setAdmin: !user.isAdmin },
       });
+      setUsers((currentUsers) =>
+        currentUsers.map((currentUser) =>
+          currentUser.id === user.id
+            ? { ...currentUser, isAdmin: !currentUser.isAdmin }
+            : currentUser
+        )
+      );
     } finally {
       setAdminTargetUserId(null);
     }
@@ -107,8 +107,8 @@ export default function UserSearch() {
           className="flex-1"
         />
         <Button
-          onClick={handleSearch}
-          disabled={isFetching}
+          onClick={() => void handleSearch()}
+          disabled={isSearching}
           className="min-w-20 sm:min-w-24"
         >
           Search
@@ -117,7 +117,7 @@ export default function UserSearch() {
 
       {users.length > 0 && (
         <div className="space-y-2">
-          {users.map((user: SearchUser) => (
+          {users.map((user: CurrentUser) => (
             <div
               key={user.id}
               className="flex items-center gap-3 rounded-lg border p-3"
@@ -133,7 +133,7 @@ export default function UserSearch() {
               </Avatar>
               <div className="flex-1">
                 <p className="text-sm font-medium">{user.name ?? '-'}</p>
-                <p className="text-muted-foreground text-xs">{user.id}</p>
+                <p className="text-muted-foreground text-xs">{user.email}</p>
               </div>
               <Button
                 size="sm"

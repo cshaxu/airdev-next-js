@@ -4,10 +4,7 @@ import { ROOT_HREF } from '@/common/constant';
 import { clientFunctionConfig } from '@/config/function/client';
 import { publicConfig } from '@/config/json/public';
 import type { HeaderBarItem } from '@/frontend/components/shell/HeaderBar';
-import {
-  useRequiredCurrentUser,
-  useUpdateCurrentUser,
-} from '@/frontend/hooks/data/user';
+import { useRequiredCurrentUser } from '@/frontend/hooks/data/user';
 import { useQueryClient } from '@tanstack/react-query';
 import { Home } from 'lucide-react';
 import {
@@ -28,8 +25,8 @@ export function useUserProfileSettingsController() {
   const nameInputRef = useRef<HTMLInputElement | null>(null);
   const { mutate: deleteUser, isPending: isDeleting } =
     clientFunctionConfig.query.user.useDeleteOne();
-  const { mutate: updateCurrentUser, isPending: isUpdatingUser } =
-    useUpdateCurrentUser();
+  const { mutate: updateUser, isPending: isUpdatingUser } =
+    clientFunctionConfig.query.user.useUpdateOne();
 
   const breadcrumbs: HeaderBarItem[] = [
     {
@@ -90,7 +87,7 @@ export function useUserProfileSettingsController() {
       return;
     }
 
-    updateCurrentUser(
+    updateUser(
       {
         params: { id: currentUser.id },
         body: { name: nextName },

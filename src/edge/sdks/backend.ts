@@ -17,7 +17,7 @@ export const getCurrentUser = async (
           })
         : headers
     )
-    .then((data: { user: ContextUser }) => data.user);
+    .then((data: { user: ContextUser | null }) => data.user);
 
 export function buildHeaders(
   headers: Headers,
