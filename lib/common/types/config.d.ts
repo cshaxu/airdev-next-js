@@ -196,13 +196,13 @@ export type ShellNavItem = {
     isActive: (pathname: string) => boolean;
 };
 export type ClientComponentConfig = {
-    LandingPage: ComponentType;
-    SettingsContent: ComponentType<{
-        userId: string;
-    }>;
     NavContent: () => {
         navItems: ShellNavItem[];
     };
+    LandingPage?: ComponentType;
+    SettingsContent?: ComponentType<{
+        userId: string;
+    }>;
 };
 export type ServerComponentConfig = {
     AdminApiPage: ComponentType;

@@ -24,6 +24,9 @@ async function RootPage() {
   }
 
   const { LandingPage } = clientComponentConfig;
+  if (LandingPage === undefined) {
+    return <p>LandingPage component is missing.</p>;
+  }
   return <LandingPage />;
 }
 

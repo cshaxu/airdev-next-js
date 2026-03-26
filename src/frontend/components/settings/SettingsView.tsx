@@ -16,7 +16,7 @@ export default function SettingsView() {
         <div className="size-full overflow-y-auto p-6">
           <div className="space-y-6">
             <EditUserProfileTile vm={vm} />
-            <SettingsContent userId={vm.currentUser.id} />
+            {SettingsContent && <SettingsContent userId={vm.currentUser.id} />}
           </div>
         </div>
       </div>

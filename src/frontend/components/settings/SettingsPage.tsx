@@ -1,5 +1,5 @@
 import { withError } from '@/frontend/utils/page';
-import SettingsView from './Settings';
+import SettingsView from './SettingsView';
 
 async function Page() {
   return <SettingsView />;
