@@ -9,12 +9,13 @@ import {
 } from '@/frontend/components/ui/Avatar';
 import { Button } from '@/frontend/components/ui/Button';
 import { Input } from '@/frontend/components/ui/Input';
+import { Skeleton } from '@/frontend/components/ui/Skeleton';
 import {
   useBecameUser,
   useSetBecameUser,
 } from '@/frontend/stores/becameUserStore';
 import { Drama, Smile, User, UserKey } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function UserSearch() {
   const { become } = clientFunctionConfig.apiClient.auth;
@@ -30,12 +31,14 @@ export default function UserSearch() {
   const { mutateAsync: updateUser, isPending: isUpdatingUser } =
     clientFunctionConfig.query.user.useUpdateOne();
 
-  async function handleSearch() {
-    const nextUsers = (await searchUsers({
-      q: inputQ.trim(),
-    })) as CurrentUser[];
+  async function handleSearch(q: string = inputQ.trim()) {
+    const nextUsers = (await searchUsers({ q })) as CurrentUser[];
     setUsers(nextUsers);
   }
+
+  useEffect(() => {
+    void handleSearch('');
+  }, []);
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
@@ -114,6 +117,25 @@ export default function UserSearch() {
           Search
         </Button>
       </div>
+
+      {isSearching && users.length === 0 && (
+        <div className="space-y-2">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-3 rounded-lg border p-3"
+            >
+              <Skeleton className="size-9 rounded-full" />
+              <div className="flex-1 space-y-2">
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-3 w-48" />
+              </div>
+              <Skeleton className="size-9 rounded-md" />
+              <Skeleton className="size-9 rounded-md" />
+            </div>
+          ))}
+        </div>
+      )}
 
       {users.length > 0 && (
         <div className="space-y-2">

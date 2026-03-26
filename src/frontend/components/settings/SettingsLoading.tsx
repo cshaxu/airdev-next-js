@@ -1,4 +1,5 @@
 import HeaderBar from '@/frontend/components/shell/HeaderBar';
+import { Skeleton } from '@/frontend/components/ui/Skeleton';
 
 export default function SettingsLoading() {
   return (
@@ -10,8 +11,17 @@ export default function SettingsLoading() {
             {Array.from({ length: 3 }).map((_, i) => (
               <div
                 key={i}
-                className="bg-muted h-[92px] animate-pulse rounded-xl"
-              />
+                className="space-y-4 rounded-2xl border p-5 shadow-sm"
+              >
+                <div className="flex items-center gap-4">
+                  <Skeleton className="size-16 rounded-full" />
+                  <div className="min-w-0 flex-1 space-y-3">
+                    <Skeleton className="h-5 w-36" />
+                    <Skeleton className="h-4 w-48" />
+                  </div>
+                </div>
+                <Skeleton className="h-9 w-24" />
+              </div>
             ))}
           </div>
         </div>
