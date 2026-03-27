@@ -1,0 +1,11 @@
+import * as AwsSdk from '@/backend/sdks/aws';
+import { CreateS3PresignedPostBody } from '@/common/types/api/json';
+import { handleBackendJsonJsonWith } from '@airdev/next/backend/lib/handlers';
+
+const executor = (body: CreateS3PresignedPostBody) =>
+  AwsSdk.createS3PresignedPost(body.key);
+
+export const POST = handleBackendJsonJsonWith({
+  bodyZod: CreateS3PresignedPostBody,
+  executor,
+});

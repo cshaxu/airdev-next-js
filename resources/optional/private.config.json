@@ -1,0 +1,18 @@
+{
+  "admin": { "emails": ["cshaxu@gmail.com"] },
+  "database": { "batchSize": 1000, "delaySeconds": 5 },
+  "nextauth": { "sessionMaxAge": 2592000 },
+  "aws": { "s3Region": "us-east-1" },
+  "openai": {
+    "audioModel": "gpt-4o-audio-preview",
+    "chatModel": "gpt-4o-mini",
+    "embeddingModel": "text-embedding-3-small",
+    "transcribeModel": "pt-4o-transcribe",
+    "maxChatTokenLimit": 16384
+  },
+  "postmark": {
+    "webhookSecretHeaderKey": "X-POSTMARK-WEBHOOK-SECRET",
+    "defaultTransactionStream": "outbound",
+    "defaultBroadcastStream": "broadcast"
+  }
+}

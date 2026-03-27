@@ -82,18 +82,22 @@ module.exports = [
             name: 'process.env',
             description:
               'Move it to a config file and import the variable from there.',
-            excludedFiles: ['src/config/**.ts'],
+            excludedFiles: [
+              'src/config/public-app.ts',
+              'src/config/private-app.ts',
+              'src/config/json/edge.ts',
+            ],
           },
           {
             name: 'process.env.',
             notFollowedBy: 'NEXT_PUBLIC_',
             description: 'It must be followed by NEXT_PUBLIC here.',
-            includedFiles: ['src/config/json/public.ts'],
+            includedFiles: ['src/config/public-app.ts'],
           },
           {
             name: 'process.env.NEXT_PUBLIC_',
-            description: 'Move it to src/config/json/public.ts.',
-            includedFiles: ['src/config/json/private.ts', 'src/config/json/edge.ts'],
+            description: 'Move it to src/config/public.ts.',
+            includedFiles: ['src/config/private-app.ts', 'src/config/edge.ts'],
           },
           {
             name: 'prisma.',
@@ -215,6 +219,34 @@ module.exports = [
   {
     files: ['prisma/seed.ts', 'src/config/**/*.ts'],
     rules: { 'airdev/no-relative-parent-imports': 'off' },
+  },
+  {
+    files: ['src/**/*.ts', 'src/**/*.tsx', 'prisma/**/*.ts'],
+    ignores: [
+      'src/config/public.ts',
+      'src/config/private.ts',
+      'src/generated/**/*.ts',
+      'src/generated/**/*.tsx',
+    ],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@/config/public',
+              message:
+                'Use "@/config/public-app" in barebone-next code. Keep "@/config/public" for Airdev/framework compatibility only.',
+            },
+            {
+              name: '@/config/private',
+              message:
+                'Use "@/config/private-app" in barebone-next code. Keep "@/config/private" for Airdev/framework compatibility only.',
+            },
+          ],
+        },
+      ],
+    },
   },
   {
     files: [
