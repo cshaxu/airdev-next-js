@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 import { buildInvalidErrorMessage, purify } from '@airent/api';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { Prisma } from '@prisma/client';

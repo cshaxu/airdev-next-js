@@ -1,0 +1,60 @@
+{
+  "@airdev/next": "seeded",
+  "app": {
+    "id": "barebone",
+    "name": "Barebone Next",
+    "description": "Next.js App Template",
+    "ownerShort": "Nano Indies",
+    "owner": "Nano Indies, Inc.",
+    "email": "dev@nanoindies.com",
+    "version": "0.0.1",
+    "logoUrl": "https://avatars.githubusercontent.com/u/5317739?v=4&size=64",
+    "welcomeText": "Sign in to start using the workspace.",
+    "categories": ["productivity"],
+    "keywords": ["nextjs", "airdev-next", "template"]
+  },
+  "defaults": { "apiBatchSize": 100, "pageSize": 50 },
+  "shell": {
+    "routes": {
+      "homeHref": "/dashboard",
+      "disallowRobots": ["/api", "/admin", "/dashboard", "/settings"]
+    },
+    "assets": { "logoSrc": "/logo.png", "iconSrc": "/favicon.ico" },
+    "adminTabs": [{ "label": "Test", "href": "/admin/test" }]
+  },
+  "service": {
+    "local": {
+      "baseUrl": "http://localhost:3000",
+      "name": "localhost",
+      "protocol": "http:",
+      "rootDomain": "localhost:3000",
+      "titlePrefix": "Local"
+    },
+    "production": {
+      "baseUrl": "https://www.nanoindies.com",
+      "name": "barebone-production",
+      "protocol": "https:",
+      "rootDomain": "nanoindies.com",
+      "titlePrefix": "Production"
+    }
+  },
+  "data": {
+    "local": { "aws": { "s3Bucket": "barebone-local" } },
+    "production": { "aws": { "s3Bucket": "barebone-production" } }
+  },
+  "aws": {
+    "s3PathUserUpload": "user-upload",
+    "s3PathUserDownload": "user-download"
+  },
+  "google": {
+    "oauthScopeOpenid": "openid",
+    "oauthScopeUserinfoEmail": "https://www.googleapis.com/auth/userinfo.email",
+    "oauthScopeUserinfoProfile": "https://www.googleapis.com/auth/userinfo.profile",
+    "oauthSigninScopes": [
+      "openid",
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/userinfo.profile"
+    ]
+  },
+  "posthog": { "apiToken": "", "apiHost": "https://us.posthog.com" }
+}

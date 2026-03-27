@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 import { publicAppConfig } from '@/config/public-app';
 import { fetchJsonOrThrow } from '@airent/api';
 

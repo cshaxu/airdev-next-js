@@ -1,3 +1,6 @@
+/* "@airdev/next": "seeded" */
+
+import { adminOrThrow, Context, selfOrThrow } from '@/airdev/framework/context';
 import { UserEntity } from '@/backend/entities/user';
 import {
   GetOneUserParams,
@@ -5,11 +8,6 @@ import {
   UpdateOneUserBody,
 } from '@/common/types/data/user';
 import { UserModel } from '@/generated/types/user';
-import {
-  adminOrThrow,
-  Context,
-  selfOrThrow,
-} from '@airdev/next/framework/context';
 import {
   buildInvalidErrorMessage,
   buildMissingErrorMessage,

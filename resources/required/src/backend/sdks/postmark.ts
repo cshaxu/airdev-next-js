@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 import { PostmarkEmail } from '@/common/types/vendors/postmark';
 import { logError } from '@/common/utils/logging';
 import { privateAppConfig } from '@/config/private-app';

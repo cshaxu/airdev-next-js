@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 import * as PostmarkSdk from '@/backend/sdks/postmark';
 import { buildEmailSender } from '@/backend/utils/email';
 import { privateAppConfig } from '@/config/private-app';

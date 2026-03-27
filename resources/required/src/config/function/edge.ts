@@ -1,12 +1,14 @@
-import UserEdgeApiClient from '@/generated/edge-clients/user';
+/* "@airdev/next": "managed" */
+
 import type {
   EdgeFunctionConfig,
   EdgeFunctionConfigTypes,
-} from '@airdev/next/common/types/config';
+} from '@/airdev/common/types/config';
 import {
   ContextUserFieldRequest,
   type ContextUser,
-} from '@airdev/next/framework/context';
+} from '@/airdev/framework/context';
+import UserEdgeApiClient from '@/generated/edge-clients/user';
 
 type AppEdgeFunctionConfigTypes = EdgeFunctionConfigTypes & {
   user: ContextUser;

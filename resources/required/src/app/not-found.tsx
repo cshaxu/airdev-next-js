@@ -1,1 +1,3 @@
-export { default } from '@airdev/next/frontend/components/shell/NotFound';
+/* "@airdev/next": "managed" */
+
+export { default } from '@/airdev/frontend/components/shell/NotFound';

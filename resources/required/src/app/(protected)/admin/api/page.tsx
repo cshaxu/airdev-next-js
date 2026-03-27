@@ -1,1 +1,3 @@
-export { default } from '@airdev/next/frontend/components/admin/AdminApiPage';
+/* "@airdev/next": "managed" */
+
+export { default } from '@/airdev/frontend/components/admin/AdminApiPage';

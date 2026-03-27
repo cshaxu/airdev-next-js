@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 // library imports
 import * as z from 'zod';
 

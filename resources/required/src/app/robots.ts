@@ -1,4 +1,6 @@
-import { generateRootRobots } from '@airdev/next/frontend/components/shell/robots';
+/* "@airdev/next": "managed" */
+
+import { generateRootRobots } from '@/airdev/frontend/components/shell/robots';
 
 const robots = generateRootRobots;
 export default robots;

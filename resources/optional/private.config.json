@@ -1,4 +1,5 @@
 {
+  "@airdev/next": "seeded",
   "admin": { "emails": ["cshaxu@gmail.com"] },
   "database": { "batchSize": 1000, "delaySeconds": 5 },
   "nextauth": { "sessionMaxAge": 2592000 },

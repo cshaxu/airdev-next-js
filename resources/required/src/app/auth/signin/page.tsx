@@ -1,6 +1,8 @@
+/* "@airdev/next": "managed" */
+
 import SignInPage, {
   generateSignInMetadata,
-} from '@airdev/next/frontend/components/auth/SignInPage';
+} from '@/airdev/frontend/components/auth/SignInPage';
 
 export const dynamic = 'force-dynamic';
 

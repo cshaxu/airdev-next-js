@@ -1,7 +1,9 @@
+/* "@airdev/next": "managed" */
+
+import { mockContext } from '@/airdev/backend/utils/context';
+import { Context } from '@/airdev/framework/context';
 import { UserEntity } from '@/backend/entities/user';
 import { SearchUsersQuery } from '@/common/types/data/user';
-import { mockContext } from '@airdev/next/backend/utils/context';
-import { Context } from '@airdev/next/framework/context';
 import {
   DefaultSearchDocument,
   DefaultSearchEngine,

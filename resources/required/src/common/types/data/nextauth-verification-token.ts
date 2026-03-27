@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 import * as z from 'zod';
 
 // params

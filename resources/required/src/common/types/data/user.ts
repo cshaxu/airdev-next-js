@@ -1,4 +1,6 @@
-import { DEFAULT_TAKE } from '@airdev/next/common/utils/zod';
+/* "@airdev/next": "managed" */
+
+import { DEFAULT_TAKE } from '@/airdev/common/utils/zod';
 import { buildMissingErrorMessage } from '@airent/api';
 import * as z from 'zod';
 

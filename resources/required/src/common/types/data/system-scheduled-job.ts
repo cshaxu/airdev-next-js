@@ -1,4 +1,6 @@
-import { Context } from '@airdev/next/framework/context';
+/* "@airdev/next": "managed" */
+
+import { Context } from '@/airdev/framework/context';
 import { Awaitable } from 'airent';
 
 export enum SystemScheduledJobStatus {

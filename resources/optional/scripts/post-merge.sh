@@ -1,4 +1,5 @@
 #!/bin/bash
+# "@airdev/next": "seeded"
 
 # to install this script, please run:
 # echo "source \$BAREBONE_NEXT_REPO_PATH/scripts/post-merge.sh" > $BAREBONE_NEXT_REPO_PATH/.git/hooks/post-merge

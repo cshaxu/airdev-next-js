@@ -1,3 +1,5 @@
+/* "@airdev/next": "seeded" */
+
 import { decrypt } from 'databag';
 import dns from 'node:dns';
 import EncryptedCredentials from '../../credentials.json';

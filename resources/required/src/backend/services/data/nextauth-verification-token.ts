@@ -1,3 +1,7 @@
+/* "@airdev/next": "managed" */
+
+import { createHash, generateCode } from '@/airdev/backend/utils/token';
+import { Context } from '@/airdev/framework/context';
 import * as AuthDelivery from '@/backend/deliveries/auth';
 import { NextauthVerificationTokenEntity } from '@/backend/entities/nextauth-verification-token';
 import {
@@ -5,8 +9,6 @@ import {
   GetOneNextauthVerificationTokenParams,
 } from '@/common/types/data/nextauth-verification-token';
 import { privateAppConfig } from '@/config/private-app';
-import { createHash, generateCode } from '@airdev/next/backend/utils/token';
-import { Context } from '@airdev/next/framework/context';
 import { Prisma } from '@prisma/client';
 import { addMinutes } from 'date-fns';
 

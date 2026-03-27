@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 'use client';
 
 import { flushSync } from 'react-dom';

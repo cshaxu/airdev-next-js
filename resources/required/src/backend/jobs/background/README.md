@@ -1,3 +1,5 @@
+"@airdev/next": "managed"
+
 # Background Job Development Guide
 
 This document is a guide for developing background jobs.

@@ -1,6 +1,8 @@
+/* "@airdev/next": "seeded" */
+
+import { ClientComponentConfig } from '@/airdev/common/types/config';
 import NavContent from '@/app/(protected)/components/NavContent';
 import LandingPage from '@/app/components/Landing';
-import { ClientComponentConfig } from '@airdev/next/common/types/config';
 
 export const clientComponentConfig: ClientComponentConfig = {
   NavContent,

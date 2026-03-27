@@ -1,1 +1,3 @@
-export { default } from '@airdev/next/frontend/components/policy/PolicyLayout';
+/* "@airdev/next": "managed" */
+
+export { default } from '@/airdev/frontend/components/policy/PolicyLayout';

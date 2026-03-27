@@ -1,111 +1,39 @@
 # @airdev/next
 
-Shared frontend, backend, common, and framework source for Airdev-style Next.js projects.
+Generator package for Airdev-style Next.js apps.
 
-## Package Boundary
+## Build
 
-This package is internally self-contained. The only project-local imports it expects from the consuming app are under `@/config/*`.
+This package does not own a runtime library anymore. Its build step pulls managed and seeded files from `barebone-next` by running that repo's `scripts/extract.sh`.
 
-Required host-side config modules currently include:
+The source repo is resolved in this order:
 
-- `@/config/json/public`
-- `@/config/json/private`
-- `@/config/json/edge`
-- `@/config/shell`
-- `@/config/component/client`
-- `@/config/component/server`
-- `@/config/function/backend`
-- `@/config/function/client`
-- `@/config/function/common`
-- `@/config/function/server`
+1. `BAREBONE_NEXT_REPO_PATH`
+2. `AIRDEV_NEXT_SOURCE_REPO_PATH`
+3. `../../repos/barebone-next` relative to this package
 
-The shared frontend currently expects these `publicConfig.shell` fields:
+Build the package resources with:
 
-- `routes.homeHref`
-- `assets.logoSrc`
-- `assets.iconSrc`
-- `manifest.categories`
-
-The shared auth sign-in illustrations are bundled inside this package, so consuming apps do not need to add the auth artwork files to their own `public/` folders.
-
-The shared frontend also expects:
-
-- `publicConfig.app.welcomeText`
-
-The package hard-codes these shared route constants and does not read them from the consuming app config:
-
-- `/admin`
-- `/admin/api`
-- `/admin/users`
-- `/auth`
-- `/auth/signin`
-- `/auth/error`
-- `/privacy`
-- `/settings`
-- `/terms`
-
-The app-level Next entrypoint file `src/proxy.ts` can be a thin wrapper around the shared package module:
-
-```ts
-export { config, proxy } from '@airdev/next/frontend/proxy';
+```bash
+npm run build
 ```
 
-## Source Layout
+That rebuilds:
 
-- `frontend/*`
-- `backend/*`
-- `common/*`
-- `framework/*`
+- `resources/required`
+- `resources/optional`
 
-## Consumer Notes
+and writes the extraction log to `tmp/extract.log`.
 
-- Keep the consuming app `@/*` alias pointing to the app `src/*` so package imports to `@/config/*` resolve into the host app.
-- Use Next `transpilePackages` when consuming this package from a Next app.
-- The package includes global CSS and font assets under `src/frontend/styles` and `src/frontend/fonts`.
+## Generate
 
-## Route Generation
-
-This package includes a root scaffold generator that copies the contents of `resources/required` and `resources/optional` into a consuming app.
-
-From a consuming app root:
+From a consumer app root:
 
 ```bash
 airdev-next
 ```
 
-The copied files currently include package-owned thin wrappers and shared project config like:
+Generation behavior:
 
-- `src/app/layout.tsx`
-- `src/app/page.tsx`
-- `src/app/loading.tsx`
-- `src/app/error.tsx`
-- `src/app/not-found.tsx`
-- `src/app/manifest.ts`
-- `src/app/robots.ts`
-- `src/app/sitemap.ts`
-- `src/app/(policy)/layout.tsx`
-- `src/app/(policy)/privacy/page.tsx`
-- `src/app/(policy)/terms/page.tsx`
-- `src/app/auth/error/page.tsx`
-- `src/app/auth/signin/layout.tsx`
-- `src/app/auth/signin/page.tsx`
-- `src/app/(protected)/layout.tsx`
-- `src/app/(protected)/not-found.tsx`
-- `src/app/(protected)/admin/layout.tsx`
-- `src/app/(protected)/admin/page.tsx`
-- `src/app/(protected)/admin/api/page.tsx`
-- `src/app/(protected)/admin/users/page.tsx`
-- `src/app/(protected)/settings/page.tsx`
-- `src/app/(protected)/settings/loading.tsx`
-- `src/app/api/auth/[...nextauth]/route.ts`
-- `src/app/api/auth/become/route.ts`
-- `src/proxy.ts`
-- `next.config.js`
-- `tsconfig.json`
-- `components.json`
-- `plugins/airent-api-next/*`
-
-The generator performs two passes into the current working directory and does not take any arguments.
-
-- Files in `resources/required` are copied 1:1 and overwrite existing files to match the package resources.
-- Files in `resources/optional` are only created when missing. If the target path already exists, the file is skipped.
+- files in `resources/required` overwrite existing files
+- files in `resources/optional` are created only when missing

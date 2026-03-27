@@ -1,5 +1,7 @@
+/* "@airdev/next": "managed" */
+
+import { ReactNodeProps } from '@/airdev/frontend/types/props';
 import { publicAppConfig } from '@/config/public-app';
-import { ReactNodeProps } from '@airdev/next/frontend/types/props';
 import {
   Body,
   Container,

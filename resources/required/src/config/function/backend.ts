@@ -1,3 +1,13 @@
+/* "@airdev/next": "managed" */
+
+import {
+  PackageNextauthAccount,
+  PackageNextauthVerificationToken,
+  PackageSystemRequestCache,
+  PackageUser,
+} from '@/airdev/backend/types/data';
+import { BackendFunctionConfig } from '@/airdev/common/types/config';
+import { Context } from '@/airdev/framework/context';
 import { NextauthAccountEntity } from '@/backend/entities/nextauth-account';
 import { SystemRequestCacheEntity } from '@/backend/entities/system-request-cache';
 import { adapter } from '@/backend/lib/nextauth';
@@ -5,14 +15,6 @@ import NextauthAccountService from '@/backend/services/data/nextauth-account';
 import NextauthVerificationTokenService from '@/backend/services/data/nextauth-verification-token';
 import SystemRequestCacheService from '@/backend/services/data/system-request-cache';
 import UserService from '@/backend/services/data/user';
-import {
-  PackageNextauthAccount,
-  PackageNextauthVerificationToken,
-  PackageSystemRequestCache,
-  PackageUser,
-} from '@airdev/next/backend/types/data';
-import { BackendFunctionConfig } from '@airdev/next/common/types/config';
-import { Context } from '@airdev/next/framework/context';
 import { pick } from 'lodash-es';
 import { Account } from 'next-auth';
 

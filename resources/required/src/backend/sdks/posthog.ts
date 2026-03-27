@@ -1,5 +1,7 @@
+/* "@airdev/next": "managed" */
+
+import { Context } from '@/airdev/framework/context';
 import { publicAppConfig } from '@/config/public-app';
-import { Context } from '@airdev/next/framework/context';
 import { PostHog } from 'posthog-node';
 
 type PostHogEventMessage = {

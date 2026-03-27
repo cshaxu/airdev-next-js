@@ -1,4 +1,5 @@
 #!/bin/bash
+# "@airdev/next": "seeded"
 
 echo "VERCEL_ENV: $VERCEL_ENV"
 echo "SERVICE_ENV: $NEXT_PUBLIC_BAREBONE_NEXT_SERVICE_ENVIRONMENT"

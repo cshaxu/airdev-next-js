@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 import prisma from '../src/backend/lib/prisma';
 import { publicConfig } from '../src/config/json/public';
 

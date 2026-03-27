@@ -1,3 +1,5 @@
+/* "@airdev/next": "seeded" */
+
 import * as z from 'zod';
 
 export const RevalidateQuery = z.object({ tag: z.string() });

@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 import { Attachment } from 'postmark';
 import { Hash } from 'postmark/dist/client/models';
 import * as z from 'zod';

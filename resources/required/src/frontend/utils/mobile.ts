@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 export const getIsMobile = (userAgent?: string | null) =>
   !!userAgent?.length &&
   (userAgent.includes('Mobile') ||

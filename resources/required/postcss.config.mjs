@@ -1,5 +1,3 @@
-export default {
-  plugins: {
-    '@tailwindcss/postcss': {},
-  },
-};
+/* "@airdev/next": "managed" */
+
+export default { plugins: { '@tailwindcss/postcss': {} } };

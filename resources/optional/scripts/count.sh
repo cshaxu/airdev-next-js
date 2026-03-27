@@ -1,4 +1,5 @@
 #!/bin/bash
+# "@airdev/next": "seeded"
 
 calculate_total() {
   local paths=("$@") # Receive all arguments as an array

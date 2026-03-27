@@ -1,3 +1,5 @@
+// "@airdev/next": "seeded"
+
 generator client {
   provider = "prisma-client-js"
 }

@@ -1,6 +1,8 @@
-import ProtectedLayout from '@airdev/next/frontend/components/shell/ProtectedLayout';
-import { initializePermission } from '@airdev/next/frontend/initializePermission';
-import { ReactNodeProps } from '@airdev/next/frontend/types/props';
+/* "@airdev/next": "managed" */
+
+import ProtectedLayout from '@/airdev/frontend/components/shell/ProtectedLayout';
+import { initializePermission } from '@/airdev/frontend/initializePermission';
+import { ReactNodeProps } from '@/airdev/frontend/types/props';
 import {
   dehydrate,
   HydrationBoundary,

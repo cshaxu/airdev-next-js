@@ -1,3 +1,5 @@
+/* "@airdev/next": "seeded" */
+
 import { RevalidateQuery, RevalidateResult } from '@/common/types/api/edge';
 import { fetchJsonOrThrow, queryStringify } from '@airent/api';
 

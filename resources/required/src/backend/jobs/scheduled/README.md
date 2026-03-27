@@ -1,3 +1,5 @@
+"@airdev/next": "managed"
+
 # Scheduled Job Development Guide
 
 This document is a guide for developing scheduled jobs.

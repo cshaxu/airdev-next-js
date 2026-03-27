@@ -1,5 +1,13 @@
+/* "@airdev/next": "seeded" */
+
 'use client';
 
+import type {
+  ClientFunctionConfig,
+  ClientFunctionConfigTypes,
+} from '@/airdev/common/types/config';
+import type { CurrentUser } from '@/airdev/common/types/context';
+import { CurrentUserFieldRequest } from '@/airdev/common/types/context';
 import type { UpdateOneUserBody } from '@/common/types/data/user';
 import { callBackendApi } from '@/frontend/lib/backend';
 import UserApiClient from '@/generated/clients/user';
@@ -10,12 +18,6 @@ import {
   useUpdateOneUser,
 } from '@/generated/tanstack-hooks/user-client';
 import { type SearchSelectedUserResponse } from '@/generated/tanstack-hooks/user-types';
-import type {
-  ClientFunctionConfig,
-  ClientFunctionConfigTypes,
-} from '@airdev/next/common/types/config';
-import type { CurrentUser } from '@airdev/next/common/types/context';
-import { CurrentUserFieldRequest } from '@airdev/next/common/types/context';
 import { signIn, signOut } from 'next-auth/react';
 
 type AppClientFunctionConfigTypes = ClientFunctionConfigTypes & {

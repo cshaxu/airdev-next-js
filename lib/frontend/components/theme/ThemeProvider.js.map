@@ -1,1 +1,0 @@
-{"version":3,"file":"ThemeProvider.js","sourceRoot":"","sources":["../../../../src/frontend/components/theme/ThemeProvider.tsx"],"names":[],"mappings":"AAAA,YAAY,CAAC;;AAEb,OAAO,EAAE,aAAa,IAAI,kBAAkB,EAAE,MAAM,aAAa,CAAC;AAGlE,MAAM,CAAC,OAAO,UAAU,aAAa,CAAC,EACpC,QAAQ,EACR,GAAG,KAAK,EACwC;IAChD,OAAO,KAAC,kBAAkB,OAAK,KAAK,YAAG,QAAQ,GAAsB,CAAC;AACxE,CAAC"}

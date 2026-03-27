@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 export function throttle<T extends (..._args: any[]) => any>(
   func: T,
   limit: number

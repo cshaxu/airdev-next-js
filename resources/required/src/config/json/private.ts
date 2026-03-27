@@ -1,4 +1,6 @@
-import type { PrivateConfig as AirdevPrivateConfig } from '@airdev/next/common/types/config';
+/* "@airdev/next": "managed" */
+
+import type { PrivateConfig as AirdevPrivateConfig } from '@/airdev/common/types/config';
 import { pick } from 'lodash-es';
 import { privateAppConfig } from '../private-app';
 

@@ -1,1 +1,3 @@
-export { default } from '@airdev/next/frontend/components/auth/SignInLayout';
+/* "@airdev/next": "managed" */
+
+export { default } from '@/airdev/frontend/components/auth/SignInLayout';

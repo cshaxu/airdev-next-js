@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 import * as AirentApi from '@airent/api';
 import createHttpError from 'http-errors';
 import { ZodError } from 'zod';

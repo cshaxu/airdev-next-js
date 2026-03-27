@@ -1,7 +1,9 @@
+/* "@airdev/next": "managed" */
+
 import RootLayout, {
   generateRootLayoutMetadata,
-} from '@airdev/next/frontend/components/shell/RootLayout';
-import { ReactNodeProps } from '@airdev/next/frontend/types/props';
+} from '@/airdev/frontend/components/shell/RootLayout';
+import { ReactNodeProps } from '@/airdev/frontend/types/props';
 
 export const generateMetadata = generateRootLayoutMetadata;
 

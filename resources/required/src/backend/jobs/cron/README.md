@@ -1,3 +1,5 @@
+"@airdev/next": "managed"
+
 # Cron Job Development Guide
 
 This document is a guide for developing Cron jobs.

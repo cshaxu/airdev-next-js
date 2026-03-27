@@ -1,3 +1,5 @@
+# "@airdev/next": "managed"
+
 name: NextauthAccount
 # internal for now since we haven't build support for unlinking sso
 internal: true

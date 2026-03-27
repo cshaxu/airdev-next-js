@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 import { privateAppConfig } from '@/config/private-app';
 import { publicAppConfig } from '@/config/public-app';
 import { logInfo, wait } from '@airent/api';

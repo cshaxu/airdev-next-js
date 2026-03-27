@@ -1,4 +1,5 @@
 #!/bin/bash
+# "@airdev/next": "seeded"
 
 current_path=$(pwd)
 cd $BAREBONE_NEXT_REPO_PATH

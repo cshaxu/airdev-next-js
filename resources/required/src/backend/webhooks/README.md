@@ -1,3 +1,5 @@
+"@airdev/next": "managed"
+
 # Webhook Development Guide
 
 This document is a guide for developing webhooks.

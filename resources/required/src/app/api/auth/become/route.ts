@@ -1,3 +1,5 @@
-import AuthService from '@airdev/next/backend/service/auth';
+/* "@airdev/next": "managed" */
+
+import AuthService from '@/airdev/backend/service/auth';
 
 export const POST = AuthService.become;

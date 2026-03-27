@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 import { Awaitable } from 'airent';
 import { merge } from 'lodash-es';
 import { toast } from 'sonner';

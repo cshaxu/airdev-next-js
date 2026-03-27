@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 'use client';
 
-export { default } from '@airdev/next/frontend/components/shell/RootError';
+export { default } from '@/airdev/frontend/components/shell/RootError';

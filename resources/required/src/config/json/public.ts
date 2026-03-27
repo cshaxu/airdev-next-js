@@ -1,4 +1,6 @@
-import type { PublicConfig as AirdevPublicConfig } from '@airdev/next/common/types/config';
+/* "@airdev/next": "managed" */
+
+import type { PublicConfig as AirdevPublicConfig } from '@/airdev/common/types/config';
 import { pick } from 'lodash-es';
 import { publicAppConfig } from '../public-app';
 

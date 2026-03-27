@@ -1,1 +1,3 @@
-export { default } from '@airdev/next/frontend/components/settings/SettingsPage';
+/* "@airdev/next": "managed" */
+
+export { default } from '@/airdev/frontend/components/settings/SettingsPage';

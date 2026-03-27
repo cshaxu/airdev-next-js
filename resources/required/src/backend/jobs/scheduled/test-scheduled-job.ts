@@ -1,8 +1,10 @@
+/* "@airdev/next": "managed" */
+
+import { Context } from '@/airdev/framework/context';
 import {
   SystemScheduledJobResult,
   SystemScheduledJobStatus,
 } from '@/common/types/data/system-scheduled-job';
-import { Context } from '@airdev/next/framework/context';
 
 export const event = 'test-scheduled-job';
 

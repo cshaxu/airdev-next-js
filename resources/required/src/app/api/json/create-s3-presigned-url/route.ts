@@ -1,6 +1,8 @@
+/* "@airdev/next": "managed" */
+
+import { handleBackendJsonJsonWith } from '@/airdev/backend/lib/handlers';
 import * as AwsSdk from '@/backend/sdks/aws';
 import { CreateS3PresignedUrlBody } from '@/common/types/api/json';
-import { handleBackendJsonJsonWith } from '@airdev/next/backend/lib/handlers';
 
 const executor = (body: CreateS3PresignedUrlBody) =>
   AwsSdk.createS3PresignedUrl(

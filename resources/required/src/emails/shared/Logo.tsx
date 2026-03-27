@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 import { Img } from '@react-email/components';
 
 type Props = { src: string; alt: string };

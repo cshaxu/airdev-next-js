@@ -1,4 +1,5 @@
 {
+  "@airdev/next": "seeded",
   "buildCommand": "npm run build",
   "functions": {
     "app/api/auth/**/*": {

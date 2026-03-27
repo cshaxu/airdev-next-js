@@ -1,3 +1,5 @@
+/* "@airdev/next": "seeded" */
+
 // Note: anything added here will be leaked to the public, use caution!
 
 import PublicConfigJson from '../../public.config.json';

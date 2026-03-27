@@ -1,5 +1,7 @@
+/* "@airdev/next": "managed" */
+
+import { handleEdgeWith } from '@/airdev/edge/lib/handlers';
 import { RevalidateQuery, RevalidateResult } from '@/common/types/api/edge';
-import { handleEdgeWith } from '@airdev/next/edge/lib/handlers';
 import { parseQueryWith } from '@airent/api';
 import { revalidateTag } from 'next/cache';
 

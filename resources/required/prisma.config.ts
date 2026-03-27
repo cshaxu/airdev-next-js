@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 import { defineConfig } from 'prisma/config';
 import { privateAppConfig } from './src/config/private-app';
 

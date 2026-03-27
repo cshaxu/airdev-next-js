@@ -1,5 +1,7 @@
+/* "@airdev/next": "managed" */
+
+import { Context } from '@/airdev/framework/context';
 import { scheduleTestScheduledJobEvent } from '@/generated/scheduler';
-import { Context } from '@airdev/next/framework/context';
 import { CommonResponse, parseBodyWith } from '@airent/api';
 import { addMinutes } from 'date-fns';
 import * as z from 'zod';

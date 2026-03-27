@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 import { privateAppConfig } from '@/config/private-app';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@prisma/client';

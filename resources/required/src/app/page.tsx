@@ -1,6 +1,8 @@
+/* "@airdev/next": "managed" */
+
 import RootPage, {
   generateRootPageMetadata,
-} from '@airdev/next/frontend/components/shell/RootPage';
+} from '@/airdev/frontend/components/shell/RootPage';
 
 export const dynamic = 'force-dynamic';
 export const generateMetadata = generateRootPageMetadata;

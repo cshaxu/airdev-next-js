@@ -1,3 +1,5 @@
+/* "@airdev/next": "seeded" */
+
 const { FlatCompat } = require('@eslint/eslintrc');
 const js = require('@eslint/js');
 const unusedImports = require('eslint-plugin-unused-imports');
@@ -27,6 +29,7 @@ module.exports = [
       'src/app/api/inngest/route.ts',
       'src/app/api/jobs/**/*.ts',
       'src/app/api/webhooks/**/*.ts',
+      'src/airdev/frontend/components/**/*.tsx',
     ],
   },
   ...require('eslint-config-next/core-web-vitals'),
@@ -236,12 +239,12 @@ module.exports = [
             {
               name: '@/config/public',
               message:
-                'Use "@/config/public-app" in barebone-next code. Keep "@/config/public" for Airdev/framework compatibility only.',
+                'Use "@/config/public-app" in memorix-next code. Keep "@/config/public" for Airdev/framework compatibility only.',
             },
             {
               name: '@/config/private',
               message:
-                'Use "@/config/private-app" in barebone-next code. Keep "@/config/private" for Airdev/framework compatibility only.',
+                'Use "@/config/private-app" in memorix-next code. Keep "@/config/private" for Airdev/framework compatibility only.',
             },
           ],
         },
@@ -265,6 +268,10 @@ module.exports = [
   },
   {
     files: ['next-env.d.ts', 'prisma/**/*.ts', '*.config.ts', '*.config.js'],
+    rules: { 'airdev/next-require-export-default-function': 'off' },
+  },
+  {
+    files: ['scripts/**/*.mjs'],
     rules: { 'airdev/next-require-export-default-function': 'off' },
   },
 ];

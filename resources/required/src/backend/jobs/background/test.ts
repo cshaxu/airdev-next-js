@@ -1,4 +1,6 @@
-import { Context } from '@airdev/next/framework/context';
+/* "@airdev/next": "managed" */
+
+import { Context } from '@/airdev/framework/context';
 import { CommonResponse, logInfo } from '@airent/api';
 
 export const event = 'test';

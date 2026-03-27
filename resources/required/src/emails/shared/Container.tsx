@@ -1,4 +1,6 @@
-import { ReactNodeProps } from '@airdev/next/frontend/types/props';
+/* "@airdev/next": "managed" */
+
+import { ReactNodeProps } from '@/airdev/frontend/types/props';
 import { Container as ReactEmailContainer } from '@react-email/components';
 
 export default function Container({ children }: ReactNodeProps) {

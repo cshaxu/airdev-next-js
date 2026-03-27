@@ -36,6 +36,11 @@ function main() {
   const results = [
     ...syncRequiredDirectory(requiredResourceRoot, targetRoot),
     ...syncOptionalDirectory(optionalResourceRoot, targetRoot),
+    ...syncGitignore({
+      requiredPaths: listRelativeFiles(requiredResourceRoot),
+      optionalPaths: listRelativeFiles(optionalResourceRoot),
+      targetRoot,
+    }),
   ];
   reportResults(results);
 }
@@ -101,8 +106,6 @@ function reportResults(results) {
   const groups = [
     ['created', 'Created'],
     ['updated', 'Updated'],
-    ['unchanged', 'Unchanged'],
-    ['skipped', 'Skipped'],
   ];
 
   for (const [status, label] of groups) {
@@ -114,8 +117,136 @@ function reportResults(results) {
     console.log(`${label}:`);
     for (const match of matches) {
       console.log(`  ${match.targetPath}`);
+      }
+  }
+
+  const summaryStatuses = [
+    ['created', 'Created'],
+    ['updated', 'Updated'],
+    ['skipped', 'Skipped'],
+    ['unchanged', 'Unchanged'],
+  ];
+
+  console.log('Stats:');
+  for (const [status, label] of summaryStatuses) {
+    const count = results.filter((result) => result.status === status).length;
+    console.log(`  ${count} ${label.toLowerCase()}`);
+  }
+}
+
+function syncGitignore({ requiredPaths, optionalPaths, targetRoot }) {
+  const gitignorePath = path.join(targetRoot, '.gitignore');
+  const hasGitignore = fs.existsSync(gitignorePath);
+  const originalContent = hasGitignore
+    ? fs.readFileSync(gitignorePath, 'utf8')
+    : '';
+  const hadTrailingNewline =
+    originalContent.endsWith('\n') || originalContent.endsWith('\r\n');
+  const lines = splitLines(originalContent);
+  removeOptionalEntries(lines, optionalPaths);
+  reconcileAirdevIgnore(lines);
+  addRequiredEntries(lines, requiredPaths);
+
+  const nextContent = joinLines(lines, hadTrailingNewline || lines.length > 0);
+  if (nextContent !== originalContent) {
+    fs.writeFileSync(gitignorePath, nextContent, 'utf8');
+    return [
+      {
+        status: hasGitignore ? 'updated' : 'created',
+        targetPath: gitignorePath,
+      },
+    ];
+  }
+
+  return [];
+}
+
+function removeOptionalEntries(lines, optionalPaths) {
+  const optionalEntrySet = new Set();
+  for (const relativePath of optionalPaths) {
+    const normalized = normalizeRelativePath(relativePath);
+    optionalEntrySet.add(normalized);
+    optionalEntrySet.add(`/${normalized}`);
+  }
+
+  for (let index = lines.length - 1; index >= 0; index -= 1) {
+    const line = lines[index];
+    const trimmed = line.trim();
+    if (!optionalEntrySet.has(trimmed)) {
+      continue;
+    }
+
+    lines.splice(index, 1);
+  }
+}
+
+function reconcileAirdevIgnore(lines) {
+  for (let index = lines.length - 1; index >= 0; index -= 1) {
+    const trimmed = lines[index].trim();
+    if (trimmed.startsWith('/src/airdev/')) {
+      lines.splice(index, 1);
+      continue;
+    }
+
+    if (trimmed === '/src/airdev/') {
+      lines.splice(index, 1);
     }
   }
+
+  const existingEntries = new Set(lines.map((line) => line.trim()));
+  if (!existingEntries.has('/src/airdev')) {
+    lines.push('/src/airdev');
+  }
+}
+
+function addRequiredEntries(lines, requiredPaths) {
+  const existingEntries = new Set(lines.map((line) => line.trim()));
+
+  for (const relativePath of requiredPaths) {
+    const normalized = normalizeRelativePath(relativePath);
+    if (normalized.startsWith('src/airdev/')) {
+      continue;
+    }
+    const rooted = `/${normalized}`;
+    if (
+      existingEntries.has(rooted) ||
+      existingEntries.has(normalized)
+    ) {
+      continue;
+    }
+
+    lines.push(rooted);
+    existingEntries.add(rooted);
+  }
+}
+
+function listRelativeFiles(rootDir) {
+  return [...walkFiles(rootDir)].map((filePath) => path.relative(rootDir, filePath));
+}
+
+function splitLines(content) {
+  if (content === '') {
+    return [];
+  }
+
+  const lines = content.split(/\r?\n/u);
+  if (lines.at(-1) === '') {
+    lines.pop();
+  }
+  return lines;
+}
+
+function joinLines(lines, trailingNewline) {
+  if (lines.length === 0) {
+    return '';
+  }
+
+  const content = lines.join('\n');
+  return trailingNewline ? `${content}\n` : content;
+}
+
+function normalizeRelativePath(relativePath) {
+  return relativePath.split(path.sep).join('/');
 }
 
 function* walkFiles(dir) {

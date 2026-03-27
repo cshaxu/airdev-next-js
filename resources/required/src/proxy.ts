@@ -1,6 +1,8 @@
-import { HEADER_URL_KEY } from '@airdev/next/common/constant';
+/* "@airdev/next": "managed" */
+
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { HEADER_URL_KEY } from './airdev/common/constant';
 
 export function proxy(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);

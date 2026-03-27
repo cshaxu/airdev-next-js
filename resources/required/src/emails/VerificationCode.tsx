@@ -1,3 +1,5 @@
+/* "@airdev/next": "managed" */
+
 import { publicAppConfig } from '@/config/public-app';
 import { Heading, Row, Section, Text } from '@react-email/components';
 import Container from './shared/Container';

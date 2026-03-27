@@ -1,4 +1,6 @@
-import { EdgeConfig as AirdevEdgeConfig } from '@airdev/next/common/types/config';
+/* "@airdev/next": "managed" */
+
+import { EdgeConfig as AirdevEdgeConfig } from '@/airdev/common/types/config';
 
 const INTERNAL_SECRET = process.env.BAREBONE_NEXT_INTERNAL_SECRET!;
 const CRON_SECRET = process.env.CRON_SECRET ?? INTERNAL_SECRET;

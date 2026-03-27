@@ -1,3 +1,5 @@
+# "@airdev/next": "seeded"
+
 # internal - explicit
 
 BAREBONE_NEXT_DATABAG_PASSWORD=op://DevEnv/common/ZIPLOC_SECRET
