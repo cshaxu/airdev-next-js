@@ -146,7 +146,7 @@
       "dispatcherConfigImportPath": "@/airdev/backend/lib/framework"
     },
     "client": {
-      "baseUrlImportPath": "@/config/public"
+      "baseUrlImportPath": "@/airdev/config/public"
     },
     "typesPath": "src/common/types/data"
   },

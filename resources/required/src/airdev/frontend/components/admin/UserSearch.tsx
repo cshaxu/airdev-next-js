@@ -11,7 +11,7 @@ import {
 import { Button } from '@/airdev/frontend/components/ui/Button';
 import { Input } from '@/airdev/frontend/components/ui/Input';
 import { Skeleton } from '@/airdev/frontend/components/ui/Skeleton';
-import { become } from '@/airdev/frontend/sdks/backend';
+import AirdevBackendApiClient from '@/airdev/frontend/sdks/backend';
 import {
   useBecameUser,
   useSetBecameUser,
@@ -53,13 +53,13 @@ export default function UserSearch() {
   }
 
   async function handleBecome(user: CurrentUser) {
-    await become(user.id);
+    await AirdevBackendApiClient.become(user.id);
     setBecameUser(user);
     window.location.reload();
   }
 
   async function handleRevertSelf() {
-    await become(null);
+    await AirdevBackendApiClient.become(null);
     setBecameUser(null);
     window.location.reload();
   }

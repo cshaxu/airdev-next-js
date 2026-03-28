@@ -1,6 +1,9 @@
-/* "@airdev/next": "seeded" */
+/* "@airdev/next": "managed" */
 
-import { RevalidateQuery, RevalidateResult } from '@/common/types/api/edge';
+import {
+  RevalidateQuery,
+  RevalidateResult,
+} from '@/airdev/common/types/api/edge';
 import { fetchJsonOrThrow, queryStringify } from '@airent/api';
 
 const revalidate = (query: RevalidateQuery): Promise<RevalidateResult> =>
@@ -9,6 +12,6 @@ const revalidate = (query: RevalidateQuery): Promise<RevalidateResult> =>
     { credentials: 'include', method: 'POST' }
   ).then((r) => r as RevalidateResult);
 
-const EdgeApiClient = { revalidate };
+const AirdevEdgeApiClient = { revalidate };
 
-export default EdgeApiClient;
+export default AirdevEdgeApiClient;

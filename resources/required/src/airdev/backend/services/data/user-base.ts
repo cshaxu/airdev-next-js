@@ -1,12 +1,12 @@
 /* "@airdev/next": "managed" */
 
-import { adminOrThrow, Context, selfOrThrow } from '@/airdev/framework/context';
-import { UserEntity } from '@/backend/entities/user';
 import {
   GetOneUserParams,
   SearchUsersQuery,
   UpdateOneUserBody,
-} from '@/common/types/data/user';
+} from '@/airdev/common/types/data/user';
+import { adminOrThrow, Context, selfOrThrow } from '@/airdev/framework/context';
+import { UserEntity } from '@/backend/entities/user';
 import { UserModel } from '@/generated/types/user';
 import {
   buildInvalidErrorMessage,
@@ -122,7 +122,7 @@ async function updateOne(
 }
 
 const buildDeleteOne =
-  (deleters: (() => Promise<number>)[]) =>
+  (deleters: ((userId: string, context: Context) => Promise<number>)[]) =>
   async (one: UserEntity, context: Context): Promise<UserEntity> => {
     const functions: (() => Promise<number>)[] = [
       NextauthAccountService.deleteManyByUser,

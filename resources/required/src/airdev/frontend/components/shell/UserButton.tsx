@@ -26,7 +26,7 @@ import {
   DropdownMenuTrigger,
 } from '@/airdev/frontend/components/ui/DropdownMenu';
 import { useRequiredCurrentUser } from '@/airdev/frontend/hooks/data/user';
-import { become } from '@/airdev/frontend/sdks/backend';
+import AirdevBackendApiClient from '@/airdev/frontend/sdks/backend';
 import {
   useBecameUser,
   useSetBecameUser,
@@ -190,7 +190,7 @@ export default function UserButton(props: Props) {
   };
 
   const handleRevertSelf = async () => {
-    await become(null);
+    await AirdevBackendApiClient.become(null);
     setBecameUser(null);
     window.location.reload();
   };

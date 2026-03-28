@@ -12,7 +12,7 @@ api:
     deleteOne: '{ requireAdmin: true }'
 types:
   - name: UserEmailPayload
-    import: '@/common/types/data/user'
+    import: '@/airdev/common/types/data/user'
 fields:
   - id: 0
     internal: true

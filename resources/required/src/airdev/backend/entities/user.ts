@@ -1,8 +1,8 @@
 ﻿/* "@airdev/next": "managed" */
 
+import { UserEmailPayload } from '@/airdev/common/types/data/user';
 import { airdevPrivateConfig } from '@/airdev/config/private';
 import { airdevPublicConfig } from '@/airdev/config/public';
-import { UserEmailPayload } from '@/common/types/data/user';
 import { UserEntityBase } from '@/generated/entities/user';
 
 export class AirdevUserEntity extends UserEntityBase {

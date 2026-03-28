@@ -2,13 +2,13 @@
 
 import * as AuthDelivery from '@/airdev/backend/deliveries/auth';
 import { createHash, generateCode } from '@/airdev/backend/utils/token';
-import { airdevPrivateConfig } from '@/airdev/config/private';
-import { Context } from '@/airdev/framework/context';
-import { NextauthVerificationTokenEntity } from '@/backend/entities/nextauth-verification-token';
 import {
   CreateOneNextauthVerificationTokenBody,
   GetOneNextauthVerificationTokenParams,
-} from '@/common/types/data/nextauth-verification-token';
+} from '@/airdev/common/types/data/nextauth-verification-token';
+import { airdevPrivateConfig } from '@/airdev/config/private';
+import { Context } from '@/airdev/framework/context';
+import { NextauthVerificationTokenEntity } from '@/backend/entities/nextauth-verification-token';
 import { Prisma } from '@prisma/client';
 import { addMinutes } from 'date-fns';
 
