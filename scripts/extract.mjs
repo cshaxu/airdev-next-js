@@ -204,6 +204,17 @@ function globToRegExp(pattern) {
   for (let index = 0; index < pattern.length; index += 1) {
     const char = pattern[index];
 
+    if (char === '\\') {
+      const nextChar = pattern[index + 1];
+      if (nextChar !== undefined) {
+        regex += escapeRegExp(nextChar);
+        index += 1;
+      } else {
+        regex += escapeRegExp(char);
+      }
+      continue;
+    }
+
     if (char === '*') {
       const nextChar = pattern[index + 1];
       if (nextChar === '*') {

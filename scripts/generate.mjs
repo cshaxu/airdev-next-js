@@ -177,9 +177,11 @@ function syncGitignore({ requiredPaths, optionalPaths, targetRoot }) {
 function removeOptionalEntries(lines, optionalPaths) {
   const optionalEntrySet = new Set();
   for (const relativePath of optionalPaths) {
-    const normalized = normalizeRelativePath(relativePath);
-    optionalEntrySet.add(normalized);
-    optionalEntrySet.add(`/${normalized}`);
+    const entries = buildGitignoreEntries(relativePath);
+    optionalEntrySet.add(entries.bare);
+    optionalEntrySet.add(entries.rooted);
+    optionalEntrySet.add(entries.legacyBare);
+    optionalEntrySet.add(entries.legacyRooted);
   }
 
   for (let index = lines.length - 1; index >= 0; index -= 1) {
@@ -220,16 +222,19 @@ function addRequiredEntries(lines, requiredPaths) {
     if (normalized.startsWith('src/airdev/')) {
       continue;
     }
-    const rooted = `/${normalized}`;
-    if (
-      existingEntries.has(rooted) ||
-      existingEntries.has(normalized)
-    ) {
+
+    const entries = buildGitignoreEntries(relativePath);
+    if (existingEntries.has(entries.rooted) || existingEntries.has(entries.bare)) {
       continue;
     }
 
-    lines.push(rooted);
-    existingEntries.add(rooted);
+    removeGitignoreEntries(lines, existingEntries, [
+      entries.legacyRooted,
+      entries.legacyBare,
+    ]);
+
+    lines.push(entries.rooted);
+    existingEntries.add(entries.rooted);
   }
 }
 
@@ -260,6 +265,58 @@ function joinLines(lines, trailingNewline) {
 
 function normalizeRelativePath(relativePath) {
   return relativePath.split(path.sep).join('/');
+}
+
+function buildGitignoreEntries(relativePath) {
+  const normalized = normalizeRelativePath(relativePath);
+  const escaped = escapeGitignoreLiteral(normalized);
+
+  return {
+    bare: escaped,
+    rooted: `/${escaped}`,
+    legacyBare: normalized,
+    legacyRooted: `/${normalized}`,
+  };
+}
+
+function escapeGitignoreLiteral(value) {
+  let escaped = '';
+
+  for (let index = 0; index < value.length; index += 1) {
+    const char = value[index];
+    const isLeadingSpecial =
+      index === 0 && (char === '#' || char === '!');
+    const isPatternSpecial =
+      char === '\\' ||
+      char === '*' ||
+      char === '?' ||
+      char === '[' ||
+      char === ']';
+    const isTrailingSpace =
+      char === ' ' && value.slice(index).trim().length === 0;
+
+    if (isLeadingSpecial || isPatternSpecial || isTrailingSpace) {
+      escaped += '\\';
+    }
+
+    escaped += char;
+  }
+
+  return escaped;
+}
+
+function removeGitignoreEntries(lines, existingEntries, entries) {
+  const entrySet = new Set(entries);
+
+  for (let index = lines.length - 1; index >= 0; index -= 1) {
+    const trimmed = lines[index].trim();
+    if (!entrySet.has(trimmed)) {
+      continue;
+    }
+
+    lines.splice(index, 1);
+    existingEntries.delete(trimmed);
+  }
 }
 
 function* walkFiles(dir) {
