@@ -2,8 +2,8 @@
 
 'use client';
 
+import { airdevPublicConfig } from '@/airdev/config/public';
 import { ReactNodeProps } from '@/airdev/frontend/types/props';
-import { publicConfig } from '@/config/json/public';
 import { Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import clipboardIllustration from '../../../assets/clipboard.svg';
@@ -32,10 +32,10 @@ export default function SignInLayout({ children }: ReactNodeProps) {
             <Sparkles className="size-6 text-white" />
           </div>
           <h1 className="text-2xl font-medium text-white sm:text-3xl">
-            Welcome to {publicConfig.app.name}
+            Welcome to {airdevPublicConfig.app.name}
           </h1>
           <p className="text-sm leading-6 text-white sm:text-base">
-            {publicConfig.app.welcomeText}
+            {airdevPublicConfig.app.welcomeText}
           </p>
         </div>
         <div className="mt-6 flex w-full justify-start lg:mt-10">

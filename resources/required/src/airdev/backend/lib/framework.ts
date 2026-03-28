@@ -1,24 +1,25 @@
 /* "@airdev/next": "managed" */
 
+import SystemRequestCacheService from '@/airdev/backend/services/data/system-request-cache';
+import AirdevUserService from '@/airdev/backend/services/data/user-base';
 import { mockContext } from '@/airdev/backend/utils/context';
-import { buildContextUserFromPackageUser } from '@/airdev/backend/utils/user';
 import {
   HEADER_COOKIE_KEY,
   HEADER_CURRENT_USER_ID_KEY,
 } from '@/airdev/common/constant';
+import { logError } from '@/airdev/common/utils/logging';
+import { airdevPrivateConfig } from '@/airdev/config/private';
+import { airdevPublicConfig } from '@/airdev/config/public';
 import {
   DispatcherOptions,
   commonDispatcherConfig,
   commonHandlerConfig,
 } from '@/airdev/framework/callbacks';
 import { Context, ContextUser } from '@/airdev/framework/context';
-import { backendFunctionConfig } from '@/config/function/backend';
-import { commonFunctionConfig } from '@/config/function/common';
-import { privateConfig } from '@/config/json/private';
-import { publicConfig } from '@/config/json/public';
 import { DispatcherConfig, Executor, wait } from '@airent/api';
 import { HandlerConfig } from '@airent/api-next';
 import createHttpError from 'http-errors';
+import { pick } from 'lodash-es';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './nextauth';
 
@@ -49,7 +50,7 @@ async function getCurrentUser(headers: Headers): Promise<ContextUser | null> {
     becameUserPromise,
   ]);
   if (
-    publicConfig.service.serviceEnvironment === 'local' ||
+    airdevPublicConfig.service.serviceEnvironment === 'local' ||
     realCurrentUser?.isAdmin
   ) {
     return becameUser ?? realCurrentUser;
@@ -72,13 +73,14 @@ async function getBecameUser(headers: Headers): Promise<ContextUser | null> {
 async function getNullableUserSafe(id: string): Promise<ContextUser | null> {
   try {
     const context = await mockContext();
-    const user = await backendFunctionConfig.user.getOneSafe(id, context);
+    const user = await AirdevUserService.getOneSafe({ id }, context);
     if (user === null) {
       return null;
     }
-    return buildContextUserFromPackageUser(user);
+    const isAdmin = user.getIsAdmin();
+    return { ...pick(user, ['id', 'name', 'email', 'createdAt']), isAdmin };
   } catch (error) {
-    commonFunctionConfig.logError(error, { id });
+    logError(error, { id });
     return null;
   }
 }
@@ -112,20 +114,16 @@ function executorWrapper<PARSED, RESULT>(
         ? options.cacheRequest
         : CACHED_REQUEST_PATHS.some((path) => url.includes(path));
     if (requireRequestCache) {
-      const requestCache =
-        await backendFunctionConfig.systemRequestCache.createOneSafe(
-          parsed,
-          context
-        );
+      const requestCache = await SystemRequestCacheService.createOneSafe(
+        parsed,
+        context
+      );
       if (requestCache === null) {
         // key conflict
         let delay = 1000;
         do {
           const { completedAt, response } =
-            await backendFunctionConfig.systemRequestCache.getOne(
-              parsed,
-              context
-            );
+            await SystemRequestCacheService.getOne(parsed, context);
           if (completedAt === null) {
             // exponential backoff
             await wait(delay);
@@ -133,12 +131,12 @@ function executorWrapper<PARSED, RESULT>(
           } else {
             return response as RESULT;
           }
-        } while (delay < privateConfig.database.delaySeconds * 1000);
+        } while (delay < airdevPrivateConfig.database.delaySeconds * 1000);
         throw createHttpError.RequestTimeout();
       } else {
         // key acquired
         const result = await executor(parsed, context);
-        await backendFunctionConfig.systemRequestCache.updateOneSafe(
+        await SystemRequestCacheService.updateOneSafe(
           requestCache.id,
           result,
           context

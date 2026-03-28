@@ -4,7 +4,7 @@
 
 import DeleteDialog from '@/airdev/frontend/components/shell/DeleteDialog';
 import HeaderBar from '@/airdev/frontend/components/shell/HeaderBar';
-import { clientComponentConfig } from '@/config/component/client';
+import { clientComponentConfig } from '@/config/component';
 import EditUserProfileTile from './EditUserProfileTile';
 import { useUserProfileSettingsController } from './useUserProfileSettingsController';
 

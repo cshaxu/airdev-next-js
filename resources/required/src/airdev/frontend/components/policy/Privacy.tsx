@@ -1,12 +1,12 @@
 /* "@airdev/next": "managed" */
 
 import { ROOT_HREF } from '@/airdev/common/constant';
+import { airdevPublicConfig } from '@/airdev/config/public';
 import Header from '@/airdev/frontend/components/ui/Header';
 import { pageTitle } from '@/airdev/frontend/utils/page';
-import { publicConfig } from '@/config/json/public';
 import Link from 'next/link';
 
-const { app } = publicConfig;
+const { app } = airdevPublicConfig;
 
 export const generatePrivacyMetadata = () => ({
   title: pageTitle('Privacy Policy'),
@@ -30,7 +30,7 @@ export default function Privacy() {
           as a natural person (“Personal Information”). This Privacy Policy sets
           forth the privacy practices of {app.owner} (“{app.ownerShort}”, “we”
           or “us” or “our”) for (1) our website located at{' '}
-          {publicConfig.service.baseUrl} (the “Site”) and (2) all{' '}
+          {airdevPublicConfig.service.baseUrl} (the “Site”) and (2) all{' '}
           {app.ownerShort} software and applications (including, without
           limitation, mobile software and applications) (the “Software”) and all
           other {app.ownerShort} products or services provided otherwise made

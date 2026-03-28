@@ -1,5 +1,6 @@
 /* "@airdev/next": "managed" */
 
+import { logError } from '@/airdev/common/utils/logging';
 import { measureElementWidth } from '@/airdev/frontend/utils/element';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -148,7 +149,7 @@ export function ResponsiveBreadcrumb({ items, className, renderItem }: Props) {
       observer.observe(container);
       updateCollapse();
     } catch (error) {
-      console.error('Error setting up ResizeObserver:', error);
+      logError(error, { message: 'Error setting up ResizeObserver:' });
     }
 
     return () => {

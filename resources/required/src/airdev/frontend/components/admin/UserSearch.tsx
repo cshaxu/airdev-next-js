@@ -11,16 +11,19 @@ import {
 import { Button } from '@/airdev/frontend/components/ui/Button';
 import { Input } from '@/airdev/frontend/components/ui/Input';
 import { Skeleton } from '@/airdev/frontend/components/ui/Skeleton';
+import { become } from '@/airdev/frontend/sdks/backend';
 import {
   useBecameUser,
   useSetBecameUser,
 } from '@/airdev/frontend/stores/becameUserStore';
-import { clientFunctionConfig } from '@/config/function/client';
+import {
+  useMutationSearchUsers,
+  useUpdateOneUser,
+} from '@/generated/tanstack-hooks/user-client';
 import { Drama, Smile, User, UserKey } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function UserSearch() {
-  const { become } = clientFunctionConfig.apiClient.auth;
   const [inputQ, setInputQ] = useState('');
   const [users, setUsers] = useState<CurrentUser[]>([]);
   const [adminTargetUserId, setAdminTargetUserId] = useState<string | null>(
@@ -29,9 +32,9 @@ export default function UserSearch() {
   const became = useBecameUser();
   const setBecameUser = useSetBecameUser();
   const { mutateAsync: searchUsers, isPending: isSearching } =
-    clientFunctionConfig.query.user.useMutationSearch();
+    useMutationSearchUsers();
   const { mutateAsync: updateUser, isPending: isUpdatingUser } =
-    clientFunctionConfig.query.user.useUpdateOne();
+    useUpdateOneUser();
 
   async function handleSearch(q: string = inputQ.trim()) {
     const nextUsers = (await searchUsers({ q })) as CurrentUser[];
@@ -40,6 +43,7 @@ export default function UserSearch() {
 
   useEffect(() => {
     void handleSearch('');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {

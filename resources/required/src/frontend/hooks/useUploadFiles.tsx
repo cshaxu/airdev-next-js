@@ -2,8 +2,9 @@
 
 'use client';
 
-import { publicAppConfig } from '@/config/public-app';
-import { makeTransition } from '@/frontend/utils/make-transition';
+import { logError } from '@/airdev/common/utils/logging';
+import { makeTransition } from '@/airdev/frontend/utils/make-transition';
+import { publicAppConfig } from '@/config/public';
 import JsonApiClient from '@/generated/json-client';
 import { useState } from 'react';
 
@@ -33,8 +34,8 @@ export function useUploadFiles({ onUpload }: Props) {
       Object.entries(data).forEach(([k, v]) => body.append(k, v));
       await fetch(presigned_url, { method: 'POST', body });
       await onUpload(file, id);
-    } catch (_err) {
-      console.error(_err);
+    } catch (err) {
+      logError(err);
       throw new Error(`Failed to upload ${file.name}`);
     }
   };

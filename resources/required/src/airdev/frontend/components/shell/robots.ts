@@ -1,7 +1,7 @@
 /* "@airdev/next": "managed" */
 
 import { ADMIN_HREF, AUTH_HREF, SETTINGS_HREF } from '@/airdev/common/constant';
-import { publicConfig } from '@/config/json/public';
+import { airdevPublicConfig } from '@/airdev/config/public';
 import { MetadataRoute } from 'next';
 
 export function generateRootRobots(): MetadataRoute.Robots {
@@ -13,12 +13,12 @@ export function generateRootRobots(): MetadataRoute.Robots {
           ADMIN_HREF,
           AUTH_HREF,
           SETTINGS_HREF,
-          publicConfig.shell.routes.homeHref,
-          ...publicConfig.shell.routes.disallowRobots,
+          airdevPublicConfig.shell.routes.homeHref,
+          ...airdevPublicConfig.shell.routes.disallowRobots,
         ],
       },
     ],
-    sitemap: `${publicConfig.service.baseUrl}/sitemap.xml`,
-    host: publicConfig.service.baseUrl,
+    sitemap: `${airdevPublicConfig.service.baseUrl}/sitemap.xml`,
+    host: airdevPublicConfig.service.baseUrl,
   };
 }

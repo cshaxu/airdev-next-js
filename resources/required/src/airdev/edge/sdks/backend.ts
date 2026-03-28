@@ -5,24 +5,22 @@ import {
   ContextUser,
   ContextUserFieldRequest,
 } from '@/airdev/framework/context';
-import { edgeFunctionConfig } from '@/config/function/edge';
+import UserEdgeApiClient from '@/generated/edge-clients/user';
 
 export const getCurrentUser = async (
   headers: Headers,
   isReal: boolean = false
 ) =>
-  edgeFunctionConfig.apiClient.user
-    .getOneSafe(
-      { id: 'me' },
-      ContextUserFieldRequest,
-      isReal
-        ? buildHeaders(headers, {
-            excludedCookieKeys: [HEADER_CURRENT_USER_ID_KEY],
-            excludedHeaderKeys: [HEADER_CURRENT_USER_ID_KEY],
-          })
-        : headers
-    )
-    .then((data: { user: ContextUser | null }) => data.user);
+  UserEdgeApiClient.getOneSafe(
+    { id: 'me' },
+    ContextUserFieldRequest,
+    isReal
+      ? buildHeaders(headers, {
+          excludedCookieKeys: [HEADER_CURRENT_USER_ID_KEY],
+          excludedHeaderKeys: [HEADER_CURRENT_USER_ID_KEY],
+        })
+      : headers
+  ).then((data: { user: ContextUser | null }) => data.user);
 
 export function buildHeaders(
   headers: Headers,

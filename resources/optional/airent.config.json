@@ -136,7 +136,7 @@
   ],
   "prisma": {
     "extensionSchemaPath": "schemas",
-    "prismaImport": "import prisma from '@/backend/lib/prisma';",
+    "prismaImport": "import prisma from '@/airdev/backend/lib/prisma';",
     "primitiveFields": "external",
     "associationFields": "skip"
   },
@@ -146,7 +146,7 @@
       "dispatcherConfigImportPath": "@/airdev/backend/lib/framework"
     },
     "client": {
-      "baseUrlImportPath": "@/config/public-app"
+      "baseUrlImportPath": "@/config/public"
     },
     "typesPath": "src/common/types/data"
   },

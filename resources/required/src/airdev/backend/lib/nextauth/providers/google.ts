@@ -1,11 +1,11 @@
 /* "@airdev/next": "managed" */
 
-import { privateConfig } from '@/config/json/private';
+import { airdevPrivateConfig } from '@/airdev/config/private';
 import GoogleProvider from 'next-auth/providers/google';
 
 export const googleProvider = GoogleProvider({
-  clientId: privateConfig.google.clientId,
-  clientSecret: privateConfig.google.clientSecret,
+  clientId: airdevPrivateConfig.google.clientId,
+  clientSecret: airdevPrivateConfig.google.clientSecret,
   allowDangerousEmailAccountLinking: true,
   authorization: { params: { include_granted_scopes: true } },
 });

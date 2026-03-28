@@ -4,7 +4,7 @@
 
 import { useRequiredCurrentUser } from '@/airdev/frontend/hooks/data/user';
 import { cn } from '@/airdev/frontend/utils/cn';
-import { clientComponentConfig } from '@/config/component/client';
+import { clientComponentConfig } from '@/config/component';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';

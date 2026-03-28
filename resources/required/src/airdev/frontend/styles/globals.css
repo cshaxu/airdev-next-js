@@ -3,7 +3,7 @@
 @import 'tailwindcss';
 @import './colors.css';
 @plugin '@tailwindcss/typography';
-@source "../**/*.{js,jsx,ts,tsx}";
+@source '../**/*.{js,jsx,ts,tsx}';
 
 @variant dark (&:where(.dark, .dark *));
 

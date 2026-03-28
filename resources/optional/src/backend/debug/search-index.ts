@@ -1,8 +1,8 @@
 /* "@airdev/next": "seeded" */
 
+import userSearchService from '@/airdev/backend/services/data/user-search';
 import { Context } from '@/airdev/framework/context';
 import { UserEntity } from '@/backend/entities/user';
-import { UserSearchService } from '@/backend/services/data/user-search';
 import { SearchDocumentType } from '@/common/types/search';
 import {
   CommonResponse,
@@ -36,7 +36,7 @@ export async function executor(
     case SearchDocumentType.USER:
       result = await processIndex(
         params,
-        new UserSearchService(),
+        userSearchService,
         UserEntity.findMany.bind(UserEntity),
         context
       );

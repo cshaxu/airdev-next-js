@@ -3,6 +3,7 @@
 'use client';
 
 import { PRIVACY_HREF, ROOT_HREF, TERMS_HREF } from '@/airdev/common/constant';
+import { airdevPublicConfig } from '@/airdev/config/public';
 import GoogleLogo from '@/airdev/frontend/components/GoogleLogo';
 import { Button } from '@/airdev/frontend/components/ui/Button';
 import {
@@ -13,9 +14,9 @@ import {
   FormMessage,
 } from '@/airdev/frontend/components/ui/Form';
 import { Input } from '@/airdev/frontend/components/ui/Input';
-import { clientFunctionConfig } from '@/config/function/client';
-import { publicConfig } from '@/config/json/public';
+import { useCreateOneNextauthVerificationToken } from '@/generated/tanstack-hooks/nextauth-verification-token-client';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { parseAsString, useQueryState } from 'nuqs';
 import { useForm } from 'react-hook-form';
@@ -30,7 +31,7 @@ export default function SignInStart({ setEmail }: Props) {
   const [_, setStep] = useQueryState('step');
   const [next] = useQueryState('next', parseAsString);
   const { mutate: createVerificationToken, isPending } =
-    clientFunctionConfig.query.nextauthVerificationToken.useCreateOne();
+    useCreateOneNextauthVerificationToken();
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: { email: '' },
@@ -52,17 +53,13 @@ export default function SignInStart({ setEmail }: Props) {
   return (
     <div className="flex flex-col gap-5 sm:gap-6">
       <h3 className="text-center text-xl font-bold text-[var(--blue-dark-75)] sm:text-2xl">
-        Welcome to {publicConfig.app.name}
+        Welcome to {airdevPublicConfig.app.name}
       </h3>
       <Button
         variant="outline"
         size="lg"
         className="flex h-12 w-full items-center gap-2 rounded-[12px] px-4 sm:h-11 [&_svg]:size-5"
-        onClick={() =>
-          clientFunctionConfig.apiClient.auth.signIn('google', {
-            callbackUrl: next || ROOT_HREF,
-          })
-        }
+        onClick={() => signIn('google', { callbackUrl: next || ROOT_HREF })}
       >
         <GoogleLogo />
         Continue with Google
@@ -112,8 +109,8 @@ export default function SignInStart({ setEmail }: Props) {
             Continue with Email
           </Button>
           <small className="text-muted-foreground mx-auto block w-full max-w-sm text-center text-xs leading-5">
-            Powered by {publicConfig.app.ownerShort}. By signing up, you agree
-            to the{' '}
+            Powered by {airdevPublicConfig.app.ownerShort}. By signing up, you
+            agree to the{' '}
             <Link href={TERMS_HREF} prefetch={false} className="underline">
               Terms of Service
             </Link>{' '}

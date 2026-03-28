@@ -1,13 +1,15 @@
 /* "@airdev/next": "managed" */
 
+import NextauthAccountService from '@/airdev/backend/services/data/nextauth-account';
+import AirdevUserService from '@/airdev/backend/services/data/user-base';
 import { mockContext } from '@/airdev/backend/utils/context';
-import { backendFunctionConfig } from '@/config/function/backend';
-import { privateConfig } from '@/config/json/private';
-import { publicConfig } from '@/config/json/public';
+import { airdevPrivateConfig } from '@/airdev/config/private';
+import { airdevPublicConfig } from '@/airdev/config/public';
 import { purify } from '@airent/api';
 import { addSeconds } from 'date-fns';
 import { Account, CallbacksOptions, Profile, User } from 'next-auth';
 import { GoogleProfile } from 'next-auth/providers/google';
+import { adapter } from './adapter';
 
 type SignInParams = {
   account: Account | null;
@@ -33,10 +35,10 @@ const signIn = async (params: SignInParams) => {
     const sessionToken = crypto.randomUUID();
     const expires = addSeconds(
       context.time,
-      privateConfig.nextauth.sessionMaxAge
+      airdevPrivateConfig.nextauth.sessionMaxAge
     );
 
-    await backendFunctionConfig.auth.adapter.createSession!({
+    await adapter.createSession!({
       sessionToken,
       userId: nextauthUser.id,
       expires,
@@ -62,7 +64,7 @@ const signIn = async (params: SignInParams) => {
     return true;
   }
 
-  const existingUser = await backendFunctionConfig.user.getOneByEmailSafe(
+  const existingUser = await AirdevUserService.getOneByEmailSafe(
     email,
     context
   );
@@ -91,8 +93,7 @@ const signIn = async (params: SignInParams) => {
 
   // Automatically create user when signing in with Google
   const user =
-    existingUser ??
-    (await backendFunctionConfig.user.getOrCreateOne(email, context));
+    existingUser ?? (await AirdevUserService.getOrCreateOne(email, context));
   const data = purify({
     ...(user.emailVerified === null &&
       email_verified && { emailVerified: context.time }),
@@ -100,11 +101,11 @@ const signIn = async (params: SignInParams) => {
       (user.name.trim().length === 0 || user.name === user.email) && { name }),
     ...(user.imageUrl === null && { imageUrl }),
   });
-  await backendFunctionConfig.user.updateOne(user.id, data, context);
+  await AirdevUserService.updateOneInternal(user, data);
 
   // Find and update account
   if (nextauthAccount !== null) {
-    await backendFunctionConfig.nextauthAccount.updateOneSafe(
+    await NextauthAccountService.updateOneSafe(
       {
         provider: nextauthAccount.provider,
         providerAccountId: nextauthAccount.providerAccountId,
@@ -127,7 +128,7 @@ const redirect = async ({ url, baseUrl }: RedirectParams) => {
   const urlOrigin = new URL(url).origin;
   if (
     urlOrigin === baseUrl ||
-    urlOrigin.endsWith(publicConfig.service.rootDomain)
+    urlOrigin.endsWith(airdevPublicConfig.service.rootDomain)
   ) {
     // Allows callback URLs on the same origin
     return url;

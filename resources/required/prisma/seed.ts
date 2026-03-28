@@ -1,7 +1,8 @@
 /* "@airdev/next": "managed" */
 
-import prisma from '../src/backend/lib/prisma';
-import { publicConfig } from '../src/config/json/public';
+/* eslint-disable airdev/no-specific-string */
+import prisma from '../src/airdev/backend/lib/prisma';
+import { airdevPublicConfig } from '../src/airdev/config/public';
 
 // For instructions, see
 // https://www.prisma.io/docs/guides/migrate/seed-database#how-to-seed-your-database-in-prisma
@@ -10,10 +11,10 @@ async function main() {
     where: { id: 'system' },
     create: {
       id: 'system',
-      name: publicConfig.app.name,
-      email: publicConfig.app.email,
+      name: airdevPublicConfig.app.name,
+      email: airdevPublicConfig.app.email,
     },
-    update: { email: publicConfig.app.email },
+    update: { email: airdevPublicConfig.app.email },
   });
   console.log({ systemUser });
 }

@@ -30,11 +30,11 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.41",
-    "@airdev/next": "github:cshaxu/airdev-next-js#9b3f642ef2c9d9733ebc423fabb5b5b20c4dea28",
+    "@airdev/next": "github:cshaxu/airdev-next-js#a1df56138c4412a76bf83951d977734a905f6ae5",
     "@airent/api": "github:cshaxu/airent-api-js#ee8cea6f134851f3bff4f8b41db04101a765f3b1",
     "@airent/api-next": "github:cshaxu/airent-api-next-js#5d7ce750b0aae44feac78996992db211bddc9b8e",
     "@airent/api-next-tanstack": "github:cshaxu/airent-api-next-tanstack-js#0760a88210376c9725186929596b249194724344",
-    "@airent/prisma": "github:cshaxu/airent-prisma-js#536a59aa25bec13c81da5a164aabbed62862de67",
+    "@airent/prisma": "github:cshaxu/airent-prisma-js#0e3216698f7d917a2608da0f494570f59dc120af",
     "@aws-sdk/client-s3": "^3.1013.0",
     "@aws-sdk/client-textract": "^3.1013.0",
     "@aws-sdk/s3-presigned-post": "^3.1013.0",

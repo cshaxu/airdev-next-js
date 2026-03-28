@@ -2,11 +2,11 @@
 
 'use client';
 
+import { airdevPublicConfig } from '@/airdev/config/public';
 import { buttonVariants } from '@/airdev/frontend/components/ui/Button';
 import { PixelResizablePanel } from '@/airdev/frontend/components/ui/PixelResizable';
 import { cn } from '@/airdev/frontend/utils/cn';
-import { clientComponentConfig } from '@/config/component/client';
-import { publicConfig } from '@/config/json/public';
+import { clientComponentConfig } from '@/config/component';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -92,7 +92,7 @@ export default function SideNavBar() {
           )}
         >
           <Image
-            src={publicConfig.shell.assets.logoSrc}
+            src={airdevPublicConfig.shell.assets.logoSrc}
             alt="Logo"
             width={40}
             height={40}
@@ -100,7 +100,7 @@ export default function SideNavBar() {
           />
           {!isCollapsed && (
             <span className="nav-icon text-xl font-bold">
-              {publicConfig.app.name}
+              {airdevPublicConfig.app.name}
             </span>
           )}
         </div>

@@ -4,7 +4,7 @@
 
 import GoogleLogo from '@/airdev/frontend/components/GoogleLogo';
 import { Button } from '@/airdev/frontend/components/ui/Button';
-import { publicAppConfig } from '@/config/public-app';
+import { publicAppConfig } from '@/config/public';
 import {
   Dialog,
   DialogContent,

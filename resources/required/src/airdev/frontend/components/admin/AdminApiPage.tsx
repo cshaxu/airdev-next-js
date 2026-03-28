@@ -1,11 +1,10 @@
 /* "@airdev/next": "managed" */
 
 import { withError } from '@/airdev/frontend/utils/page';
-import { serverComponentConfig } from '@/config/component/server';
+import AirentApiNextStudio from '@/generated/airent-api-next-studio';
 
 async function Page() {
-  const { AdminApiPage } = serverComponentConfig;
-  return <AdminApiPage />;
+  return <AirentApiNextStudio />;
 }
 
 const SafePage = withError(Page);

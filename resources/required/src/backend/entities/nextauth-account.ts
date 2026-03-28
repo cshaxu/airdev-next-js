@@ -1,5 +1,3 @@
 /* "@airdev/next": "managed" */
 
-import { NextauthAccountEntityBase } from '@/generated/entities/nextauth-account';
-
-export class NextauthAccountEntity extends NextauthAccountEntityBase {}
+export * from '@/airdev/backend/entities/nextauth-account';

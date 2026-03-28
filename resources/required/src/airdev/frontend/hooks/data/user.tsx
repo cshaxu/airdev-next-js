@@ -6,7 +6,7 @@ import {
   CurrentUser,
   CurrentUserFieldRequest,
 } from '@/airdev/common/types/context';
-import { clientFunctionConfig } from '@/config/function/client';
+import UserApiClient from '@/generated/clients/user';
 import {
   queryOptions,
   useQuery,
@@ -20,9 +20,9 @@ const currentUserQueryOptions = {
 };
 
 const getNullableCurrentUser = () =>
-  clientFunctionConfig.apiClient.user
-    .getOneSafe({ id: 'me' }, CurrentUserFieldRequest)
-    .then((page) => page.user);
+  UserApiClient.getOneSafe({ id: 'me' }, CurrentUserFieldRequest).then(
+    (page) => page.user
+  );
 
 const requiredCurrentUserQueryOptions = queryOptions({
   ...currentUserQueryOptions,

@@ -1,7 +1,7 @@
 /* "@airdev/next": "managed" */
 
+import SystemRequestCacheService from '@/airdev/backend/services/data/system-request-cache';
 import { Context } from '@/airdev/framework/context';
-import SystemRequestCacheService from '@/backend/services/data/system-request-cache';
 import { CommonResponse } from '@airent/api';
 
 export const maxDuration = 60;

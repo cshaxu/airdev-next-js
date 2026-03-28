@@ -1,8 +1,8 @@
 /* "@airdev/next": "managed" */
 
+import NextauthVerificationTokenService from '@/airdev/backend/services/data/nextauth-verification-token';
+import AirdevUserService from '@/airdev/backend/services/data/user-base';
 import { mockContext } from '@/airdev/backend/utils/context';
-import { buildNextauthUserFromPackageUser } from '@/airdev/backend/utils/user';
-import { backendFunctionConfig } from '@/config/function/backend';
 import { pick } from 'lodash-es';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
@@ -27,7 +27,7 @@ export const codeProvider = CredentialsProvider({
     }
     const context = await mockContext();
     const nextauthVerificationToken =
-      await backendFunctionConfig.nextauthVerificationToken.deleteOneSafe(
+      await NextauthVerificationTokenService.deleteOneSafe(
         pick(credentials, ['email', 'code']),
         context
       );
@@ -35,15 +35,14 @@ export const codeProvider = CredentialsProvider({
       return null;
     }
     const { identifier: email } = nextauthVerificationToken;
-    const user = await backendFunctionConfig.user.getOrCreateOne(
-      email,
-      context
-    );
-    const verifiedUser = await backendFunctionConfig.user.updateOne(
-      user.id,
-      { emailVerified: context.time },
-      context
-    );
-    return buildNextauthUserFromPackageUser(verifiedUser, 'email');
+    const user = await AirdevUserService.getOrCreateOne(email, context);
+    const verifiedUser = await AirdevUserService.updateOneInternal(user, {
+      emailVerified: context.time,
+    });
+    return {
+      ...pick(verifiedUser, ['id', 'name', 'email', 'emailVerified']),
+      image: user.imageUrl,
+      source: 'email',
+    };
   },
 });

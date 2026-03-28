@@ -1,7 +1,3 @@
 /* "@airdev/next": "seeded" */
 
-import * as z from 'zod';
-
-export const RevalidateQuery = z.object({ tag: z.string() });
-export type RevalidateQuery = z.infer<typeof RevalidateQuery>;
-export type RevalidateResult = { revalidated: boolean; now: number };
+export * from '@/airdev/common/types/api/edge';

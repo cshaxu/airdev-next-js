@@ -1,7 +1,7 @@
 /* "@airdev/next": "managed" */
 
+import * as AuthDelivery from '@/airdev/backend/deliveries/auth';
 import { Context } from '@/airdev/framework/context';
-import * as AuthDelivery from '@/backend/deliveries/auth';
 import { CommonResponse, parseBodyWith } from '@airent/api';
 import * as z from 'zod';
 

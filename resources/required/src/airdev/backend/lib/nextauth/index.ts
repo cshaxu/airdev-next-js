@@ -1,8 +1,8 @@
 /* "@airdev/next": "managed" */
 
-import { backendFunctionConfig } from '@/config/function/backend';
-import { privateConfig } from '@/config/json/private';
+import { airdevPrivateConfig } from '@/airdev/config/private';
 import { AuthOptions } from 'next-auth';
+import { adapter } from './adapter';
 import { callbacks } from './callbacks';
 import { cookies } from './cookies';
 import { jwt } from './jwt';
@@ -13,8 +13,8 @@ import { googleProvider } from './providers/google';
 export const authOptions: AuthOptions = {
   cookies,
   pages,
-  session: { maxAge: privateConfig.nextauth.sessionMaxAge },
-  adapter: backendFunctionConfig.auth.adapter,
+  session: { maxAge: airdevPrivateConfig.nextauth.sessionMaxAge },
+  adapter,
   providers: [googleProvider, codeProvider],
   callbacks,
   jwt,

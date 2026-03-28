@@ -1,16 +1,16 @@
 /* "@airdev/next": "managed" */
 
 import { PRIVACY_HREF, ROOT_HREF } from '@/airdev/common/constant';
+import { airdevPublicConfig } from '@/airdev/config/public';
 import Header from '@/airdev/frontend/components/ui/Header';
 import { pageTitle } from '@/airdev/frontend/utils/page';
-import { publicConfig } from '@/config/json/public';
 import Link from 'next/link';
 
 export const generateTermsMetadata = () => ({
   title: pageTitle('Terms of Service'),
 });
 
-const { app } = publicConfig;
+const { app } = airdevPublicConfig;
 
 export default function Terms() {
   return (
@@ -29,7 +29,7 @@ export default function Terms() {
           use of the various websites owned and operated by Company, including,
           without limitation, the{' '}
           <a
-            href={publicConfig.service.baseUrl}
+            href={airdevPublicConfig.service.baseUrl}
             className="text-blue-600 underline hover:text-blue-800"
           >
             {app.name}
@@ -82,10 +82,10 @@ export default function Terms() {
         <p>
           Company’s current privacy policy is located at{' '}
           <a
-            href={`${publicConfig.service.baseUrl}${PRIVACY_HREF}`}
+            href={`${airdevPublicConfig.service.baseUrl}${PRIVACY_HREF}`}
             className="text-blue-600 underline hover:text-blue-800"
           >
-            {`${publicConfig.service.baseUrl}${PRIVACY_HREF}`}
+            {`${airdevPublicConfig.service.baseUrl}${PRIVACY_HREF}`}
           </a>{' '}
           (the “Privacy Policy”) and is incorporated into these Terms of Use by
           this reference. For inquiries in regard to the Privacy Policy, or to
@@ -342,10 +342,10 @@ export default function Terms() {
           Agreement, non-transferable license to access the Company websites
           (located at the following URL:{' '}
           <a
-            href={publicConfig.service.baseUrl}
+            href={airdevPublicConfig.service.baseUrl}
             className="text-blue-600 underline hover:text-blue-800"
           >
-            {publicConfig.service.baseUrl}
+            {airdevPublicConfig.service.baseUrl}
           </a>{' '}
           ), and to use the Service. No part of the Service, including the
           Website, may be reproduced, duplicated, copied, modified, sold,

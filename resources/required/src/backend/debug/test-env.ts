@@ -1,6 +1,6 @@
 /* "@airdev/next": "managed" */
 
-import { publicAppConfig } from '@/config/public-app';
+import { publicAppConfig } from '@/config/public';
 import { CommonResponse, parseBodyWith } from '@airent/api';
 import { pick } from 'lodash-es';
 import * as z from 'zod';

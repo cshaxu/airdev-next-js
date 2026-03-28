@@ -1,10 +1,8 @@
 /* "@airdev/next": "managed" */
 
-import { commonFunctionConfig } from '@/config/function/common';
 import { wait } from '@airent/api';
 import { Awaitable } from 'airent';
-
-const { logError } = commonFunctionConfig;
+import { logError } from './logging';
 
 export async function retry<T>(
   fn: () => Awaitable<T>,

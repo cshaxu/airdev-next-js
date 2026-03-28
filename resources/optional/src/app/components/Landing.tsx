@@ -1,6 +1,6 @@
 /* "@airdev/next": "seeded" */
 
-import { publicAppConfig } from '@/config/public-app';
+import { publicAppConfig } from '@/config/public';
 import { Blocks, Settings2, ShieldCheck, Sparkles, Wrench } from 'lucide-react';
 import Image from 'next/image';
 import GetStartedDialog from './GetStartedDialog';

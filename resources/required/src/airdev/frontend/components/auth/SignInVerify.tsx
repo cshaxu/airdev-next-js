@@ -15,8 +15,9 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from '@/airdev/frontend/components/ui/InputOTP';
-import { clientFunctionConfig } from '@/config/function/client';
+import { useCreateOneNextauthVerificationToken } from '@/generated/tanstack-hooks/nextauth-verification-token-client';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { signIn } from 'next-auth/react';
 import { parseAsString, useQueryState } from 'nuqs';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -35,7 +36,7 @@ export default function SignInVerify({ email }: Props) {
   const {
     mutate: createVerificationToken,
     isPending: isCreatingVerificationToken,
-  } = clientFunctionConfig.query.nextauthVerificationToken.useCreateOne();
+  } = useCreateOneNextauthVerificationToken();
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -50,8 +51,7 @@ export default function SignInVerify({ email }: Props) {
       setIsSigningIn(true);
       const { code } = values;
 
-      await clientFunctionConfig.apiClient.auth
-        .signIn('credentials', { email, code, callbackUrl: next || '/' })
+      await signIn('credentials', { email, code, callbackUrl: next || '/' })
         .catch(() => {
           form.setError('code', { message: 'Invalid code' });
         })

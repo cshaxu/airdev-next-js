@@ -4,12 +4,12 @@ import {
   CurrentUser,
   CurrentUserFieldRequest,
 } from '@/airdev/common/types/context';
-import { serverFunctionConfig } from '@/config/function/server';
+import UserServerApiClient from '@/generated/server-clients/user';
 
 export const currentUserServerQueryOptions = {
   queryKey: ['currentUser'],
   queryFn: () =>
-    serverFunctionConfig.apiClient.user
-      .getOneSafe({ id: 'me' }, CurrentUserFieldRequest)
-      .then((page: { user: CurrentUser | null }) => page.user),
+    UserServerApiClient.getOneSafe({ id: 'me' }, CurrentUserFieldRequest).then(
+      (page: { user: CurrentUser | null }) => page.user
+    ),
 };

@@ -1,9 +1,10 @@
 /* "@airdev/next": "managed" */
 
-import { publicConfig } from '@/config/json/public';
+import { airdevPublicConfig } from '@/airdev/config/public';
 import { CookiesOptions } from 'next-auth';
 
-const isServiceLocal = publicConfig.service.serviceEnvironment === 'local';
+const isServiceLocal =
+  airdevPublicConfig.service.serviceEnvironment === 'local';
 const secureCookiePrefix = isServiceLocal ? '' : '__Secure-';
 const hostCookiePrefix = isServiceLocal ? '' : '__Host-';
 const SESSION_TOKEN_COOKIE_NAME = `${secureCookiePrefix}next-auth.session-token`;

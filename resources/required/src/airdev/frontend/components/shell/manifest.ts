@@ -1,14 +1,14 @@
 /* "@airdev/next": "managed" */
 
-import { publicConfig } from '@/config/json/public';
+import { airdevPublicConfig } from '@/airdev/config/public';
 import type { MetadataRoute } from 'next';
 
 export function generateRootManifest(): MetadataRoute.Manifest {
   return {
-    name: publicConfig.app.name,
-    short_name: publicConfig.app.name,
-    description: publicConfig.app.description,
-    categories: publicConfig.app.categories,
+    name: airdevPublicConfig.app.name,
+    short_name: airdevPublicConfig.app.name,
+    description: airdevPublicConfig.app.description,
+    categories: airdevPublicConfig.app.categories,
     id: '/',
     scope: '/',
     start_url: '/',
@@ -20,7 +20,7 @@ export function generateRootManifest(): MetadataRoute.Manifest {
     launch_handler: { client_mode: 'focus-existing' },
     icons: [
       {
-        src: publicConfig.shell.assets.iconSrc,
+        src: airdevPublicConfig.shell.assets.iconSrc,
         sizes: 'any',
         type: 'image/x-icon',
       },

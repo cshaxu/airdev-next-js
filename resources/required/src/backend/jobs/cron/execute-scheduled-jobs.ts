@@ -1,9 +1,9 @@
 /* "@airdev/next": "managed" */
 
+import SystemScheduledJobService from '@/airdev/backend/services/data/system-scheduled-job';
 import { batchExecuteByPageParam } from '@/airdev/backend/utils/data';
 import { Context } from '@/airdev/framework/context';
 import { SystemScheduledJobEntity } from '@/backend/entities/system-scheduled-job';
-import SystemScheduledJobService from '@/backend/services/data/system-scheduled-job';
 import { CommonResponse } from '@airent/api';
 import { Prisma } from '@prisma/client';
 

@@ -7,9 +7,9 @@ import {
   HEADER_REFERER_KEY,
   HEADER_USER_AGENT_KEY,
 } from '@/airdev/common/constant';
-import { commonFunctionConfig } from '@/config/function/common';
-import { edgeConfig } from '@/config/json/edge';
-import { publicConfig } from '@/config/json/public';
+import { normalizeError } from '@/airdev/common/utils/logging';
+import { airdevEdgeConfig } from '@/airdev/config/edge';
+import { airdevPublicConfig } from '@/airdev/config/public';
 import {
   CommonResponse,
   DispatcherConfig,
@@ -51,7 +51,7 @@ function authorizer(context: Context, options?: DispatcherOptions): void {
   if (options?.requireCron === true) {
     if (
       context.headers.get(HEADER_AUTHORIZATION_KEY) ===
-      `Bearer ${edgeConfig.cronSecret}`
+      `Bearer ${airdevEdgeConfig.cronSecret}`
     ) {
       return;
     }
@@ -62,7 +62,7 @@ function authorizer(context: Context, options?: DispatcherOptions): void {
   if (options?.requireInternal === true) {
     if (
       context.headers.get(HEADER_INTERNAL_SECRET_KEY) ===
-      edgeConfig.internalSecret
+      airdevEdgeConfig.internalSecret
     ) {
       return;
     }
@@ -117,9 +117,9 @@ function errorHandler<DATA, PARSED, RESULT>(
     ...dcRest,
     redactedHeaders: redactHeaders(headers),
   };
-  const normalizedError = commonFunctionConfig.normalizeError(error);
+  const normalizedError = normalizeError(error);
   logError(normalizedError, redactedDc);
-  if (publicConfig.service.serviceEnvironment === 'production') {
+  if (airdevPublicConfig.service.serviceEnvironment === 'production') {
     delete normalizedError['original'];
     delete normalizedError['stack'];
   }

@@ -4,6 +4,7 @@ const { FlatCompat } = require('@eslint/eslintrc');
 const js = require('@eslint/js');
 const unusedImports = require('eslint-plugin-unused-imports');
 const airdevPlugin = require('@airdev/eslint');
+const airdevManagedPlugin = require('./plugins/eslint');
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
@@ -29,7 +30,6 @@ module.exports = [
       'src/app/api/inngest/route.ts',
       'src/app/api/jobs/**/*.ts',
       'src/app/api/webhooks/**/*.ts',
-      'src/airdev/frontend/components/**/*.tsx',
     ],
   },
   ...require('eslint-config-next/core-web-vitals'),
@@ -38,6 +38,7 @@ module.exports = [
     plugins: {
       'unused-imports': unusedImports,
       airdev: airdevPlugin,
+      'airdev-managed': airdevManagedPlugin,
     },
     rules: {
       '@next/next/no-img-element': 'off',
@@ -86,87 +87,57 @@ module.exports = [
             description:
               'Move it to a config file and import the variable from there.',
             excludedFiles: [
-              'src/config/public-app.ts',
-              'src/config/private-app.ts',
-              'src/config/json/edge.ts',
+              'src/config/public.ts',
+              'src/config/private.ts',
+              'src/airdev/config/edge.ts',
             ],
           },
           {
             name: 'process.env.',
             notFollowedBy: 'NEXT_PUBLIC_',
             description: 'It must be followed by NEXT_PUBLIC here.',
-            includedFiles: ['src/config/public-app.ts'],
+            includedFiles: ['src/config/public.ts'],
           },
           {
             name: 'process.env.NEXT_PUBLIC_',
             description: 'Move it to src/config/public.ts.',
-            includedFiles: ['src/config/private-app.ts', 'src/config/edge.ts'],
+            includedFiles: [
+              'src/config/private.ts',
+              'src/airdev/config/edge.ts',
+            ],
           },
           {
             name: 'prisma.',
             description: 'Replace it with corresponding Airent entity.',
-            excludedFiles: ['prisma/seed.ts', 'src/backend/lib/nextauth.ts'],
           },
           {
             name: 'console.debug',
             description: 'Replace it with logDebug.',
             replacement: 'logDebug',
-            includedFiles: [
-              'src/app/api/**/*.ts',
-              'src/backend/**/*.ts',
-              'src/edge/**/*.ts',
-            ],
-          },
-          {
-            name: 'console.log',
-            description: 'Add comment on why we need it for fe',
-            includedFiles: [
-              'src/app/**/*.ts',
-              'src/app/**/*.tsx',
-              'src/frontend/**/*.ts',
-              'src/frontend/**/*.tsx',
-            ],
+            includedFiles: ['src/**/*.ts', 'src/**/*.tsx'],
           },
           {
             name: 'console.log',
             description: 'Replace it with logInfo.',
-            replacement: 'logInfo',
-            includedFiles: [
-              'src/app/api/**/*.ts',
-              'src/backend/**/*.ts',
-              'src/edge/**/*.ts',
-            ],
-            excludedFiles: ['src/framework/logging.ts'],
+            includedFiles: ['src/**/*.ts', 'src/**/*.tsx'],
           },
           {
             name: 'console.info',
             description: 'Replace it with logInfo.',
             replacement: 'logInfo',
-            includedFiles: [
-              'src/app/api/**/*.ts',
-              'src/backend/**/*.ts',
-              'src/edge/**/*.ts',
-            ],
+            includedFiles: ['src/**/*.ts', 'src/**/*.tsx'],
           },
           {
             name: 'console.warn',
             description: 'Replace it with logWarn.',
             replacement: 'logWarn',
-            includedFiles: [
-              'src/app/api/**/*.ts',
-              'src/backend/**/*.ts',
-              'src/edge/**/*.ts',
-            ],
+            includedFiles: ['src/**/*.ts', 'src/**/*.tsx'],
           },
           {
             name: 'console.error',
             description: 'Replace it with logError.',
             replacement: 'logError',
-            includedFiles: [
-              'src/app/api/**/*.ts',
-              'src/backend/**/*.ts',
-              'src/edge/**/*.ts',
-            ],
+            includedFiles: ['src/**/*.ts', 'src/**/*.tsx'],
           },
           {
             name: 'new Error',
@@ -177,24 +148,36 @@ module.exports = [
               'src/backend/**/*.ts',
               'src/edge/**/*.ts',
             ],
+            excludedFiles: [
+              'src/airdev/common/**/*.ts',
+              'src/airdev/common/**/*.tsx',
+              'src/airdev/frontend/**/*.ts',
+              'src/airdev/frontend/**/*.tsx',
+              'src/common/**/*.ts',
+              'src/common/**/*.tsx',
+              'src/frontend/**/*.ts',
+              'src/frontend/**/*.tsx',
+            ],
           },
           {
             name: 'new Date()',
             description: 'Replace it with context.time.',
             replacement: 'context.time',
-            includedFiles: ['src/backend/**/*.ts', 'src/edge/**/*.ts'],
-            excludedFiles: [
-              'src/**/framework.ts',
-              'src/backend/sdks/**/*.ts',
-              'src/backend/services/data/system-request-cache.ts',
-              'src/backend/services/data/system-scheduled-job.ts',
+            includedFiles: [
+              'src/backend/**/*.ts',
+              'src/common/**/*.ts',
+              'src/edge/**/*.ts',
             ],
+            excludedFiles: ['src/airdev/**/*.ts'],
           },
         ],
       ],
       'airdev/require-await': 'error',
+      'airdev-managed/require-airdev-next-managed': [
+        'error',
+        { includedFiles: ['src/airdev/**/*.ts', 'src/airdev/**/*.tsx'] },
+      ],
     },
-
     languageOptions: {
       ecmaVersion: 5,
       sourceType: 'module',
@@ -220,16 +203,26 @@ module.exports = [
     },
   },
   {
-    files: ['prisma/seed.ts', 'src/config/**/*.ts'],
+    files: [
+      'prisma/seed.ts',
+      'src/config/**/*.ts',
+      'src/airdev/frontend/components/auth/SignInLayout.tsx',
+    ],
     rules: { 'airdev/no-relative-parent-imports': 'off' },
   },
   {
-    files: ['src/**/*.ts', 'src/**/*.tsx', 'prisma/**/*.ts'],
-    ignores: [
-      'src/config/public.ts',
-      'src/config/private.ts',
-      'src/generated/**/*.ts',
-      'src/generated/**/*.tsx',
+    files: [
+      'src/app/**/*.ts',
+      'src/app/**/*.tsx',
+      'src/backend/**/*.ts',
+      'src/backend/**/*.tsx',
+      'src/common/**/*.ts',
+      'src/common/**/*.tsx',
+      'src/config/**/*.ts',
+      'src/config/**/*.tsx',
+      'src/frontend/**/*.ts',
+      'src/frontend/**/*.tsx',
+      'prisma/**/*.ts',
     ],
     rules: {
       'no-restricted-imports': [
@@ -237,14 +230,12 @@ module.exports = [
         {
           paths: [
             {
-              name: '@/config/public',
-              message:
-                'Use "@/config/public-app" in memorix-next code. Keep "@/config/public" for Airdev/framework compatibility only.',
+              name: '@/airdev/config/public',
+              message: 'Use "@/config/public" in code.',
             },
             {
-              name: '@/config/private',
-              message:
-                'Use "@/config/private-app" in memorix-next code. Keep "@/config/private" for Airdev/framework compatibility only.',
+              name: '@/airdev/config/private',
+              message: 'Use "@/config/private" in code.',
             },
           ],
         },
@@ -253,7 +244,45 @@ module.exports = [
   },
   {
     files: [
-      'src/**/*.ts',
+      'src/airdev/backend/**/*.ts',
+      'src/airdev/common/**/*.ts',
+      'src/airdev/edge/**/*.ts',
+      'src/airdev/emails/**/*.ts',
+      'src/airdev/emails/**/*.tsx',
+      'src/airdev/framework/**/*.ts',
+      'src/airdev/frontend/**/*.ts',
+      'src/airdev/frontend/**/*.tsx',
+    ],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@/config/public',
+              message: 'Use "@/airdev/config/public" in code.',
+            },
+            {
+              name: '@/config/private',
+              message: 'Use "@/airdev/config/private" in code.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['src/airdev/frontend/components/shell/NotFound.tsx'],
+    rules: { 'airdev/no-negative-names': 'off' },
+  },
+  {
+    files: [
+      './**/*.ts',
+      './**/*.cts',
+      './**/*.mts',
+      './**/*.js',
+      './**/*.cjs',
+      './**/*.mjs',
       'src/**/error.tsx',
       'src/**/layout.tsx',
       'src/**/loading.tsx',
@@ -261,17 +290,9 @@ module.exports = [
       'src/**/page.tsx',
       'src/**/hooks/**/*.tsx',
       'src/**/context/**/*.tsx',
-      'src/config/component/**/*.tsx',
-      'src/frontend/components/ui/**/*.tsx',
+      'src/**/components/**/*.tsx',
+      'src/config/component.tsx',
     ],
-    rules: { 'airdev/next-require-export-default-function': 'off' },
-  },
-  {
-    files: ['next-env.d.ts', 'prisma/**/*.ts', '*.config.ts', '*.config.js'],
-    rules: { 'airdev/next-require-export-default-function': 'off' },
-  },
-  {
-    files: ['scripts/**/*.mjs'],
     rules: { 'airdev/next-require-export-default-function': 'off' },
   },
 ];

@@ -1,5 +1,3 @@
 /* "@airdev/next": "managed" */
 
-import { SystemRequestCacheEntityBase } from '@/generated/entities/system-request-cache';
-
-export class SystemRequestCacheEntity extends SystemRequestCacheEntityBase {}
+export * from '@/airdev/backend/entities/system-request-cache';

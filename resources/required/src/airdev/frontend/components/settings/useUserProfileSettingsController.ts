@@ -3,12 +3,16 @@
 'use client';
 
 import { ROOT_HREF } from '@/airdev/common/constant';
+import { airdevPublicConfig } from '@/airdev/config/public';
 import type { HeaderBarItem } from '@/airdev/frontend/components/shell/HeaderBar';
 import { useRequiredCurrentUser } from '@/airdev/frontend/hooks/data/user';
-import { clientFunctionConfig } from '@/config/function/client';
-import { publicConfig } from '@/config/json/public';
+import {
+  useDeleteOneUser,
+  useUpdateOneUser,
+} from '@/generated/tanstack-hooks/user-client';
 import { useQueryClient } from '@tanstack/react-query';
 import { Home } from 'lucide-react';
+import { signOut } from 'next-auth/react';
 import {
   KeyboardEvent,
   createElement,
@@ -25,15 +29,13 @@ export function useUserProfileSettingsController() {
   const [isEditingName, setIsEditingName] = useState(false);
   const [draftName, setDraftName] = useState(currentUser.name ?? '');
   const nameInputRef = useRef<HTMLInputElement | null>(null);
-  const { mutate: deleteUser, isPending: isDeleting } =
-    clientFunctionConfig.query.user.useDeleteOne();
-  const { mutate: updateUser, isPending: isUpdatingUser } =
-    clientFunctionConfig.query.user.useUpdateOne();
+  const { mutate: deleteUser, isPending: isDeleting } = useDeleteOneUser();
+  const { mutate: updateUser, isPending: isUpdatingUser } = useUpdateOneUser();
 
   const breadcrumbs: HeaderBarItem[] = [
     {
       label: '',
-      href: publicConfig.shell.routes.homeHref,
+      href: airdevPublicConfig.shell.routes.homeHref,
       icon: createElement(Home, { className: 'size-4' }),
     },
     { label: 'Settings' },
@@ -58,9 +60,7 @@ export function useUserProfileSettingsController() {
       {
         onSuccess: async () => {
           toast.success('Account deleted');
-          await clientFunctionConfig.apiClient.auth.signOut({
-            callbackUrl: ROOT_HREF,
-          });
+          await signOut({ callbackUrl: ROOT_HREF });
         },
       }
     );

@@ -3,9 +3,9 @@
 'use client';
 
 import { ADMIN_API_HREF, ADMIN_USERS_HREF } from '@/airdev/common/constant';
+import { airdevPublicConfig } from '@/airdev/config/public';
 import HeaderBar from '@/airdev/frontend/components/shell/HeaderBar';
 import { cn } from '@/airdev/frontend/utils/cn';
-import { publicConfig } from '@/config/json/public';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -16,7 +16,7 @@ export default function AdminNav() {
   const adminTabs: AdminTab[] = [
     { label: 'API', href: ADMIN_API_HREF },
     { label: 'Users', href: ADMIN_USERS_HREF },
-    ...publicConfig.shell.adminTabs,
+    ...airdevPublicConfig.shell.adminTabs,
   ];
 
   return (

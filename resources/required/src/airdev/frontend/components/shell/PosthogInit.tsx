@@ -2,7 +2,7 @@
 
 'use client';
 
-import { publicConfig } from '@/config/json/public';
+import { airdevPublicConfig } from '@/airdev/config/public';
 import { parseAsBoolean, useQueryState } from 'nuqs';
 import posthog from 'posthog-js';
 import { useEffect } from 'react';
@@ -14,13 +14,13 @@ export default function PosthogInit() {
   useEffect(() => {
     if (
       initialized ||
-      (publicConfig.service.serviceEnvironment !== 'production' &&
+      (airdevPublicConfig.service.serviceEnvironment !== 'production' &&
         !forcePosthog)
     ) {
       return;
     }
-    posthog.init(publicConfig.posthog.apiToken, {
-      api_host: publicConfig.posthog.apiHost,
+    posthog.init(airdevPublicConfig.posthog.apiToken, {
+      api_host: airdevPublicConfig.posthog.apiHost,
       capture_pageview: false, // Disable automatic pageview capture, as we capture manually
       capture_pageleave: true, // Enable pageleave capture
     });

@@ -92,6 +92,7 @@ const PixelResizablePanel = React.forwardRef<
       isDragging.current = false;
       document.body.style.cursor = '';
       document.removeEventListener('mousemove', handleMouseMove);
+      // eslint-disable-next-line react-hooks/immutability
       document.removeEventListener('mouseup', handleMouseUp);
     }, [handleMouseMove]);
 

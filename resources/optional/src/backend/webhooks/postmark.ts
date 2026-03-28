@@ -1,8 +1,8 @@
 /* "@airdev/next": "seeded" */
 
+import { PostmarkWebhookBody } from '@/airdev/common/types/vendors/postmark';
 import { Context } from '@/airdev/framework/context';
-import { PostmarkWebhookBody } from '@/common/types/vendors/postmark';
-import { privateAppConfig } from '@/config/private-app';
+import { privateAppConfig } from '@/config/private';
 import { buildInvalidErrorMessage, parseBodyWith } from '@airent/api';
 import createHttpError from 'http-errors';
 

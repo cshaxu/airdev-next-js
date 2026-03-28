@@ -26,18 +26,19 @@ import {
   DropdownMenuTrigger,
 } from '@/airdev/frontend/components/ui/DropdownMenu';
 import { useRequiredCurrentUser } from '@/airdev/frontend/hooks/data/user';
+import { become } from '@/airdev/frontend/sdks/backend';
 import {
   useBecameUser,
   useSetBecameUser,
 } from '@/airdev/frontend/stores/becameUserStore';
 import { cn } from '@/airdev/frontend/utils/cn';
-import { clientFunctionConfig } from '@/config/function/client';
 import {
   ChevronRightIcon,
   Cog6ToothIcon,
   EllipsisVerticalIcon,
 } from '@heroicons/react/24/outline';
 import { LogOut, Wrench } from 'lucide-react';
+import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import {
   ReactNode,
@@ -185,13 +186,11 @@ export default function UserButton(props: Props) {
   const settleTimeoutRef = useRef<number | null>(null);
 
   const handleSignOut = async () => {
-    await clientFunctionConfig.apiClient.auth.signOut({
-      callbackUrl: ROOT_HREF,
-    });
+    await signOut({ callbackUrl: ROOT_HREF });
   };
 
   const handleRevertSelf = async () => {
-    await clientFunctionConfig.apiClient.auth.become(null);
+    await become(null);
     setBecameUser(null);
     window.location.reload();
   };
