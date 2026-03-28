@@ -4,7 +4,7 @@ Generator package for Airdev-style Next.js apps.
 
 ## Build
 
-This package does not own a runtime library anymore. Its build step pulls managed and seeded files from `barebone-next` by running that repo's `scripts/extract.sh`.
+This package does not own a runtime library anymore. Its build step pulls managed and seeded files from `barebone-next` by running this package's `scripts/extract.mjs` against that source repo.
 
 The source repo is resolved in this order:
 

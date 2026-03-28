@@ -103,21 +103,30 @@ function syncOptionalDirectory(sourceDir, targetDir) {
 }
 
 function reportResults(results) {
-  const groups = [
+  const sections = [
     ['created', 'Created'],
     ['updated', 'Updated'],
-  ];
+  ].map(([status, label]) => [
+    status,
+    label,
+    results.filter((result) => result.status === status),
+  ]);
 
-  for (const [status, label] of groups) {
-    const matches = results.filter((result) => result.status === status);
+  let printedSection = false;
+  for (const [_status, label, matches] of sections) {
     if (matches.length === 0) {
       continue;
+    }
+
+    if (printedSection) {
+      console.log('');
     }
 
     console.log(`${label}:`);
     for (const match of matches) {
       console.log(`  ${match.targetPath}`);
-      }
+    }
+    printedSection = true;
   }
 
   const summaryStatuses = [
@@ -126,6 +135,10 @@ function reportResults(results) {
     ['skipped', 'Skipped'],
     ['unchanged', 'Unchanged'],
   ];
+
+  if (printedSection) {
+    console.log('');
+  }
 
   console.log('Stats:');
   for (const [status, label] of summaryStatuses) {

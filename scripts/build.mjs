@@ -9,7 +9,7 @@ const resourcesRoot = path.join(repoRoot, 'resources');
 const tmpRoot = path.join(repoRoot, 'tmp');
 const logPath = path.join(tmpRoot, 'extract.log');
 const sourceRepoRoot = resolveSourceRepoRoot();
-const extractScriptPath = path.join(sourceRepoRoot, 'scripts', 'extract.mjs');
+const extractScriptPath = path.join(repoRoot, 'scripts', 'extract.mjs');
 
 if (!fs.existsSync(extractScriptPath)) {
   throw new Error(`extract.mjs not found: ${extractScriptPath}`);
@@ -18,10 +18,14 @@ if (!fs.existsSync(extractScriptPath)) {
 fs.mkdirSync(resourcesRoot, { recursive: true });
 fs.mkdirSync(tmpRoot, { recursive: true });
 
-execFileSync(process.execPath, [extractScriptPath, resourcesRoot, logPath], {
-  cwd: sourceRepoRoot,
-  stdio: 'inherit',
-});
+execFileSync(
+  process.execPath,
+  [extractScriptPath, sourceRepoRoot, resourcesRoot, logPath],
+  {
+    cwd: repoRoot,
+    stdio: 'inherit',
+  }
+);
 
 function resolveSourceRepoRoot() {
   const candidates = [
@@ -32,7 +36,7 @@ function resolveSourceRepoRoot() {
 
   for (const candidate of candidates) {
     const resolved = path.resolve(candidate);
-    if (fs.existsSync(path.join(resolved, 'scripts', 'extract.mjs'))) {
+    if (fs.existsSync(resolved) && fs.statSync(resolved).isDirectory()) {
       return resolved;
     }
   }
