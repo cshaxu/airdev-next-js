@@ -112,6 +112,10 @@
     --blue-separator: #2c3036;
 
     --primary-disabled: #555d67;
+    --button-default-bg: #555d67;
+    --button-default-hover: #434952;
+    --button-default-foreground: #f7f8fa;
+    --button-default-disabled: #363b43;
     --shell-link: #eceef2;
     --shell-link-hover: #f7f8fa;
     --shell-page-start: #0f1012;

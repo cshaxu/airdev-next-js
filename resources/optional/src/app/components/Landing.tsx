@@ -5,6 +5,12 @@ import { Blocks, Settings2, ShieldCheck, Sparkles, Wrench } from 'lucide-react';
 import Image from 'next/image';
 import GetStartedDialog from './GetStartedDialog';
 
+const landingPanelClassName =
+  'rounded-3xl border border-[var(--shell-tint-100)] bg-linear-to-br from-[var(--shell-tint-50-70)] via-background to-[var(--shell-page-mid)] shadow-xl shadow-[color:var(--shell-shadow-tint)]';
+
+const landingTileClassName =
+  'rounded-2xl border border-[var(--shell-tint-100)] bg-linear-to-br from-[var(--shell-tint-50-70)] to-background shadow-sm shadow-[color:var(--shell-shadow-tint)]';
+
 const highlights = [
   {
     title: 'Auth Included',
@@ -83,7 +89,7 @@ export default function Landing() {
 
           <div className="relative">
             <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-r from-[var(--shell-glow-start)] to-[var(--shell-glow-end)] blur-2xl" />
-            <div className="bg-card space-y-4 rounded-3xl border border-[var(--shell-tint-100)] p-6 shadow-xl shadow-[color:var(--shell-shadow-tint)]">
+            <div className={`${landingPanelClassName} space-y-4 p-6`}>
               <div className="text-muted-foreground flex items-center gap-2 text-sm font-medium">
                 <Settings2 className="size-4 text-[var(--shell-tint-600)]" />
                 Template Snapshot
@@ -120,7 +126,7 @@ export default function Landing() {
             return (
               <article
                 key={item.title}
-                className="bg-card rounded-2xl border border-[var(--shell-tint-100)] p-5 shadow-sm"
+                className={`${landingTileClassName} p-5`}
               >
                 <div className="mb-3 inline-flex rounded-lg bg-[var(--shell-tint-100)] p-2 text-[var(--shell-tint-700)]">
                   <Icon className="size-5" />
@@ -135,7 +141,7 @@ export default function Landing() {
         </section>
 
         <section className="py-8">
-          <div className="bg-card rounded-3xl border border-[var(--shell-tint-100)] p-6 md:p-8">
+          <div className={`${landingPanelClassName} p-6 md:p-8`}>
             <h2 className="text-2xl font-semibold tracking-tight">
               How It Works
             </h2>
@@ -161,3 +167,4 @@ export default function Landing() {
     </div>
   );
 }
+

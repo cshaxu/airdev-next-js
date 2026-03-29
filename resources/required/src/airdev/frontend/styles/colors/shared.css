@@ -28,6 +28,11 @@
     --primary: var(--blue-primary);
     --primary-hover: var(--blue-7);
     --primary-foreground: var(--blue-contrast);
+    --button-default-bg: var(--primary);
+    --button-default-hover: var(--primary-hover);
+    --button-default-foreground: var(--color-white);
+    --button-default-disabled: var(--primary-disabled);
+    --button-default-disabled-foreground: rgb(255 255 255 / 0.9);
 
     /* Secondary, Muted, Accent */
     --secondary: var(--color-neutral-100);
