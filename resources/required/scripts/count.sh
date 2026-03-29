@@ -1,5 +1,5 @@
 #!/bin/bash
-# "@airdev/next": "seeded"
+# "@airdev/next": "managed"
 
 calculate_total() {
   local paths=("$@") # Receive all arguments as an array
@@ -54,7 +54,9 @@ frontend_files=(
   'src/frontend'
 )
 
-process_script="$BAREBONE_NEXT_REPO_PATH/node_modules/@airdev/tool/bin/countlines.sh"
+
+repo_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+process_script="$repo_root/node_modules/@airdev/tool/bin/countlines.sh"
 
 airent_frontend=$(calculate_total "${airent_frontend_files[@]}")
 echo "Airent Frontend: $airent_frontend"

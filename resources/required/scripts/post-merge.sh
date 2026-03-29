@@ -1,8 +1,8 @@
 #!/bin/bash
-# "@airdev/next": "seeded"
+# "@airdev/next": "managed"
 
-# to install this script, please run:
-# echo "source \$BAREBONE_NEXT_REPO_PATH/scripts/post-merge.sh" > $BAREBONE_NEXT_REPO_PATH/.git/hooks/post-merge
+# to install this script, please add one line to `.git/hooks/post-merge`:
+# source ../../scripts/post-merge.sh
 
 function changed() {
   git diff --name-only HEAD@{1} HEAD | grep "^$1" >/dev/null 2>&1

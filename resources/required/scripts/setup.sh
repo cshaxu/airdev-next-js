@@ -1,8 +1,9 @@
 #!/bin/bash
-# "@airdev/next": "seeded"
+# "@airdev/next": "managed"
 
 current_path=$(pwd)
-cd $BAREBONE_NEXT_REPO_PATH
+repo_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+cd $repo_root
 
 if [ -n "$BASH_VERSION" ]; then
   if [[ "$(type -t devtool)" != 'function' ]]; then
