@@ -9,14 +9,14 @@ import * as React from 'react';
 const SHELL_COLOR_STORAGE_KEY = 'airdev-shell-color';
 
 export const shellColorOptions = [
-  { value: 'blue', label: 'Blue' },
-  { value: 'black', label: 'Black' },
-  { value: 'green', label: 'Green' },
-  { value: 'yellow', label: 'Yellow' },
-  { value: 'red', label: 'Red' },
-  { value: 'purple', label: 'Purple' },
   { value: 'pink', label: 'Pink' },
+  { value: 'red', label: 'Red' },
   { value: 'orange', label: 'Orange' },
+  { value: 'yellow', label: 'Yellow' },
+  { value: 'green', label: 'Green' },
+  { value: 'blue', label: 'Blue' },
+  { value: 'purple', label: 'Purple' },
+  { value: 'black', label: 'Black' },
 ] satisfies Array<{ value: ShellStyleColor; label: string }>;
 
 type ThemeProviderProps = React.ComponentProps<typeof NextThemesProvider> & {
