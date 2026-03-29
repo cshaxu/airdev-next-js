@@ -15,12 +15,16 @@
   },
   "defaults": { "apiBatchSize": 100, "pageSize": 50 },
   "shell": {
+    "adminTabs": [{ "label": "Test", "href": "/admin/test" }],
+    "assets": { "logoSrc": "/logo.png", "iconSrc": "/favicon.ico" },
     "routes": {
       "homeHref": "/dashboard",
       "disallowRobots": ["/api", "/admin", "/dashboard", "/settings"]
     },
-    "assets": { "logoSrc": "/logo.png", "iconSrc": "/favicon.ico" },
-    "adminTabs": [{ "label": "Test", "href": "/admin/test" }]
+    "style": {
+      "color": "black",
+      "font": { "src": "/airdev/Mona-Sans.woff2", "format": "woff2" }
+    }
   },
   "service": {
     "local": {

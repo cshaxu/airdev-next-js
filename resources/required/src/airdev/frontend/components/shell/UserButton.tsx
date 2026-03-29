@@ -3,6 +3,11 @@
 'use client';
 
 import { ADMIN_HREF, ROOT_HREF, SETTINGS_HREF } from '@/airdev/common/constant';
+import type { ShellStyleColor } from '@/airdev/common/types/config';
+import {
+  shellColorOptions,
+  useShellColor,
+} from '@/airdev/frontend/components/ThemeProvider';
 import {
   Avatar,
   AvatarFallback,
@@ -22,7 +27,12 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/airdev/frontend/components/ui/DropdownMenu';
 import { useRequiredCurrentUser } from '@/airdev/frontend/hooks/data/user';
@@ -37,7 +47,7 @@ import {
   Cog6ToothIcon,
   EllipsisVerticalIcon,
 } from '@heroicons/react/24/outline';
-import { LogOut, Wrench } from 'lucide-react';
+import { ArrowLeft, LogOut, Palette, Wrench } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import {
@@ -57,6 +67,17 @@ type BottomNavProps = {
 };
 
 type Props = SidebarProps | BottomNavProps;
+
+const shellColorTextClassName: Record<string, string> = {
+  blue: 'text-sky-600',
+  black: 'text-neutral-900 dark:text-neutral-100',
+  green: 'text-emerald-600',
+  yellow: 'text-amber-600',
+  red: 'text-rose-600',
+  purple: 'text-violet-600',
+  pink: 'text-pink-600',
+  orange: 'text-orange-600',
+};
 
 function useUserInitials() {
   const { data: user } = useRequiredCurrentUser();
@@ -128,6 +149,8 @@ type AccountAction = {
   icon: ReactNode;
   href?: string;
   onClick?: () => void | Promise<void>;
+  closeOnClick?: boolean;
+  showsChevron?: boolean;
   tone?: 'default' | 'danger';
 };
 
@@ -161,20 +184,69 @@ function AccountActionRow({
       className={classes}
       onClick={async () => {
         await action.onClick?.();
-        onDone?.();
+        if (action.closeOnClick !== false) {
+          onDone?.();
+        }
       }}
     >
       <span className="shrink-0">{action.icon}</span>
       <span className="flex-1 text-sm font-medium">{action.label}</span>
+      {action.showsChevron && (
+        <ChevronRightIcon className="size-4 shrink-0 opacity-60" />
+      )}
     </button>
+  );
+}
+
+function MobileThemePicker({
+  shellColor,
+  setShellColor,
+}: {
+  shellColor: ShellStyleColor;
+  setShellColor: (color: ShellStyleColor) => void;
+}) {
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      {shellColorOptions.map((option) => {
+        const isActive = option.value === shellColor;
+
+        return (
+          <button
+            key={option.value}
+            type="button"
+            className={cn(
+              'rounded-2xl border px-3 py-2 text-left text-sm transition-colors',
+              isActive
+                ? 'border-foreground bg-muted'
+                : 'border-border hover:bg-muted/60'
+            )}
+            onClick={() => setShellColor(option.value)}
+          >
+            <span
+              className={cn(
+                'block font-medium',
+                shellColorTextClassName[option.value]
+              )}
+            >
+              {option.label}
+            </span>
+            <span className="text-muted-foreground block text-xs">
+              {isActive ? 'Selected' : 'Set theme'}
+            </span>
+          </button>
+        );
+      })}
+    </div>
   );
 }
 
 export default function UserButton(props: Props) {
   const { user, initials } = useUserInitials();
+  const { shellColor, setShellColor } = useShellColor();
   const became = useBecameUser();
   const setBecameUser = useSetBecameUser();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileView, setMobileView] = useState<'menu' | 'theme'>('menu');
   const [desktopOpen, setDesktopOpen] = useState(false);
   const [sheetOffset, setSheetOffset] = useState(0);
   const [sheetHeight, setSheetHeight] = useState(0);
@@ -240,6 +312,7 @@ export default function UserButton(props: Props) {
   const forceCloseMobileSheet = useCallback(() => {
     clearSettleTimeout();
     setMobileOpen(false);
+    setMobileView('menu');
     setSheetOffset(0);
     setSheetHeight(0);
     resetSheetDragState();
@@ -329,6 +402,14 @@ export default function UserButton(props: Props) {
     };
   }, [mobileOpen]);
 
+  useEffect(() => {
+    if (!mobileOpen) {
+      return;
+    }
+
+    sheetContentRef.current?.scrollTo({ top: 0 });
+  }, [mobileOpen, mobileView]);
+
   const handleSheetPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     event.currentTarget.setPointerCapture(event.pointerId);
     clearSettleTimeout();
@@ -396,6 +477,14 @@ export default function UserButton(props: Props) {
         ]
       : []),
     {
+      key: 'theme',
+      label: 'Theme',
+      onClick: () => setMobileView('theme'),
+      closeOnClick: false,
+      showsChevron: true,
+      icon: <Palette className="size-5" />,
+    },
+    {
       key: 'settings',
       label: 'Settings',
       href: SETTINGS_HREF,
@@ -452,7 +541,7 @@ export default function UserButton(props: Props) {
         <BottomPopupSheetTrigger asChild>{trigger}</BottomPopupSheetTrigger>
         <BottomPopupSheetContent
           ref={sheetContentRef}
-          className="max-h-[50vh] min-h-[20rem] overflow-y-auto rounded-t-3xl px-0"
+          className="max-h-[88dvh] min-h-0 overflow-hidden rounded-t-3xl px-0"
           onRequestClose={closeMobileSheet}
           overlayStyle={{
             opacity: overlayOpacity,
@@ -475,32 +564,61 @@ export default function UserButton(props: Props) {
             onPointerCancel={handleSheetPointerEnd}
           >
             <div className="bg-muted mx-auto mb-3 h-1.5 w-12 rounded-full" />
-            <div className="flex items-center gap-3">
-              <Avatar className="size-11">
-                <AvatarImage
-                  src={user.imageUrl ?? undefined}
-                  alt={user.name ?? 'User'}
-                />
-                <AvatarFallback>{initials}</AvatarFallback>
-              </Avatar>
-              <div className="min-w-0">
-                <BottomPopupSheetTitle className="truncate">
-                  {user.name}
-                </BottomPopupSheetTitle>
-                <BottomPopupSheetDescription className="truncate">
-                  {user.email}
-                </BottomPopupSheetDescription>
+            {mobileView === 'theme' ? (
+              <div className="relative flex min-h-11 items-center justify-center">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="iconSm"
+                  className="absolute top-1/2 left-0 -translate-y-1/2"
+                  onPointerDown={(event) => event.stopPropagation()}
+                  onClick={() => setMobileView('menu')}
+                >
+                  <ArrowLeft className="size-4" />
+                  <span className="sr-only">Back to account menu</span>
+                </Button>
+                <div className="px-8 text-center">
+                  <BottomPopupSheetTitle>Theme</BottomPopupSheetTitle>
+                  <BottomPopupSheetDescription>
+                    Choose your shell color
+                  </BottomPopupSheetDescription>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                <Avatar className="size-11">
+                  <AvatarImage
+                    src={user.imageUrl ?? undefined}
+                    alt={user.name ?? 'User'}
+                  />
+                  <AvatarFallback>{initials}</AvatarFallback>
+                </Avatar>
+                <div className="min-w-0">
+                  <BottomPopupSheetTitle className="truncate">
+                    {user.name}
+                  </BottomPopupSheetTitle>
+                  <BottomPopupSheetDescription className="truncate">
+                    {user.email}
+                  </BottomPopupSheetDescription>
+                </div>
+              </div>
+            )}
           </BottomPopupSheetHeader>
           <div className="space-y-3 px-4 pb-4">
-            {mobileActions.map((action) => (
-              <AccountActionRow
-                key={action.key}
-                action={action}
-                onDone={closeMobileSheet}
+            {mobileView === 'theme' ? (
+              <MobileThemePicker
+                shellColor={shellColor}
+                setShellColor={setShellColor}
               />
-            ))}
+            ) : (
+              mobileActions.map((action) => (
+                <AccountActionRow
+                  key={action.key}
+                  action={action}
+                  onDone={closeMobileSheet}
+                />
+              ))
+            )}
           </div>
         </BottomPopupSheetContent>
       </BottomPopupSheet>
@@ -529,6 +647,28 @@ export default function UserButton(props: Props) {
             </Link>
           </DropdownMenuItem>
         )}
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger className="gap-4">
+            <Palette className="size-4" />
+            <span>Theme</span>
+          </DropdownMenuSubTrigger>
+          <DropdownMenuSubContent className="w-44">
+            <DropdownMenuRadioGroup
+              value={shellColor}
+              onValueChange={(value) =>
+                setShellColor(value as typeof shellColor)
+              }
+            >
+              {shellColorOptions.map((option) => (
+                <DropdownMenuRadioItem key={option.value} value={option.value}>
+                  <span className={shellColorTextClassName[option.value]}>
+                    {option.label}
+                  </span>
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
         <DropdownMenuItem asChild>
           <Link href={SETTINGS_HREF}>
             <Cog6ToothIcon className="mr-2 size-4" />

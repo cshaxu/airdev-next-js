@@ -1,4 +1,4 @@
-/* "@airdev/next": "managed" */
+﻿/* "@airdev/next": "managed" */
 
 'use client';
 
@@ -14,8 +14,15 @@ export default function CalculatorIllustration() {
         fill="#ffffff"
         fillOpacity="0.9"
       />
-      <rect x="28" y="20" width="52" height="18" rx="6" fill="#1395E1" />
-      <g fill="#0C4A6E">
+      <rect
+        x="28"
+        y="20"
+        width="52"
+        height="18"
+        rx="6"
+        fill="var(--shell-illustration-accent)"
+      />
+      <g fill="var(--shell-illustration-ink)">
         <rect x="28" y="48" width="12" height="12" rx="4" />
         <rect x="46" y="48" width="12" height="12" rx="4" />
         <rect x="64" y="48" width="12" height="12" rx="4" />
@@ -28,7 +35,7 @@ export default function CalculatorIllustration() {
       <circle cx="96" cy="24" r="10" fill="#FACC15" fillOpacity="0.9" />
       <path
         d="M96 18v12M90 24h12"
-        stroke="#0C4A6E"
+        stroke="var(--shell-illustration-ink)"
         strokeWidth="3"
         strokeLinecap="round"
       />

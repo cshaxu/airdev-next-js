@@ -3,18 +3,42 @@
 import { airdevPublicConfig } from '@/airdev/config/public';
 import ErrorBoundary from '@/airdev/frontend/components/ErrorBoundary';
 import ReactQueryProvider from '@/airdev/frontend/components/ReactQueryProvider';
-import ThemeProvider from '@/airdev/frontend/components/theme/ThemeProvider';
+import ThemeProvider from '@/airdev/frontend/components/ThemeProvider';
 import { Toaster } from '@/airdev/frontend/components/ui/Toaster';
 import '@/airdev/frontend/styles/globals.css';
 import { ReactNodeProps } from '@/airdev/frontend/types/props';
 import { pageTitle } from '@/airdev/frontend/utils/page';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import localFont from 'next/font/local';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { Suspense } from 'react';
 import CookieBanner from './CookieBanner';
 import PosthogInit from './PosthogInit';
+
+function escapeCssString(value: string) {
+  return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+}
+
+const SHELL_FONT_FAMILY_NAME = '__airdev_shell_font__';
+const SHELL_FONT_FALLBACK =
+  '"Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif';
+
+function getShellFontCss() {
+  const { src, format } = airdevPublicConfig.shell.style.font;
+  const escapedSrc = escapeCssString(src);
+
+  return `
+    @font-face {
+      font-family: "${SHELL_FONT_FAMILY_NAME}";
+      src: url("${escapedSrc}") format("${format}");
+      font-display: swap;
+    }
+
+    :root {
+      --shell-font-family: "${SHELL_FONT_FAMILY_NAME}", ${SHELL_FONT_FALLBACK};
+    }
+  `;
+}
 
 export function generateRootLayoutMetadata() {
   return {
@@ -53,20 +77,21 @@ export function generateRootLayoutMetadata() {
   };
 }
 
-const frutiger = localFont({
-  src: '../../../assets/Frutiger55Roman.woff2',
-  display: 'swap',
-});
-
 export default function RootLayout({ children }: ReactNodeProps) {
   return (
-    <html lang="en" className={frutiger.className} suppressHydrationWarning>
+    <html
+      lang="en"
+      data-shell-color={airdevPublicConfig.shell.style.color}
+      suppressHydrationWarning
+    >
       <body>
+        <style>{getShellFontCss()}</style>
         <ErrorBoundary>
           <ReactQueryProvider>
             <ThemeProvider
               attribute="class"
               defaultTheme="light"
+              defaultShellColor={airdevPublicConfig.shell.style.color}
               enableSystem={false}
               disableTransitionOnChange
             >

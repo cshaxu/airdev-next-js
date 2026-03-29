@@ -28,15 +28,6 @@ function main() {
     throw new Error(`Refusing to write to target: ${targetRoot}`);
   }
 
-  const relPaths = walkRepoFiles(repoRoot).filter((relPath) => {
-    const sourcePath = path.join(repoRoot, relPath);
-    return (
-      sourcePath !== targetRoot &&
-      !sourcePath.startsWith(`${targetRoot}${path.sep}`)
-    );
-  });
-  const totalCount = relPaths.length;
-
   fs.rmSync(requiredDir, { recursive: true, force: true });
   fs.rmSync(optionalDir, { recursive: true, force: true });
   fs.mkdirSync(requiredDir, { recursive: true });
@@ -46,35 +37,18 @@ function main() {
   const requiredEntries = [];
   const optionalEntries = [];
   const skippedEntries = [];
+  const ignoreMatcher = createIgnoreMatcher(repoRoot);
 
-  let lastPercent = -1;
-  for (const [index, relPath] of relPaths.entries()) {
-    const sourcePath = path.join(repoRoot, relPath);
-
-    if (relPath.startsWith(`src${path.sep}airdev${path.sep}`)) {
-      copyFile(sourcePath, path.join(requiredDir, relPath), createdDirs);
-      requiredEntries.push(relPath);
-      lastPercent = printProgress(index + 1, totalCount, relPath, lastPercent);
-      continue;
-    }
-
-    const bucket = classifyFile(sourcePath);
-    if (bucket === 'required') {
-      copyFile(sourcePath, path.join(requiredDir, relPath), createdDirs);
-      requiredEntries.push(relPath);
-    } else if (bucket === 'optional') {
-      copyFile(sourcePath, path.join(optionalDir, relPath), createdDirs);
-      optionalEntries.push(relPath);
-    } else {
-      skippedEntries.push(relPath);
-    }
-
-    lastPercent = printProgress(index + 1, totalCount, relPath, lastPercent);
-  }
-
-  if (totalCount > 0) {
-    process.stdout.write('\n');
-  }
+  processDirectory(repoRoot, '', {
+    targetRoot,
+    requiredDir,
+    optionalDir,
+    ignoreMatcher,
+    createdDirs,
+    requiredEntries,
+    optionalEntries,
+    skippedEntries,
+  });
 
   if (logPath) {
     ensureDir(path.dirname(logPath), createdDirs);
@@ -94,30 +68,69 @@ function main() {
   console.log(`Skipped: ${skippedEntries.length}`);
 }
 
-function walkRepoFiles(repoRoot) {
-  const ignoreMatcher = createIgnoreMatcher(repoRoot);
-  const relPaths = [];
-  walkDirectory(repoRoot, '');
-  return relPaths;
+function processDirectory(absDirPath, relDirPath, context) {
+  const {
+    targetRoot,
+    requiredDir,
+    optionalDir,
+    ignoreMatcher,
+    createdDirs,
+    requiredEntries,
+    optionalEntries,
+    skippedEntries,
+  } = context;
+  const directoryBucket = getDirectoryBucket(absDirPath);
+  const childDirectories = [];
 
-  function walkDirectory(absDirPath, relDirPath) {
-    for (const entry of fs.readdirSync(absDirPath, { withFileTypes: true })) {
-      const relPath = relDirPath
-        ? path.join(relDirPath, entry.name)
-        : entry.name;
-      const normalizedRelPath = normalizePath(relPath);
-      const absPath = path.join(absDirPath, entry.name);
+  for (const entry of fs.readdirSync(absDirPath, { withFileTypes: true })) {
+    const relPath = relDirPath
+      ? path.join(relDirPath, entry.name)
+      : entry.name;
+    const normalizedRelPath = normalizePath(relPath);
+    const absPath = path.join(absDirPath, entry.name);
 
-      if (ignoreMatcher(normalizedRelPath, entry.isDirectory())) {
-        continue;
-      }
-
-      if (entry.isDirectory()) {
-        walkDirectory(absPath, relPath);
-      } else if (entry.isFile()) {
-        relPaths.push(relPath);
-      }
+    if (isWithinTarget(absPath, targetRoot)) {
+      continue;
     }
+
+    if (ignoreMatcher(normalizedRelPath, entry.isDirectory())) {
+      continue;
+    }
+
+    if (entry.isDirectory()) {
+      childDirectories.push({ absPath, relPath });
+      continue;
+    }
+
+    if (!entry.isFile()) {
+      continue;
+    }
+
+    if (entry.name === 'airdev-next') {
+      skippedEntries.push(relPath);
+      continue;
+    }
+
+    if (relPath.startsWith(`src${path.sep}airdev${path.sep}`)) {
+      copyFile(absPath, path.join(requiredDir, relPath), createdDirs);
+      requiredEntries.push(relPath);
+      continue;
+    }
+
+    const bucket = directoryBucket ?? classifyFile(absPath);
+    if (bucket === 'required') {
+      copyFile(absPath, path.join(requiredDir, relPath), createdDirs);
+      requiredEntries.push(relPath);
+    } else if (bucket === 'optional') {
+      copyFile(absPath, path.join(optionalDir, relPath), createdDirs);
+      optionalEntries.push(relPath);
+    } else {
+      skippedEntries.push(relPath);
+    }
+  }
+
+  for (const childDirectory of childDirectories) {
+    processDirectory(childDirectory.absPath, childDirectory.relPath, context);
   }
 }
 
@@ -192,6 +205,23 @@ function matchesRule(rule, relPath, isDirectory) {
   }
 
   return matchesGlob(relPath, rule.pattern) || matchesGlob(relPath, `**/${rule.pattern}`);
+}
+
+function getDirectoryBucket(absDirPath) {
+  const markerPath = path.join(absDirPath, 'airdev-next');
+  if (!fs.existsSync(markerPath) || !fs.statSync(markerPath).isFile()) {
+    return null;
+  }
+
+  return classifyDirectoryMarker(markerPath);
+}
+
+function isWithinTarget(absPath, targetRoot) {
+  const relativePath = path.relative(targetRoot, absPath);
+  return (
+    relativePath === '' ||
+    (!relativePath.startsWith('..') && !path.isAbsolute(relativePath))
+  );
 }
 
 function matchesGlob(value, pattern) {
@@ -270,6 +300,24 @@ function classifyFile(filePath) {
   return null;
 }
 
+function classifyDirectoryMarker(filePath) {
+  const firstLine = readFirstLine(filePath);
+  if (firstLine === null) {
+    return null;
+  }
+
+  const normalizedFirstLine = firstLine.trim().toLowerCase();
+  if (normalizedFirstLine === 'managed') {
+    return 'required';
+  }
+
+  if (normalizedFirstLine === 'seeded') {
+    return 'optional';
+  }
+
+  return null;
+}
+
 function readHeader(filePath) {
   const fd = fs.openSync(filePath, 'r');
   try {
@@ -284,6 +332,24 @@ function readHeader(filePath) {
     const text = chunk.toString('utf8');
     const lines = text.split(/\r?\n/u).slice(0, 2);
     return lines.join('\n');
+  } finally {
+    fs.closeSync(fd);
+  }
+}
+
+function readFirstLine(filePath) {
+  const fd = fs.openSync(filePath, 'r');
+  try {
+    const buffer = Buffer.alloc(1024);
+    const bytesRead = fs.readSync(fd, buffer, 0, buffer.length, 0);
+    const chunk = buffer.subarray(0, bytesRead);
+
+    if (chunk.includes(0)) {
+      return null;
+    }
+
+    const text = chunk.toString('utf8');
+    return text.split(/\r?\n/u, 1)[0] ?? '';
   } finally {
     fs.closeSync(fd);
   }
@@ -314,26 +380,6 @@ function buildLog({ requiredEntries, optionalEntries, skippedEntries }) {
     ...skippedEntries,
     '',
   ].join('\n');
-}
-
-function printProgress(current, total, relPath, lastPercent) {
-  if (total === 0) {
-    return lastPercent;
-  }
-
-  const percent = Math.floor((current / total) * 100);
-  if (percent === lastPercent && current !== total) {
-    return lastPercent;
-  }
-
-  const message = `Progress: ${percent}% (${current}/${total}) ${normalizePath(relPath)}`;
-  if (process.stdout.isTTY) {
-    process.stdout.write(`\r${message}`);
-  } else {
-    console.log(message);
-  }
-
-  return percent;
 }
 
 function normalizePath(filePath) {

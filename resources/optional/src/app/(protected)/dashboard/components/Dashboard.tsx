@@ -39,7 +39,7 @@ export default function Dashboard() {
       <HeaderBar items={breadcrumbs} />
       <div className="min-h-0 flex-1 overflow-y-auto p-6">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
-          <section className="rounded-[28px] border border-[var(--blue-separator)] bg-linear-to-br from-white via-[var(--blue-1)] to-[var(--blue-3)] p-8 shadow-[0_24px_80px_-48px_rgba(2,147,238,0.45)]">
+          <section className="rounded-[28px] border border-[var(--blue-separator)] bg-linear-to-br from-white via-[var(--blue-1)] to-[var(--blue-3)] p-8 shadow-[var(--shell-hero-shadow)]">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
               <div className="max-w-2xl space-y-3">
                 <div className="inline-flex w-fit items-center gap-2 rounded-full bg-white/80 px-3 py-1 text-xs font-medium text-[var(--blue-9)] shadow-sm">
@@ -65,7 +65,7 @@ export default function Dashboard() {
           </section>
 
           <section className="grid gap-4 md:grid-cols-2">
-            <Card className="rounded-[24px] border-[var(--blue-separator)] bg-white/90 shadow-[0_18px_50px_-40px_rgba(32,54,86,0.55)]">
+            <Card className="rounded-[24px] border-[var(--blue-separator)] bg-white/90 shadow-[var(--shell-panel-shadow)]">
               <CardHeader>
                 <CardDescription>Signed in as</CardDescription>
                 <CardTitle className="text-2xl font-semibold text-[var(--blue-12)]">
@@ -78,7 +78,7 @@ export default function Dashboard() {
               </CardContent>
             </Card>
 
-            <Card className="rounded-[24px] border-[var(--blue-separator)] bg-[var(--blue-bg)] shadow-[0_18px_50px_-40px_rgba(32,54,86,0.55)]">
+            <Card className="rounded-[24px] border-[var(--blue-separator)] bg-[var(--blue-bg)] shadow-[var(--shell-panel-shadow)]">
               <CardHeader>
                 <CardDescription>Next step</CardDescription>
                 <CardTitle className="text-xl font-semibold text-[var(--blue-12)]">

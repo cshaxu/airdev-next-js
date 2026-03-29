@@ -4,6 +4,7 @@
 
 import { ResponsiveBreadcrumb } from '@/airdev/frontend/components/ui/ResponsiveBreadcrumb';
 import TranslateButton from './TranslateButton';
+import UserButton from './UserButton';
 
 export type HeaderBarItem = {
   label: string;
@@ -55,6 +56,9 @@ export default function HeaderBar({
       {/* Right: Actions */}
       <div className="flex flex-1 items-center justify-end space-x-4 pl-8">
         <TranslateButton />
+        <div className="hidden md:block [@media(orientation:portrait)]:hidden">
+          <UserButton mode="sidebar" isFull={false} />
+        </div>
       </div>
     </div>
   );

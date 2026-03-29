@@ -1,4 +1,4 @@
-/* "@airdev/next": "seeded" */
+﻿/* "@airdev/next": "seeded" */
 
 import { publicAppConfig } from '@/config/public';
 import { Blocks, Settings2, ShieldCheck, Sparkles, Wrench } from 'lucide-react';
@@ -45,8 +45,8 @@ const steps = [
 
 export default function Landing() {
   return (
-    <div className="flex h-screen flex-col overflow-y-auto bg-gradient-to-b from-blue-50 via-sky-50 to-white text-slate-900">
-      <header className="sticky top-0 z-20 border-b border-sky-100/80 bg-white/80 backdrop-blur">
+    <div className="flex h-screen flex-col overflow-y-auto bg-gradient-to-b from-[var(--shell-page-start)] via-[var(--shell-page-mid)] to-white text-slate-900">
+      <header className="sticky top-0 z-20 border-b border-[var(--shell-tint-100-80)] bg-white/80 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-8">
           <div className="flex items-center gap-3">
             <Image
@@ -66,7 +66,7 @@ export default function Landing() {
       <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pb-16 md:px-8">
         <section className="grid items-center gap-10 pt-14 pb-12 md:grid-cols-2 md:pt-20">
           <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white px-3 py-1 text-sm text-sky-700">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--shell-tint-200)] bg-white px-3 py-1 text-sm text-[var(--shell-tint-700)]">
               <Sparkles className="size-4" />
               Minimal app template
             </div>
@@ -82,13 +82,13 @@ export default function Landing() {
           </div>
 
           <div className="relative">
-            <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-r from-sky-200/60 to-cyan-100/50 blur-2xl" />
-            <div className="space-y-4 rounded-3xl border border-sky-100 bg-white p-6 shadow-xl shadow-sky-100/60">
+            <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-r from-[var(--shell-glow-start)] to-[var(--shell-glow-end)] blur-2xl" />
+            <div className="space-y-4 rounded-3xl border border-[var(--shell-tint-100)] bg-white p-6 shadow-xl shadow-[color:var(--shell-shadow-tint)]">
               <div className="flex items-center gap-2 text-sm font-medium text-slate-500">
-                <Settings2 className="size-4 text-sky-600" />
+                <Settings2 className="size-4 text-[var(--shell-tint-600)]" />
                 Template Snapshot
               </div>
-              <div className="rounded-2xl border border-sky-100 bg-sky-50/70 p-4">
+              <div className="rounded-2xl border border-[var(--shell-tint-100)] bg-[var(--shell-tint-50-70)] p-4">
                 <p className="text-sm text-slate-500">Default Shape</p>
                 <p className="text-2xl font-semibold">
                   Auth + Admin + Generated Data Layer
@@ -116,9 +116,9 @@ export default function Landing() {
             return (
               <article
                 key={item.title}
-                className="rounded-2xl border border-sky-100 bg-white p-5 shadow-sm"
+                className="rounded-2xl border border-[var(--shell-tint-100)] bg-white p-5 shadow-sm"
               >
-                <div className="mb-3 inline-flex rounded-lg bg-sky-100 p-2 text-sky-700">
+                <div className="mb-3 inline-flex rounded-lg bg-[var(--shell-tint-100)] p-2 text-[var(--shell-tint-700)]">
                   <Icon className="size-5" />
                 </div>
                 <h3 className="mb-1 text-lg font-semibold">{item.title}</h3>
@@ -131,14 +131,17 @@ export default function Landing() {
         </section>
 
         <section className="py-8">
-          <div className="rounded-3xl border border-sky-100 bg-white p-6 md:p-8">
+          <div className="rounded-3xl border border-[var(--shell-tint-100)] bg-white p-6 md:p-8">
             <h2 className="text-2xl font-semibold tracking-tight">
               How It Works
             </h2>
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               {steps.map((step, index) => (
-                <div key={step.title} className="rounded-2xl bg-sky-50/70 p-4">
-                  <p className="text-sm font-medium text-sky-700">
+                <div
+                  key={step.title}
+                  className="rounded-2xl bg-[var(--shell-tint-50-70)] p-4"
+                >
+                  <p className="text-sm font-medium text-[var(--shell-tint-700)]">
                     Step {index + 1}
                   </p>
                   <h3 className="mt-1 font-semibold">{step.title}</h3>

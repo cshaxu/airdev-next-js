@@ -6,6 +6,21 @@ export type EnvironmentBase = 'local' | 'production';
 
 export type Environment = EnvironmentBase | (string & {});
 
+export type ShellStyleColor =
+  | 'blue'
+  | 'black'
+  | 'green'
+  | 'yellow'
+  | 'red'
+  | 'purple'
+  | 'pink'
+  | 'orange';
+
+export type ShellStyleFont = {
+  src: string;
+  format: 'woff2' | 'woff' | 'truetype' | 'opentype';
+};
+
 export type AirdevPublicConfigBase = {
   app: {
     id: string;
@@ -31,6 +46,7 @@ export type AirdevPublicConfigBase = {
   shell: {
     routes: { homeHref: string; disallowRobots: string[] };
     assets: { logoSrc: string; iconSrc: string };
+    style: { color: ShellStyleColor; font: ShellStyleFont };
     adminTabs: { href: string; label: string }[];
   };
   aws: { s3Bucket: string };

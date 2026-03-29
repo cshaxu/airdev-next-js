@@ -2,7 +2,10 @@
 
 // Note: anything added here will be leaked to the public, use caution!
 
-import { EnvironmentBase } from '@/airdev/common/types/config';
+import {
+  AirdevPublicConfigBase,
+  EnvironmentBase,
+} from '@/airdev/common/types/config';
 import PublicConfigJson from '../../public.config.json';
 
 // environment definitions, do not move
@@ -36,7 +39,8 @@ const service = {
   serviceEnvironment: SERVICE_ENVIRONMENT,
 };
 
-const { app, defaults, shell, google, posthog } = PublicConfigJson;
+const { app, defaults, google, posthog } = PublicConfigJson;
+const shell = PublicConfigJson.shell as AirdevPublicConfigBase['shell'];
 
 const aws = {
   ...PublicConfigJson.aws,
