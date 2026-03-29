@@ -108,7 +108,7 @@ export default function SignInVerify({ email }: Props) {
                       <InputOTPGroup key={i}>
                         <InputOTPSlot
                           index={i}
-                          className="size-11 bg-white text-base font-semibold text-black sm:size-12"
+                          className="bg-background text-foreground size-11 text-base font-semibold sm:size-12"
                         />
                       </InputOTPGroup>
                     ))}

@@ -50,7 +50,7 @@ export default function SignInLayout({ children }: ReactNodeProps) {
       </div>
 
       <div className="grid place-items-center [@media(orientation:portrait)]:items-start">
-        <div className="w-full max-w-md [@media(orientation:portrait)]:rounded-3xl [@media(orientation:portrait)]:border [@media(orientation:portrait)]:border-[var(--shell-tint-100)] [@media(orientation:portrait)]:bg-white/90 [@media(orientation:portrait)]:p-5 [@media(orientation:portrait)]:shadow-sm sm:[@media(orientation:portrait)]:p-6">
+        <div className="[@media(orientation:portrait)]:bg-background/90 w-full max-w-md [@media(orientation:portrait)]:rounded-3xl [@media(orientation:portrait)]:border [@media(orientation:portrait)]:border-[var(--shell-tint-100)] [@media(orientation:portrait)]:p-5 [@media(orientation:portrait)]:shadow-sm sm:[@media(orientation:portrait)]:p-6">
           {children}
         </div>
       </div>

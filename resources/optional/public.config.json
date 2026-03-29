@@ -22,8 +22,8 @@
       "disallowRobots": ["/api", "/admin", "/dashboard", "/settings"]
     },
     "style": {
-      "color": "black",
-      "font": { "src": "/airdev/Mona-Sans.woff2", "format": "woff2" }
+      "color": "blue",
+      "font": { "src": "/airdev/Frutiger55Roman.woff2", "format": "woff2" }
     }
   },
   "service": {

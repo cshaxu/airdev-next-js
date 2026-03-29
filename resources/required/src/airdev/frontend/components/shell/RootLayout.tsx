@@ -92,7 +92,7 @@ export default function RootLayout({ children }: ReactNodeProps) {
               attribute="class"
               defaultTheme="light"
               defaultShellColor={airdevPublicConfig.shell.style.color}
-              enableSystem={false}
+              enableSystem
               disableTransitionOnChange
             >
               <NuqsAdapter>

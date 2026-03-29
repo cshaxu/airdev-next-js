@@ -3,7 +3,6 @@
 'use client';
 
 import { ADMIN_HREF, ROOT_HREF, SETTINGS_HREF } from '@/airdev/common/constant';
-import type { ShellStyleColor } from '@/airdev/common/types/config';
 import {
   shellColorOptions,
   useShellColor,
@@ -47,8 +46,17 @@ import {
   Cog6ToothIcon,
   EllipsisVerticalIcon,
 } from '@heroicons/react/24/outline';
-import { ArrowLeft, LogOut, Palette, Wrench } from 'lucide-react';
+import {
+  ArrowLeft,
+  LogOut,
+  Monitor,
+  Moon,
+  Palette,
+  Sun,
+  Wrench,
+} from 'lucide-react';
 import { signOut } from 'next-auth/react';
+import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import {
   ReactNode,
@@ -149,22 +157,36 @@ type AccountAction = {
   icon: ReactNode;
   href?: string;
   onClick?: () => void | Promise<void>;
+  children?: AccountActionChild[];
+  childrenDescription?: string;
+  childrenVariant?: 'option-grid';
   closeOnClick?: boolean;
   showsChevron?: boolean;
   tone?: 'default' | 'danger';
 };
 
+type AccountActionChild = {
+  key: string;
+  label: string;
+  onClick: () => void | Promise<void>;
+  isSelected?: boolean;
+  textClassName?: string;
+  mobileHint?: string;
+};
+
 function AccountActionRow({
   action,
   onDone,
+  onOpenChildren,
 }: {
   action: AccountAction;
   onDone?: () => void;
+  onOpenChildren?: (action: AccountAction) => void;
 }) {
   const classes = cn(
     'flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left transition-colors',
     action.tone === 'danger'
-      ? 'border-border text-red-700 hover:bg-red-50'
+      ? 'border-border text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40'
       : 'border-border hover:bg-muted/60'
   );
 
@@ -183,6 +205,10 @@ function AccountActionRow({
       type="button"
       className={classes}
       onClick={async () => {
+        if (action.children) {
+          onOpenChildren?.(action);
+          return;
+        }
         await action.onClick?.();
         if (action.closeOnClick !== false) {
           onDone?.();
@@ -198,40 +224,40 @@ function AccountActionRow({
   );
 }
 
-function MobileThemePicker({
-  shellColor,
-  setShellColor,
+function MobileChildActionGrid({
+  items,
+  onDone,
 }: {
-  shellColor: ShellStyleColor;
-  setShellColor: (color: ShellStyleColor) => void;
+  items: AccountActionChild[];
+  onDone?: () => void;
 }) {
   return (
     <div className="grid grid-cols-2 gap-2">
-      {shellColorOptions.map((option) => {
-        const isActive = option.value === shellColor;
+      {items.map((item) => {
+        const isActive = item.isSelected;
 
         return (
           <button
-            key={option.value}
+            key={item.key}
             type="button"
             className={cn(
               'rounded-2xl border px-3 py-2 text-left text-sm transition-colors',
               isActive
-                ? 'border-foreground bg-muted'
+                ? 'bg-muted border border-[var(--shell-tint-600)]'
                 : 'border-border hover:bg-muted/60'
             )}
-            onClick={() => setShellColor(option.value)}
+            onClick={() => {
+              void (async () => {
+                await item.onClick();
+                onDone?.();
+              })();
+            }}
           >
-            <span
-              className={cn(
-                'block font-medium',
-                shellColorTextClassName[option.value]
-              )}
-            >
-              {option.label}
+            <span className={cn('block font-medium', item.textClassName)}>
+              {item.label}
             </span>
             <span className="text-muted-foreground block text-xs">
-              {isActive ? 'Selected' : 'Set theme'}
+              {isActive ? 'Selected' : item.mobileHint}
             </span>
           </button>
         );
@@ -240,14 +266,88 @@ function MobileThemePicker({
   );
 }
 
+function renderDesktopAccountAction(
+  action: AccountAction,
+  onDone?: () => void
+) {
+  const icon = <span className="mr-2 [&_svg]:size-4">{action.icon}</span>;
+
+  if (action.children) {
+    const selectedChild = action.children.find((child) => child.isSelected);
+
+    return (
+      <DropdownMenuSub key={action.key}>
+        <DropdownMenuSubTrigger className="gap-4">
+          <span className="[&_svg]:size-4">{action.icon}</span>
+          <span>{action.label}</span>
+        </DropdownMenuSubTrigger>
+        <DropdownMenuSubContent className="w-44">
+          <DropdownMenuRadioGroup value={selectedChild?.key}>
+            {action.children.map((child) => (
+              <DropdownMenuRadioItem
+                key={child.key}
+                value={child.key}
+                onSelect={(event) => {
+                  event.preventDefault();
+                  void (async () => {
+                    await child.onClick();
+                    onDone?.();
+                  })();
+                }}
+              >
+                <span className={child.textClassName}>{child.label}</span>
+              </DropdownMenuRadioItem>
+            ))}
+          </DropdownMenuRadioGroup>
+        </DropdownMenuSubContent>
+      </DropdownMenuSub>
+    );
+  }
+
+  if (action.href) {
+    return (
+      <DropdownMenuItem key={action.key} asChild>
+        <Link href={action.href} onClick={onDone}>
+          {icon}
+          <span>{action.label}</span>
+        </Link>
+      </DropdownMenuItem>
+    );
+  }
+
+  return (
+    <DropdownMenuItem
+      key={action.key}
+      className={cn(
+        'cursor-pointer',
+        action.tone === 'danger' &&
+          'text-red-700 focus:text-red-700 dark:text-red-400 dark:focus:text-red-400'
+      )}
+      onClick={() => {
+        void action.onClick?.();
+        if (action.closeOnClick !== false) {
+          onDone?.();
+        }
+      }}
+    >
+      {icon}
+      <span>{action.label}</span>
+    </DropdownMenuItem>
+  );
+}
+
 export default function UserButton(props: Props) {
   const { user, initials } = useUserInitials();
   const { shellColor, setShellColor } = useShellColor();
+  const { theme, setTheme } = useTheme();
   const became = useBecameUser();
   const setBecameUser = useSetBecameUser();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mobileView, setMobileView] = useState<'menu' | 'theme'>('menu');
+  const [mobileChildActionKey, setMobileChildActionKey] = useState<
+    string | null
+  >(null);
   const [desktopOpen, setDesktopOpen] = useState(false);
+  const [isThemeMounted, setIsThemeMounted] = useState(false);
   const [sheetOffset, setSheetOffset] = useState(0);
   const [sheetHeight, setSheetHeight] = useState(0);
   const [isDraggingSheet, setIsDraggingSheet] = useState(false);
@@ -266,6 +366,8 @@ export default function UserButton(props: Props) {
     setBecameUser(null);
     window.location.reload();
   };
+
+  const activeThemeMode = isThemeMounted ? (theme ?? 'light') : 'light';
 
   const clearSettleTimeout = () => {
     if (settleTimeoutRef.current !== null) {
@@ -312,7 +414,7 @@ export default function UserButton(props: Props) {
   const forceCloseMobileSheet = useCallback(() => {
     clearSettleTimeout();
     setMobileOpen(false);
-    setMobileView('menu');
+    setMobileChildActionKey(null);
     setSheetOffset(0);
     setSheetHeight(0);
     resetSheetDragState();
@@ -346,6 +448,10 @@ export default function UserButton(props: Props) {
     },
     []
   );
+
+  useEffect(() => {
+    setIsThemeMounted(true);
+  }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -408,7 +514,7 @@ export default function UserButton(props: Props) {
     }
 
     sheetContentRef.current?.scrollTo({ top: 0 });
-  }, [mobileOpen, mobileView]);
+  }, [mobileOpen, mobileChildActionKey]);
 
   const handleSheetPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     event.currentTarget.setPointerCapture(event.pointerId);
@@ -465,7 +571,7 @@ export default function UserButton(props: Props) {
     animateSheetTo(0);
   };
 
-  const mobileActions: AccountAction[] = [
+  const accountActions: AccountAction[] = [
     ...(user.isAdmin
       ? [
           {
@@ -477,18 +583,63 @@ export default function UserButton(props: Props) {
         ]
       : []),
     {
-      key: 'theme',
-      label: 'Theme',
-      onClick: () => setMobileView('theme'),
-      closeOnClick: false,
-      showsChevron: true,
-      icon: <Palette className="size-5" />,
-    },
-    {
       key: 'settings',
       label: 'Settings',
       href: SETTINGS_HREF,
       icon: <Cog6ToothIcon className="size-5" />,
+    },
+    {
+      key: 'mode',
+      label: 'Mode',
+      showsChevron: true,
+      childrenDescription: 'Choose light, dark, or system mode',
+      childrenVariant: 'option-grid',
+      children: [
+        {
+          key: 'light',
+          label: 'Light Mode',
+          isSelected: activeThemeMode === 'light',
+          mobileHint: 'Use light theme',
+          onClick: () => setTheme('light'),
+        },
+        {
+          key: 'dark',
+          label: 'Dark Mode',
+          isSelected: activeThemeMode === 'dark',
+          mobileHint: 'Use dark theme',
+          onClick: () => setTheme('dark'),
+        },
+        {
+          key: 'system',
+          label: 'System Mode',
+          isSelected: activeThemeMode === 'system',
+          mobileHint: 'Follow device theme',
+          onClick: () => setTheme('system'),
+        },
+      ],
+      icon:
+        activeThemeMode === 'dark' ? (
+          <Moon className="size-5" />
+        ) : activeThemeMode === 'system' ? (
+          <Monitor className="size-5" />
+        ) : (
+          <Sun className="size-5" />
+        ),
+    },
+    {
+      key: 'theme',
+      label: 'Theme',
+      showsChevron: true,
+      childrenDescription: 'Choose your shell color',
+      childrenVariant: 'option-grid',
+      children: shellColorOptions.map((option) => ({
+        key: option.value,
+        label: option.label,
+        isSelected: option.value === shellColor,
+        textClassName: shellColorTextClassName[option.value],
+        onClick: () => setShellColor(option.value),
+      })),
+      icon: <Palette className="size-5" />,
     },
     became
       ? {
@@ -516,6 +667,10 @@ export default function UserButton(props: Props) {
           user.imageUrl,
           props.showLabel
         );
+
+  const activeMobileChildAction =
+    accountActions.find((action) => action.key === mobileChildActionKey) ??
+    null;
 
   if (props.mode === 'bottom-nav') {
     const safeSheetHeight =
@@ -564,7 +719,7 @@ export default function UserButton(props: Props) {
             onPointerCancel={handleSheetPointerEnd}
           >
             <div className="bg-muted mx-auto mb-3 h-1.5 w-12 rounded-full" />
-            {mobileView === 'theme' ? (
+            {activeMobileChildAction ? (
               <div className="relative flex min-h-11 items-center justify-center">
                 <Button
                   type="button"
@@ -572,16 +727,20 @@ export default function UserButton(props: Props) {
                   size="iconSm"
                   className="absolute top-1/2 left-0 -translate-y-1/2"
                   onPointerDown={(event) => event.stopPropagation()}
-                  onClick={() => setMobileView('menu')}
+                  onClick={() => setMobileChildActionKey(null)}
                 >
                   <ArrowLeft className="size-4" />
                   <span className="sr-only">Back to account menu</span>
                 </Button>
                 <div className="px-8 text-center">
-                  <BottomPopupSheetTitle>Theme</BottomPopupSheetTitle>
-                  <BottomPopupSheetDescription>
-                    Choose your shell color
-                  </BottomPopupSheetDescription>
+                  <BottomPopupSheetTitle>
+                    {activeMobileChildAction.label}
+                  </BottomPopupSheetTitle>
+                  {activeMobileChildAction.childrenDescription && (
+                    <BottomPopupSheetDescription>
+                      {activeMobileChildAction.childrenDescription}
+                    </BottomPopupSheetDescription>
+                  )}
                 </div>
               </div>
             ) : (
@@ -605,17 +764,21 @@ export default function UserButton(props: Props) {
             )}
           </BottomPopupSheetHeader>
           <div className="space-y-3 px-4 pb-4">
-            {mobileView === 'theme' ? (
-              <MobileThemePicker
-                shellColor={shellColor}
-                setShellColor={setShellColor}
+            {activeMobileChildAction?.children &&
+            activeMobileChildAction.childrenVariant === 'option-grid' ? (
+              <MobileChildActionGrid
+                items={activeMobileChildAction.children}
+                onDone={closeMobileSheet}
               />
             ) : (
-              mobileActions.map((action) => (
+              accountActions.map((action) => (
                 <AccountActionRow
                   key={action.key}
                   action={action}
                   onDone={closeMobileSheet}
+                  onOpenChildren={(nextAction) =>
+                    setMobileChildActionKey(nextAction.key)
+                  }
                 />
               ))
             )}
@@ -626,6 +789,12 @@ export default function UserButton(props: Props) {
   }
 
   const sideOffset = props.isFull ? 12 : 16;
+  const standardActions = accountActions.filter(
+    (action) => action.tone !== 'danger'
+  );
+  const dangerActions = accountActions.filter(
+    (action) => action.tone === 'danger'
+  );
 
   return (
     <DropdownMenu open={desktopOpen} onOpenChange={setDesktopOpen}>
@@ -639,57 +808,12 @@ export default function UserButton(props: Props) {
       >
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {user.isAdmin && (
-          <DropdownMenuItem asChild>
-            <Link href={ADMIN_HREF}>
-              <Wrench className="mr-2 size-4" />
-              <span>Admin</span>
-            </Link>
-          </DropdownMenuItem>
+        {standardActions.map((action) =>
+          renderDesktopAccountAction(action, forceCloseDesktopMenu)
         )}
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger className="gap-4">
-            <Palette className="size-4" />
-            <span>Theme</span>
-          </DropdownMenuSubTrigger>
-          <DropdownMenuSubContent className="w-44">
-            <DropdownMenuRadioGroup
-              value={shellColor}
-              onValueChange={(value) =>
-                setShellColor(value as typeof shellColor)
-              }
-            >
-              {shellColorOptions.map((option) => (
-                <DropdownMenuRadioItem key={option.value} value={option.value}>
-                  <span className={shellColorTextClassName[option.value]}>
-                    {option.label}
-                  </span>
-                </DropdownMenuRadioItem>
-              ))}
-            </DropdownMenuRadioGroup>
-          </DropdownMenuSubContent>
-        </DropdownMenuSub>
-        <DropdownMenuItem asChild>
-          <Link href={SETTINGS_HREF}>
-            <Cog6ToothIcon className="mr-2 size-4" />
-            <span>Settings</span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        {became ? (
-          <button className="w-full" onClick={handleRevertSelf}>
-            <DropdownMenuItem className="w-full cursor-pointer">
-              <LogOut className="mr-2 size-4" />
-              <span>Revert to self</span>
-            </DropdownMenuItem>
-          </button>
-        ) : (
-          <button className="w-full" onClick={handleSignOut}>
-            <DropdownMenuItem className="w-full cursor-pointer">
-              <LogOut className="mr-2 size-4" />
-              <span>Log out</span>
-            </DropdownMenuItem>
-          </button>
+        {dangerActions.length > 0 && <DropdownMenuSeparator />}
+        {dangerActions.map((action) =>
+          renderDesktopAccountAction(action, forceCloseDesktopMenu)
         )}
       </DropdownMenuContent>
     </DropdownMenu>
