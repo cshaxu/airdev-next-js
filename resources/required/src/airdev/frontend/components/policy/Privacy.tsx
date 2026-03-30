@@ -25,19 +25,19 @@ export default function Privacy() {
         <p>
           This privacy policy explains our practices regarding the collection,
           use and disclosure of information that we receive from the person or
-          entity accessing our Site or using our Services (â€œyouâ€ or
-          â€œyourâ€), including in particular information which may be used to
-          identify you as a natural person (â€œPersonal Informationâ€). This
-          Privacy Policy sets forth the privacy practices of {app.owner} (â€œ
-          {app.ownerShort}â€, â€œweâ€ or â€œusâ€ or â€œourâ€) for (1) our
-          website located at {airdevPublicConfig.service.baseUrl} (the
-          â€œSiteâ€) and (2) all {app.ownerShort} software and applications
-          (including, without limitation, mobile software and applications) (the
-          â€œSoftwareâ€) and all other {app.ownerShort} products or services
-          provided otherwise made accessible on or through the Software or the
-          Site (collectively theâ€œServicesâ€). This Privacy Policy does not
-          apply to any third-party websites, services or applications, even if
-          they are accessible through our Services.
+          entity accessing our Site or using our Services (“you” or “your”),
+          including in particular information which may be used to identify you
+          as a natural person (“Personal Information”). This Privacy Policy sets
+          forth the privacy practices of {app.owner}
+          (“{app.ownerShort}”, “we” or “us” or “our”) for (1) our website
+          located at {airdevPublicConfig.service.baseUrl} (the “Site”) and (2)
+          all {app.ownerShort} software and applications (including, without
+          limitation, mobile software and applications) (the “Software”) and all
+          other {app.ownerShort} products or services provided otherwise made
+          accessible on or through the Software or the Site (collectively the
+          “Services”). This Privacy Policy does not apply to any third-party
+          websites, services or applications, even if they are accessible
+          through our Services.
         </p>
         <p>
           We reserve the right to change this Privacy Policy from time to time
@@ -136,7 +136,7 @@ export default function Privacy() {
           <li>
             We automatically collect through the Services information that is
             often not personally identifying, such as the website from which
-            visitors came to the Services, Services visitorsâ€™ IP address,
+            visitors came to the Services, Services visitors’ IP address,
             browser type and other information relating to the device through
             which they access the Services. We may combine this information with
             the Personal Information we have collected from you;
@@ -158,11 +158,11 @@ export default function Privacy() {
         <h2 className="font-bold">Limited Use Policy Compliance</h2>
         <p>
           {' '}
-          {app.ownerShort} rigorously adheres to Googleâ€™s API Services User
-          Data Policy, especially the Limited Use requirements and applies it
-          across our data. Our usage and handling of data obtained via
-          Googleâ€™s Restricted and Sensitive Scopes are governed by these
-          stringent standards.
+          {app.ownerShort} rigorously adheres to Google’s API Services User Data
+          Policy, especially the Limited Use requirements and applies it across
+          our data. Our usage and handling of data obtained via Google’s
+          Restricted and Sensitive Scopes are governed by these stringent
+          standards.
         </p>
         <p>
           <strong>Key points of our compliance include</strong>:
@@ -171,7 +171,7 @@ export default function Privacy() {
           <li>
             Focused Data Usage: We strictly limit our use of user data to
             providing or enhancing user-facing features that are clearly visible
-            and integral to our applicationâ€™s interface.
+            and integral to our application’s interface.
           </li>
           <li>
             Restricted Data Transfer: Data transfer is permitted only under
@@ -213,7 +213,7 @@ export default function Privacy() {
           third-party service providers, such as cookies, web beacons (clear
           GIFs, web bugs) and similar technologies to track user activity and
           collect site data. We may combine this data with the Personal
-          Information we have collected from you.â€
+          Information we have collected from you.
         </p>
         <h3>Cookies and Web beacons</h3>
         <p>
@@ -223,16 +223,16 @@ export default function Privacy() {
         <p>
           <span className="font-bold">A Cookie </span>
           <span className="font-normal">
-            is a text file that a website transfers to your computerâ€™s hard
+            is a text file that a website transfers to your computer’s hard
             drive for record-keeping purposes. Our cookies assign a random,
-            unique number to each visitorâ€™s computer. They do not contain
+            unique number to each visitor’s computer. They do not contain
             information that would personally identify the visitor, although we
             can associate a cookie with any identifying information that is or
             has been provided to us while visiting the Services. We use cookies
             that remain on your computer for a specified period of time or until
             they are deleted (persistent cookies). We may also use cookies that
-            exist only temporarily during an online session (session cookies)
-            â€“ these cookies allow us to identify you temporarily as you move
+            exist only temporarily during an online session (session cookies) –
+            these cookies allow us to identify you temporarily as you move
             through the Services. Most browsers allow users to refuse cookies
             but doing so may impede the functionality of some portions of our
             Services.
@@ -243,22 +243,22 @@ export default function Privacy() {
           <span className="font-normal">
             are tiny graphics with a unique identifier, similar in function to
             cookies, that are used to track the online movements of Web users.
-            In contrast to cookies, which are stored on your computerâ€™s hard
+            In contrast to cookies, which are stored on your computer’s hard
             drive, Web beacons are embedded invisibly on webpages and may not be
             disabled or controlled through your browser.
           </span>
         </p>
-        <h3> â€œDo Not Trackâ€ options</h3>
+        <h3>“Do Not Track” options</h3>
         <p>
           Although we do our best to honor the privacy preferences of our
           customers, we are not able to respond to Do-Not-Track signals from
           your browser at this time. As discussed above, we track websites and
           app usage information through the use of cookies for analytic and
           internal purposes only. Because we do not collect this information to
-          track you across websites or apps over time, your selection of the
-          â€œDo Not Trackâ€ option provided by your browser will not have any
-          effect on our collection of cookie information for analytics or
-          internal purposes.
+          track you across websites or apps over time, your selection of the “Do
+          Not Track” option provided by your browser will not have any effect on
+          our collection of cookie information for analytics or internal
+          purposes.
         </p>
         <h3> How long do we keep your information? </h3>
         <p>
@@ -298,7 +298,7 @@ export default function Privacy() {
           except to help us conduct and improve our business. We may also
           release your Personal Information when we believe release is
           appropriate to comply with the law, enforce our site policies or
-          protect our or othersâ€™ rights, property or safety. Your Personal
+          protect our or others’ rights, property or safety. Your Personal
           Information may also be transferred to another company in the event of
           a transfer, change of ownership, reorganization or assignment of all
           or part of our businesses or assets. This will occur if the parties
@@ -318,7 +318,7 @@ export default function Privacy() {
           third-party websites. We are not responsible for the information
           practices of such third-party websites.
         </p>
-        <h2 className="font-bold">â€Email Policy</h2>
+        <h2 className="font-bold">Email Policy</h2>
         <p>
           We may use your email address to share with you sign-in code,
           communicate with you about orders you have placed, inquiries you have
@@ -359,7 +359,7 @@ export default function Privacy() {
           your personal data is carried out in accordance with applicable
           privacy laws and, in particular, that appropriate contractual,
           technical, and organisational measures are in place such as the
-          Standard Contractual Clauses approved by the EU Commission.â€
+          Standard Contractual Clauses approved by the EU Commission.
         </p>
         <h2 className="font-bold">
           Your Data Protection Rights (California Residents)
@@ -367,21 +367,21 @@ export default function Privacy() {
         <p>
           If you are a resident of California and interact with us as a
           consumer, you have certain rights under the California Consumer
-          Privacy Act or â€œCCPAâ€ (Cal. Civ. Code Â§ 1798.100 et seq.),
-          including to request access to and deletion of your Personal
-          Information (as defined in the CCPA). You may exercise these rights by
-          contacting us at {app.email}. We do not sell your Personal
-          Information, but we may allow our advertising partners to collect
-          certain device identifiers and electronic network activity that allows
-          them to show ads within their systems that are targeted to your
-          interests. To opt out of having your Personal Information used for
-          targeted advertising purposes, please visit{' '}
+          Privacy Act or “CCPA” (Cal. Civ. Code § 1798.100 et seq.), including
+          to request access to and deletion of your Personal Information (as
+          defined in the CCPA). You may exercise these rights by contacting us
+          at {app.email}. We do not sell your Personal Information, but we may
+          allow our advertising partners to collect certain device identifiers
+          and electronic network activity that allows them to show ads within
+          their systems that are targeted to your interests. To opt out of
+          having your Personal Information used for targeted advertising
+          purposes, please visit{' '}
           <a href="http://www.aboutads.info/choices" className="link-primary">
             www.aboutads.info/choices
           </a>{' '}
           .
         </p>
-        <h2 className="font-bold">Childrenâ€™s Privacy</h2>
+        <h2 className="font-bold">Children’s Privacy</h2>
         <p>
           We do not knowingly collect, maintain, or use personal information
           from children under 13 years of age, and no parts of our Services are

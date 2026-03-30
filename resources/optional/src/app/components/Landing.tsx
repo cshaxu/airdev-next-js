@@ -3,6 +3,7 @@
 import { publicAppConfig } from '@/config/public';
 import { Blocks, Settings2, ShieldCheck, Sparkles, Wrench } from 'lucide-react';
 import Image from 'next/image';
+import Footer from './Footer';
 import GetStartedDialog from './GetStartedDialog';
 
 const landingPanelClassName =
@@ -70,7 +71,10 @@ export default function Landing() {
       </header>
 
       <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pb-16 md:px-8">
-        <section className="grid items-center gap-10 pt-14 pb-12 md:grid-cols-2 md:pt-20">
+        <section
+          id="overview"
+          className="grid scroll-mt-24 items-center gap-10 pt-14 pb-12 md:grid-cols-2 md:pt-20"
+        >
           <div className="space-y-6">
             <div className="bg-background inline-flex items-center gap-2 rounded-full border border-[var(--shell-tint-200)] px-3 py-1 text-sm text-[var(--shell-tint-700)]">
               <Sparkles className="size-4" />
@@ -120,7 +124,10 @@ export default function Landing() {
           </div>
         </section>
 
-        <section className="grid gap-4 py-8 md:grid-cols-3">
+        <section
+          id="features"
+          className="grid scroll-mt-24 gap-4 py-8 md:grid-cols-3"
+        >
           {highlights.map((item) => {
             const Icon = item.icon;
             return (
@@ -140,7 +147,7 @@ export default function Landing() {
           })}
         </section>
 
-        <section className="py-8">
+        <section id="how-it-works" className="scroll-mt-24 py-8">
           <div className={`${landingPanelClassName} p-6 md:p-8`}>
             <h2 className="text-2xl font-semibold tracking-tight">
               How It Works
@@ -164,6 +171,7 @@ export default function Landing() {
           </div>
         </section>
       </main>
+      <Footer />
     </div>
   );
 }

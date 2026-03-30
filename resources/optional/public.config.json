@@ -2,11 +2,11 @@
   "@airdev/next": "seeded",
   "app": {
     "id": "barebone",
-    "name": "Barebone Next",
+    "name": "barebone.",
     "description": "Next.js App Template",
     "ownerShort": "Nano Indies",
-    "owner": "Nano Indies, Inc.",
-    "email": "dev@nanoindies.com",
+    "owner": "Nano Indies LLC",
+    "email": "nanoindies@gmail.com",
     "version": "0.0.1",
     "logoUrl": "https://avatars.githubusercontent.com/u/5317739?v=4&size=64",
     "welcomeText": "Sign in to start using the workspace.",
@@ -35,10 +35,10 @@
       "titlePrefix": "Local"
     },
     "production": {
-      "baseUrl": "https://www.nanoindies.com",
+      "baseUrl": "https://barebone-next.vercel.app",
       "name": "barebone-production",
       "protocol": "https:",
-      "rootDomain": "nanoindies.com",
+      "rootDomain": "barebone-next.vercel.app",
       "titlePrefix": "Production"
     }
   },

@@ -22,18 +22,18 @@ export default function Terms() {
       <section className="mb-6 flex flex-col gap-y-3">
         <p>Last Updated: March 25, 2026</p>
         <p>
-          Please read these terms of service (â€œAgreementâ€ or â€œTerms of
-          Useâ€) carefully before using the services offered by {app.owner}
-          (â€œCompanyâ€). This agreement sets forth the legally binding terms
-          and conditions for your and your business or other legal entityâ€™s
-          (â€œyouâ€) use of the various websites owned and operated by Company,
-          including, without limitation, the{' '}
+          Please read these terms of service (“Agreement” or “Terms of Use”)
+          carefully before using the services offered by {app.owner}
+          (“Company”). This agreement sets forth the legally binding terms and
+          conditions for your and your business or other legal entity’s (“you”)
+          use of the various websites owned and operated by Company, including,
+          without limitation, the{' '}
           <a href={airdevPublicConfig.service.baseUrl} className="link-primary">
             {app.name}
           </a>{' '}
-          website and domain name (â€œSitesâ€), and any other features, content,
-          or applications offered from time to time in connection therewith
-          (collectively, the â€œServiceâ€). By using the sites or service in any
+          website and domain name (“Sites”), and any other features, content, or
+          applications offered from time to time in connection therewith
+          (collectively, the “Service”). By using the sites or service in any
           manner, including but not limited to visiting or browsing the sites,
           you agree to be bound by this agreement.
         </p>
@@ -77,16 +77,16 @@ export default function Terms() {
         </p>
         <h2 className="font-bold">Privacy</h2>
         <p>
-          Companyâ€™s current privacy policy is located at{' '}
+          Company’s current privacy policy is located at{' '}
           <a
             href={`${airdevPublicConfig.service.baseUrl}${PRIVACY_HREF}`}
             className="link-primary"
           >
             {`${airdevPublicConfig.service.baseUrl}${PRIVACY_HREF}`}
           </a>{' '}
-          (the â€œPrivacy Policyâ€) and is incorporated into these Terms of Use
-          by this reference. For inquiries in regard to the Privacy Policy, or
-          to report a privacy-related problem, please contact{' '}
+          (the “Privacy Policy”) and is incorporated into these Terms of Use by
+          this reference. For inquiries in regard to the Privacy Policy, or to
+          report a privacy-related problem, please contact{' '}
           <a href={`mailto:${app.email}`} className="link-primary">
             {app.email}
           </a>{' '}
@@ -104,51 +104,51 @@ export default function Terms() {
           account in its sole discretion. You are solely responsible for
           activity that occurs on your account and shall be responsible for
           maintaining the confidentiality of your Company password. You shall
-          never use anotherâ€™s account without such other userâ€™s express
+          never use another’s account without such other user’s express
           permission. You will immediately notify Company in writing of any
           unauthorized use of your account, or other account related security
           breach of which you are aware. Company shall have the right to use
-          Customerâ€™s name in a factual manner for marketing or promotional
-          purposes on Companyâ€™s website and in other communication with
-          existing or potential customers. To refuse Company this right,
-          Customer must email Company (at the email address provided in the
-          Service) stating that Customer does not wish to grant Company this
-          right. If any provision of this Agreement is found to be unenforceable
-          or invalid, that provision will be limited or eliminated to the
-          minimum extent necessary so that this Agreement will otherwise remain
-          in effect and enforceable.
+          Customer’s name in a factual manner for marketing or promotional
+          purposes on Company’s website and in other communication with existing
+          or potential customers. To refuse Company this right, Customer must
+          email Company (at the email address provided in the Service) stating
+          that Customer does not wish to grant Company this right. If any
+          provision of this Agreement is found to be unenforceable or invalid,
+          that provision will be limited or eliminated to the minimum extent
+          necessary so that this Agreement will otherwise remain in effect and
+          enforceable.
         </p>
         <h2 className="font-bold">Services</h2>
         <p>
           Customer shall have the right to grant users, including its employees,
           investors, vendors, advisors and agents, access to its account for use
-          of the Services in accordance with this Agreement (â€œAuthorized
-          Usersâ€) and designate which Authorized Users shall have
-          administrative privileges. Customer is solely responsible for ensuring
-          Authorized Users comply with the Agreement. Customer shall be
-          responsible for all activities occurring under Customerâ€™s account,
-          including all activities of its Authorized Users, and for obtaining
-          and maintaining any equipment and ancillary services needed to connect
-          to, access or otherwise use the Services, including, without
-          limitation, modems, hardware, servers, software, operating systems,
-          networking, web servers and the like (collectively, â€œEquipmentâ€).
-          Customer shall also be responsible for maintaining the security of the
-          Equipment, Customer account, passwords (including but not limited to
-          administrative and Authorized User passwords) and files, and for all
-          uses of Customer account or the Equipment with or without Customerâ€™s
-          knowledge or consent. Company may invite Customer to try certain
-          services at no charge for a free trial or assessment or if such
-          services are not widely available to customers (collectively,
-          â€œEvaluation Servicesâ€). Evaluation Services will be identified as
-          alpha, beta, trial, early access, limited release, pilot, evaluation,
-          or similar. Evaluation Services are for Companyâ€™s internal
-          analytical purposes only and not for production use, are not
-          considered â€œServicesâ€ under this Agreement, are not supported, are
-          provided â€œas isâ€ without warranty of any kind, and may be subject
-          to additional terms. Company may discontinue Evaluation Services at
-          any time in its sole discretion and may never make them generally
-          available. Company will have no liability for any harm or damage
-          arising out of or in connection with any Evaluation Services.
+          of the Services in accordance with this Agreement (“Authorized Users”)
+          and designate which Authorized Users shall have administrative
+          privileges. Customer is solely responsible for ensuring Authorized
+          Users comply with the Agreement. Customer shall be responsible for all
+          activities occurring under Customer’s account, including all
+          activities of its Authorized Users, and for obtaining and maintaining
+          any equipment and ancillary services needed to connect to, access or
+          otherwise use the Services, including, without limitation, modems,
+          hardware, servers, software, operating systems, networking, web
+          servers and the like (collectively, “Equipment”). Customer shall also
+          be responsible for maintaining the security of the Equipment, Customer
+          account, passwords (including but not limited to administrative and
+          Authorized User passwords) and files, and for all uses of Customer
+          account or the Equipment with or without Customer’s knowledge or
+          consent. Company may invite Customer to try certain services at no
+          charge for a free trial or assessment or if such services are not
+          widely available to customers (collectively, “Evaluation Services”).
+          Evaluation Services will be identified as alpha, beta, trial, early
+          access, limited release, pilot, evaluation, or similar. Evaluation
+          Services are for Company’s internal analytical purposes only and not
+          for production use, are not considered “Services” under this
+          Agreement, are not supported, are provided “as is” without warranty of
+          any kind, and may be subject to additional terms. Company may
+          discontinue Evaluation Services at any time in its sole discretion and
+          may never make them generally available. Company will have no
+          liability for any harm or damage arising out of or in connection with
+          any Evaluation Services.
         </p>
         <h2 className="font-bold">
           Consent to Receive Electronic Communications from Company
@@ -176,10 +176,10 @@ export default function Terms() {
           Through the service, you may direct Company to retrieve certain
           information maintained online by third-party services or providers
           with which you have a customer relationship, maintain accounts or
-          engage in transactions (â€œaccount informationâ€). You agree to
-          provide your username, password, pin and other log-in information and
+          engage in transactions (“account information”). You agree to provide
+          your username, password, pin and other log-in information and
           credentials necessary to access your account with such institutions or
-          providers (â€œaccess informationâ€), and you hereby grant company
+          providers (“access information”), and you hereby grant company
           permission to use the access information and account information for
           the purposes contemplated by this agreement. By using the service, you
           expressly authorize Company to access, store and use your account
@@ -198,7 +198,7 @@ export default function Terms() {
           store and use your account information with the full power and
           authority to do and perform each thing necessary in connection with
           such activities, as you could do in person solely in connection with
-          companyâ€™s provision of the service. You acknowledge and agree that
+          company’s provision of the service. You acknowledge and agree that
           when Company accesses and retrieves account information from third
           party sites, Company is acting as your agent, and not as the agent of
           or on behalf of the third party. You acknowledge and agree that the
@@ -215,14 +215,14 @@ export default function Terms() {
           these Terms of Use. The Service is provided only for your internal use
           in connection with your lawful business activities. You are
           responsible for all of your activity in connection with the Service.
-          For purposes of the Terms of Use, the term â€œContentâ€ includes,
-          without limitation, any advertisements, advice, suggestions, blogs or
-          forum comments, information, data, text, photographs, software,
-          scripts, graphics, and interactive features generated, provided, or
-          otherwise made accessible by Company or its partners on or through the
-          Service. By way of example, and not as a limitation, you shall not
-          (and shall not permit any third party to) either (a) take any action
-          or (b) post any content on or through the Service, that:
+          For purposes of the Terms of Use, the term “Content” includes, without
+          limitation, any advertisements, advice, suggestions, blogs or forum
+          comments, information, data, text, photographs, software, scripts,
+          graphics, and interactive features generated, provided, or otherwise
+          made accessible by Company or its partners on or through the Service.
+          By way of example, and not as a limitation, you shall not (and shall
+          not permit any third party to) either (a) take any action or (b) post
+          any content on or through the Service, that:
         </p>
         <ul className="list-inside list-disc pl-5">
           <li>
@@ -231,17 +231,17 @@ export default function Terms() {
           </li>
           <li>
             is unlawful, threatening, abusive, harassing, defamatory, libelous,
-            deceptive, fraudulent, invasive of anotherâ€™s privacy, tortious,
+            deceptive, fraudulent, invasive of another’s privacy, tortious,
             obscene, offensive, or profane;
           </li>
           <li>
             constitutes unauthorized or unsolicited advertising, junk or bulk
-            e-mail (â€œspammingâ€);
+            e-mail (“spamming”);
           </li>
           <li>
-            involves commercial activities and/or sales without Companyâ€™s
-            prior written consent, such as contests, sweepstakes, barter,
-            advertising, or pyramid schemes;
+            involves commercial activities and/or sales without Company’s prior
+            written consent, such as contests, sweepstakes, barter, advertising,
+            or pyramid schemes;
           </li>
           <li>
             contains software viruses or any other computer codes, files, or
@@ -260,31 +260,30 @@ export default function Terms() {
         <p>
           Additionally, you shall not: (i) take any action that imposes or may
           impose (as determined by Company in its sole discretion) an
-          unreasonable or disproportionately large load on Companyâ€™s (or its
-          third party providersâ€™) infrastructure; (ii) interfere or attempt to
+          unreasonable or disproportionately large load on Company’s (or its
+          third party providers’) infrastructure; (ii) interfere or attempt to
           interfere with the proper working of the Service or any activities
           conducted on the Service; (iii) bypass any measures Company may use to
           prevent or restrict access to the Service (or other accounts, computer
           systems or networks connected to the Service); (iv) run Maillist,
-          Listserv, any form of auto-responder or â€œspamâ€ on the Service; or
-          (v) use manual or automated software, devices, or other processes to
-          â€œcrawlâ€ or â€œspiderâ€ any page of the Sites. You shall not
-          (directly or indirectly): (i) decipher, decompile, disassemble,
-          reverse engineer or otherwise attempt to derive any source code or
-          underlying ideas or algorithms of any part of the Service, except to
-          the limited extent applicable laws specifically prohibit such
-          restriction, (ii) modify, translate, or otherwise create derivative
-          works of any part of the Service, (iii) copy, rent, lease, distribute,
-          or otherwise transfer any or all of the rights that you receive
-          hereunder, or (iv) use or access the Service in order to build a
-          competitive product or service. You shall abide by all applicable
-          local, state, national and international laws and regulations when
-          using the Service. Company reserves the right to remove any Content
-          from the Sites or Service at any time, for any reason (including, but
-          not limited to, upon receipt of claims or allegations from third
-          parties or authorities relating to such Content or if Company is
-          concerned that you may have violated the Terms of Use), or for no
-          reason at all.
+          Listserv, any form of auto-responder or “spam” on the Service; or (v)
+          use manual or automated software, devices, or other processes to
+          “crawl” or “spider” any page of the Sites. You shall not (directly or
+          indirectly): (i) decipher, decompile, disassemble, reverse engineer or
+          otherwise attempt to derive any source code or underlying ideas or
+          algorithms of any part of the Service, except to the limited extent
+          applicable laws specifically prohibit such restriction, (ii) modify,
+          translate, or otherwise create derivative works of any part of the
+          Service, (iii) copy, rent, lease, distribute, or otherwise transfer
+          any or all of the rights that you receive hereunder, or (iv) use or
+          access the Service in order to build a competitive product or service.
+          You shall abide by all applicable local, state, national and
+          international laws and regulations when using the Service. Company
+          reserves the right to remove any Content from the Sites or Service at
+          any time, for any reason (including, but not limited to, upon receipt
+          of claims or allegations from third parties or authorities relating to
+          such Content or if Company is concerned that you may have violated the
+          Terms of Use), or for no reason at all.
         </p>
         <h2 className="font-bold">Company and Site Content</h2>
         <p>
@@ -307,12 +306,12 @@ export default function Terms() {
           portion of any Content in any form. Copying or storing of any Content
           for other than for your internal business use is expressly prohibited
           without prior written permission from Company, or from the copyright
-          holder identified in such Contentâ€™s copyright notice.
+          holder identified in such Content’s copyright notice.
         </p>
         <h2 className="font-bold">Confidentiality and Feedback</h2>
         <p>
-          Neither Company or Customer will use or disclose the other partyâ€™s
-          Confidential Information without the otherâ€™s prior written consent,
+          Neither Company or Customer will use or disclose the other party’s
+          Confidential Information without the other’s prior written consent,
           except for the purpose of exercising rights under or performing this
           Agreement, or if required by law, regulation or court order; in which
           case, the party being compelled to disclose Confidential Information
@@ -321,12 +320,11 @@ export default function Terms() {
           Company with any suggestions, information, ideas, or feedback
           concerning {app.ownerShort}, its functionality and features, or any
           model, report or output, errors discovered, or any suggestions for or
-          relating to any models or output (â€œFeedbackâ€) while using{' '}
-          {app.name}, such Feedback will be the property of Company. You agree
-          to assign, and hereby assign, all right, title and interest worldwide
-          in the Feedback, and the related intellectual property rights, to
-          Company and agree to assist Company in perfecting and enforcing these
-          rights.
+          relating to any models or output (“Feedback”) while using {app.name},
+          such Feedback will be the property of Company. You agree to assign,
+          and hereby assign, all right, title and interest worldwide in the
+          Feedback, and the related intellectual property rights, to Company and
+          agree to assist Company in perfecting and enforcing these rights.
         </p>
         <h2 className="font-bold">License</h2>
         <p>
@@ -361,13 +359,13 @@ export default function Terms() {
           the Terms of Use which by their nature shall survive termination,
           including, without limitation, ownership provisions, warranty
           disclaimers, indemnity and limitations of liability.If Company, in
-          Companyâ€™s discretion, takes legal action against you in connection
+          Company’s discretion, takes legal action against you in connection
           with any actual or suspected breach of this Agreement, Company will be
           entitled to recover from you as part of such legal action, and you
-          agree to pay, Companyâ€™s reasonable costs and attorneysâ€™ fees
-          incurred as a result of such legal action. The Company Parties will
-          have no legal obligation or other liability to you or to any third
-          party arising out of or relating to any termination of this Agreement.
+          agree to pay, Company’s reasonable costs and attorneys’ fees incurred
+          as a result of such legal action. The Company Parties will have no
+          legal obligation or other liability to you or to any third party
+          arising out of or relating to any termination of this Agreement.
         </p>
         <h2 className="font-bold">Warranty Disclaimer</h2>
         <p>
@@ -379,48 +377,47 @@ export default function Terms() {
           the sites. You should independently verify all content and other
           information that you access through the service. By using the service,
           you agree that company shall not be responsible for (1) any content,
-          (2) any personâ€™s reliance on any such content, whether or not
-          correct, current and complete, or (3) the consequences of any action
-          that you or any other person takes or fails to take based on any
-          content or otherwise as a result of your use of the service. Your use
-          of or reliance on any content is at your own risk. The service
-          (including, without limitation, any content) is provided â€œAs isâ€
-          and â€œAs availableâ€ and is without warranty of any kind, express or
-          including, but not limited to, the implied warranties of title,
-          non-infringement, merchantability and fitness for a particular
-          purpose, and any warranties implied by any course of performance or
-          usage of trade, all of which are expressly disclaimed. Company, and
-          its directors, employees, agents, suppliers, partners and content
-          providers do not warrant that: (a) the service will be secure or
-          available at any particular time or location; (b) the use of the
-          service will be secure, timely, uninterrupted or error-free, or
-          operate in combination with any other hardware, software, system or
-          data; (b) any defects or errors will be corrected; (c) any content or
-          software available at or through the service is free of viruses or
-          other harmful components; or (d) the results of using the service will
-          meet your requirements or expectations. Your use of the service is
-          solely at your own risk. The services may be subject to limitations,
-          delays, and other problems inherent in the use of the internet and
-          electronic communications, and Company is not responsible for any
-          delays, delivery failures, or other damage resulting from such
-          problems. Some states do not allow limitations on how long an implied
-          warranty lasts, so the above limitations may not apply to you.
-          Electronic communications privacy act notice (18 usc 2701-2711):
-          company makes no guaranty of confidentiality or privacy of any
-          communication or information transmitted on the sites or any website
-          linked to the sites.Company will not be liable for the privacy of
-          email addresses, registration and identification information, disk
-          space, communications, confidential or trade-secret information, or
-          any other content stored on companyâ€™s equipment, transmitted over
-          networks accessed by the sites, or otherwise connected with your use
-          of the service.
+          (2) any person’s reliance on any such content, whether or not correct,
+          current and complete, or (3) the consequences of any action that you
+          or any other person takes or fails to take based on any content or
+          otherwise as a result of your use of the service. Your use of or
+          reliance on any content is at your own risk. The service (including,
+          without limitation, any content) is provided “As is” and “As
+          available” and is without warranty of any kind, express or including,
+          but not limited to, the implied warranties of title, non-infringement,
+          merchantability and fitness for a particular purpose, and any
+          warranties implied by any course of performance or usage of trade, all
+          of which are expressly disclaimed. Company, and its directors,
+          employees, agents, suppliers, partners and content providers do not
+          warrant that: (a) the service will be secure or available at any
+          particular time or location; (b) the use of the service will be
+          secure, timely, uninterrupted or error-free, or operate in combination
+          with any other hardware, software, system or data; (b) any defects or
+          errors will be corrected; (c) any content or software available at or
+          through the service is free of viruses or other harmful components; or
+          (d) the results of using the service will meet your requirements or
+          expectations. Your use of the service is solely at your own risk. The
+          services may be subject to limitations, delays, and other problems
+          inherent in the use of the internet and electronic communications, and
+          Company is not responsible for any delays, delivery failures, or other
+          damage resulting from such problems. Some states do not allow
+          limitations on how long an implied warranty lasts, so the above
+          limitations may not apply to you. Electronic communications privacy
+          act notice (18 usc 2701-2711): company makes no guaranty of
+          confidentiality or privacy of any communication or information
+          transmitted on the sites or any website linked to the sites.Company
+          will not be liable for the privacy of email addresses, registration
+          and identification information, disk space, communications,
+          confidential or trade-secret information, or any other content stored
+          on company’s equipment, transmitted over networks accessed by the
+          sites, or otherwise connected with your use of the service.
         </p>
         <h2 className="font-bold">Indemnification</h2>
         <p>
           You shall defend, indemnify, and hold harmless Company, its affiliates
           and each of its, and its affiliates employees, contractors, directors,
           suppliers and representatives from all liabilities, claims, and
-          expenses, including reasonable attorneysâ€™ fees, that arise from or
+          expenses, including reasonable attorneys’ fees, that arise from or
           relate to (i) your use or misuse of, or access to, the Sites, Service,
           Content, or otherwise from any content that you post to the Sites,
           (ii) your violation of the Terms of Use, or (iii) infringement by you,
@@ -473,13 +470,13 @@ export default function Terms() {
           this Agreement shall be finally settled by arbitration in San
           Francisco County, California, using the English language in accordance
           with the Arbitration Rules and Procedures of Judicial Arbitration and
-          Mediation Services, Inc. (â€œJAMSâ€) then in effect, by one commercial
+          Mediation Services, Inc. (“JAMS”) then in effect, by one commercial
           arbitrator with substantial experience in resolving intellectual
           property and commercial contract disputes, who shall be selected from
           the appropriate list of JAMS arbitrators in accordance with the
           Arbitration Rules and Procedures of JAMS. The prevailing party in the
           arbitration shall be entitled to receive reimbursement of its
-          reasonable expenses (including reasonable attorneysâ€™ fees, expert
+          reasonable expenses (including reasonable attorneys’ fees, expert
           witness fees and all other expenses) incurred in connection therewith.
           Judgment upon the award so rendered may be entered in a court having
           jurisdiction or application may be made to such court for judicial
@@ -511,15 +508,15 @@ export default function Terms() {
         <p>
           Customer may not remove or export from the United States or allow the
           export or re-export of {app.name}. As defined in FAR section 2.101,
-          the Software and documentation are â€œcommercial itemsâ€ and according
-          to DFAR section 252.2277014(a)(1) and (5) are deemed to be
-          â€œcommercial computer softwareâ€ and â€œcommercial computer software
-          documentation.â€ Consistent with DFAR section 227.7202 and FAR section
-          12.212, any use modification, reproduction, release, performance,
-          display, or disclosure of such commercial software or commercial
-          software documentation by the U.S. Government will be governed solely
-          by the terms of this Agreement and will be prohibited except to the
-          extent expressly permitted by the terms of this Agreement.
+          the Software and documentation are “commercial items” and according to
+          DFAR section 252.2277014(a)(1) and (5) are deemed to be “commercial
+          computer software” and “commercial computer software documentation.”
+          Consistent with DFAR section 227.7202 and FAR section 12.212, any use
+          modification, reproduction, release, performance, display, or
+          disclosure of such commercial software or commercial software
+          documentation by the U.S. Government will be governed solely by the
+          terms of this Agreement and will be prohibited except to the extent
+          expressly permitted by the terms of this Agreement.
         </p>
         <h2 className="font-bold">Fees and Payment</h2>
         <p>
@@ -552,7 +549,7 @@ export default function Terms() {
         <h2 className="font-bold">Data Retention</h2>
         <p>
           Even after you have stopped using our software, all information and
-          files youâ€™ve input and uploaded on {app.name} will be kept for at
+          files you’ve input and uploaded on {app.name} will be kept for at
           least one year. Please reach out to us at{' '}
           <a href={`mailto:${app.email}`} className="link-primary">
             {app.email}
@@ -576,29 +573,29 @@ export default function Terms() {
         <h2 className="font-bold">Geenral</h2>
         <p>
           Company shall not be liable for any failure to perform its obligations
-          hereunder where such failure results from any cause beyond Companyâ€™s
+          hereunder where such failure results from any cause beyond Company’s
           reasonable control, including, without limitation, mechanical,
           electronic or communications failure or degradation (including
-          â€œline-noiseâ€ interference). The Terms of Use are personal to you,
-          and you, and are not assignable, transferable or sub-licensable by you
-          except with Companyâ€™s prior written consent. Company may assign,
+          “line-noise” interference). The Terms of Use are personal to you, and
+          you, and are not assignable, transferable or sub-licensable by you
+          except with Company’s prior written consent. Company may assign,
           transfer or delegate any of its rights and obligations hereunder
           without consent. No agency, partnership, joint venture, or employment
           relationship is created as a result of the Terms of Use and neither
           party has any authority of any kind to bind the other in any respect.
           In any action or proceeding to enforce rights under the Terms of Use,
-          the prevailing party will be entitled to recover costs and
-          attorneysâ€™ fees. All notices under the Terms of Use will be in
-          writing and will be deemed to have been duly given when received, if
-          personally delivered or sent by certified or registered mail, return
-          receipt requested; when receipt is electronically confirmed, if
-          transmitted by facsimile or e-mail; or the day after it is sent, if
-          sent for next day delivery by recognized overnight delivery service.
+          the prevailing party will be entitled to recover costs and attorneys’
+          fees. All notices under the Terms of Use will be in writing and will
+          be deemed to have been duly given when received, if personally
+          delivered or sent by certified or registered mail, return receipt
+          requested; when receipt is electronically confirmed, if transmitted by
+          facsimile or e-mail; or the day after it is sent, if sent for next day
+          delivery by recognized overnight delivery service.
         </p>
         <h2 className="font-bold">Copyright and Trademark Notices</h2>
         <p>
           Unless otherwise indicated, the Terms of Use and all Content provided
-          by Company are copyright Â© 2026 {app.owner}. All rights reserved.
+          by Company are copyright © 2026 {app.owner}. All rights reserved.
         </p>
         <h2 className="font-bold">Corrections</h2>
         <p>
