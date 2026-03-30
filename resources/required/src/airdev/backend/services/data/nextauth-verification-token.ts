@@ -1,6 +1,7 @@
 /* "@airdev/next": "managed" */
 
 import * as AuthDelivery from '@/airdev/backend/deliveries/auth';
+import { NextauthVerificationTokenEntity } from '@/airdev/backend/entities/nextauth-verification-token';
 import { createHash, generateCode } from '@/airdev/backend/utils/token';
 import {
   CreateOneNextauthVerificationTokenBody,
@@ -8,7 +9,6 @@ import {
 } from '@/airdev/common/types/data/nextauth-verification-token';
 import { airdevPrivateConfig } from '@/airdev/config/private';
 import { Context } from '@/airdev/framework/context';
-import { NextauthVerificationTokenEntity } from '@/backend/entities/nextauth-verification-token';
 import { Prisma } from '@prisma/client';
 import { addMinutes } from 'date-fns';
 

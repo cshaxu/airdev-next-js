@@ -22,7 +22,7 @@ const decryptedCredentials = decrypt(EncryptedCredentials, DATABAG_PASSWORD);
 const { data: DataCredentials } = decryptedCredentials;
 const environmentalDataCredentials = DataCredentials[dataEnvironment];
 
-const { admin } = PrivateConfigJson;
+const { admin, email } = PrivateConfigJson;
 
 const database = {
   ...PrivateConfigJson.database,
@@ -48,6 +48,7 @@ const postmark = {
 export const privateAppConfig = {
   admin,
   database,
+  email,
   nextauth,
   google,
   aws,

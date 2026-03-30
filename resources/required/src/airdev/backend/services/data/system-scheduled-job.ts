@@ -1,5 +1,6 @@
 /* "@airdev/next": "managed" */
 
+import { SystemScheduledJobEntity } from '@/airdev/backend/entities/system-scheduled-job';
 import {
   SystemScheduledJobExecution,
   SystemScheduledJobResult,
@@ -7,7 +8,6 @@ import {
 } from '@/airdev/common/types/data/system-scheduled-job';
 import { logError, normalizeError } from '@/airdev/common/utils/logging';
 import { Context } from '@/airdev/framework/context';
-import { SystemScheduledJobEntity } from '@/backend/entities/system-scheduled-job';
 import { SCHEDULED_JOB_EXECUTOR_MAP } from '@/generated/scheduler';
 import { buildInvalidErrorMessage, logInfo } from '@airent/api';
 import { Prisma } from '@prisma/client';

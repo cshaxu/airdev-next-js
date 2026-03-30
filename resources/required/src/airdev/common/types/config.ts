@@ -56,6 +56,7 @@ export type AirdevPublicConfigBase = {
 export type AirdevPrivateConfigBase = {
   admin: { emails: string[] };
   database: { batchSize: number; delaySeconds: number; url: string };
+  email: { noReplySender: string };
   nextauth: { secret: string; sessionMaxAge: number };
   aws: { accessKeyId: string; secretAccessKey: string; s3Region: string };
   google: { clientId: string; clientSecret: string };

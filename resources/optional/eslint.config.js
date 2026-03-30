@@ -80,6 +80,41 @@ module.exports = [
       'airdev/no-specific-string': [
         'error',
         [
+          {
+            name: "from '@/app/",
+            description: 'Disallow importing from outside of src/airdev',
+            includedFiles: ['src/airdev/**/*.ts', 'src/airdev/**/*.tsx'],
+          },
+          {
+            name: "from '@/backend/",
+            description: 'Disallow importing from outside of src/airdev',
+            includedFiles: ['src/airdev/**/*.ts', 'src/airdev/**/*.tsx'],
+            excludedFiles: [
+              'src/airdev/backend/services/data/user-base.ts',
+              'src/airdev/backend/services/data/user-search.ts',
+            ],
+          },
+          {
+            name: "from '@/common/",
+            description: 'Disallow importing from outside of src/airdev',
+            includedFiles: ['src/airdev/**/*.ts', 'src/airdev/**/*.tsx'],
+          },
+          {
+            name: "from '@/config/",
+            notFollowedBy: 'component',
+            description:
+              'Disallow importing from outside of src/airdev, except for component config',
+            includedFiles: ['src/airdev/**/*.ts', 'src/airdev/**/*.tsx'],
+            excludedFiles: [
+              'src/airdev/config/private.ts',
+              'src/airdev/config/public.ts',
+            ],
+          },
+          {
+            name: "from '@/frontend/",
+            description: 'Disallow importing from outside of src/airdev',
+            includedFiles: ['src/airdev/**/*.ts', 'src/airdev/**/*.tsx'],
+          },
           { name: ' == ', description: '', replacement: ' === ' },
           { name: ' != ', description: '', replacement: ' !== ' },
           {

@@ -2,6 +2,7 @@
   "@airdev/next": "seeded",
   "admin": { "emails": ["cshaxu@gmail.com"] },
   "database": { "batchSize": 1000, "delaySeconds": 5 },
+  "email": { "noReplySender": "nanoindies@gmail.com" },
   "nextauth": { "sessionMaxAge": 2592000 },
   "aws": { "s3Region": "us-east-1" },
   "openai": {

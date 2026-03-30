@@ -4,7 +4,6 @@ import * as PostmarkSdk from '@/airdev/backend/sdks/postmark';
 import { airdevPrivateConfig } from '@/airdev/config/private';
 import { airdevPublicConfig } from '@/airdev/config/public';
 import VerificationCode from '@/airdev/emails/VerificationCode';
-import { buildEmailSender } from '@/backend/utils/email';
 import { render } from '@react-email/render';
 
 export async function sendEmail(
@@ -15,12 +14,11 @@ export async function sendEmail(
   const payload = { subject, code };
 
   const stream = airdevPrivateConfig.postmark.defaultTransactionStream;
-  const sender = buildEmailSender(airdevPublicConfig.app.name, 'no-reply');
   const htmlBody = await render(VerificationCode(payload));
 
   const email = {
     stream,
-    sender,
+    sender: airdevPrivateConfig.email.noReplySender,
     receiver,
     subject,
     htmlBody,

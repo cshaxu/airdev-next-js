@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/frontend/components/ui/Dialog';
+} from '@/airdev/frontend/components/ui/Dialog';
 import { ArrowRight } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';

@@ -1,8 +1,8 @@
 /* "@airdev/next": "managed" */
 
+import { NextauthAccountEntity } from '@/airdev/backend/entities/nextauth-account';
 import { GetManyNextauthAccountsQuery } from '@/airdev/common/types/data/nextauth-account';
 import { adminOrThrow, Context } from '@/airdev/framework/context';
-import { NextauthAccountEntity } from '@/backend/entities/nextauth-account';
 import { Account } from 'next-auth';
 
 /** unused for now since we haven't build support for unlinking sso */
