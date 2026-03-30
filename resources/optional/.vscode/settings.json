@@ -1,5 +1,25 @@
 {
-  "@airdev/next": "managed",
+  "@airdev/next": "seeded",
+  "files.exclude": {
+    "**/.next": true,
+    "**/node_modules": true
+  },
+  "search.exclude": {
+    "**/.next": true,
+    "**/node_modules": true
+  },
+  "files.watcherExclude": {
+    "**/.next": true,
+    "**/node_modules/**": true
+  },
+  "js/ts.tsserver.maxMemory": 768,
+  "eslint.run": "onType",
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
   "terminal.integrated.defaultProfile.windows": "Git Bash",
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
