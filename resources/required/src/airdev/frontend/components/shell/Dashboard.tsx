@@ -1,10 +1,7 @@
-/* "@airdev/next": "seeded" */
+/* "@airdev/next": "managed" */
 
 'use client';
 
-import HeaderBar, {
-  type HeaderBarItem,
-} from '@/airdev/frontend/components/shell/HeaderBar';
 import { Button } from '@/airdev/frontend/components/ui/Button';
 import { useCurrentUser } from '@/airdev/frontend/stores/currentUserStore';
 import Loading from '@/app/loading';
@@ -17,6 +14,7 @@ import {
 } from '@/frontend/components/ui/Card';
 import { ArrowRight, Home, Settings, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import HeaderBar, { type HeaderBarItem } from './HeaderBar';
 
 const breadcrumbs: HeaderBarItem[] = [
   {

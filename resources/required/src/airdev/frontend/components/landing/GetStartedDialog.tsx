@@ -1,10 +1,10 @@
-﻿/* "@airdev/next": "seeded" */
+﻿/* "@airdev/next": "managed" */
 
 'use client';
 
+import { airdevPublicConfig } from '@/airdev/config/public';
 import GoogleLogo from '@/airdev/frontend/components/GoogleLogo';
 import { Button } from '@/airdev/frontend/components/ui/Button';
-import { publicAppConfig } from '@/config/public';
 import {
   Dialog,
   DialogContent,
@@ -66,7 +66,7 @@ export default function GetStartedDialog({
       <DialogContent className="sm:max-w-[430px]">
         <DialogHeader>
           <DialogTitle>
-            {title ?? `Welcome to ${publicAppConfig.app.name}`}
+            {title ?? `Welcome to ${airdevPublicConfig.app.name}`}
           </DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
@@ -82,8 +82,8 @@ export default function GetStartedDialog({
         </Button>
 
         <small className="text-muted-foreground text-center text-xs leading-5">
-          Powered by {publicAppConfig.app.ownerShort}. By signing in, you agree
-          to the{' '}
+          Powered by {airdevPublicConfig.app.ownerShort}. By signing in, you
+          agree to the{' '}
           <Link href="/terms" className="underline">
             Terms of Service
           </Link>{' '}

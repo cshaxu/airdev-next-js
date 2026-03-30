@@ -1,7 +1,7 @@
 /* "@airdev/next": "seeded" */
 
+import Dashboard from '@/airdev/frontend/components/shell/Dashboard';
 import { withError } from '@/airdev/frontend/utils/page';
-import Dashboard from './components/Dashboard';
 
 async function Page() {
   return <Dashboard />;

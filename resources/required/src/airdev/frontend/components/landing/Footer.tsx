@@ -1,7 +1,7 @@
-/* "@airdev/next": "seeded" */
+/* "@airdev/next": "managed" */
 
 import { PRIVACY_HREF, ROOT_HREF, TERMS_HREF } from '@/airdev/common/constant';
-import { publicAppConfig } from '@/config/public';
+import { airdevPublicConfig } from '@/airdev/config/public';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -13,8 +13,8 @@ const productLinks = [
 
 const connectLinks = [
   {
-    href: `mailto:${publicAppConfig.app.email}`,
-    label: publicAppConfig.app.email,
+    href: `mailto:${airdevPublicConfig.app.email}`,
+    label: airdevPublicConfig.app.email,
     external: true,
   },
 ];
@@ -32,18 +32,17 @@ export default function Footer() {
           <div className="w-full md:max-w-xs">
             <Link href={ROOT_HREF} className="flex items-center gap-3">
               <Image
-                src={publicAppConfig.shell.assets.logoSrc}
-                alt={publicAppConfig.app.name}
+                src={airdevPublicConfig.shell.assets.logoSrc}
+                alt={airdevPublicConfig.app.name}
                 width={36}
                 height={36}
               />
               <span className="text-lg font-semibold tracking-tight">
-                {publicAppConfig.app.name}
+                {airdevPublicConfig.app.name}
               </span>
             </Link>
             <p className="text-muted-foreground mt-2">
-              {publicAppConfig.app.description}. Keep the framework pieces you
-              need and extend the product layer on your own terms.
+              {airdevPublicConfig.app.description}
             </p>
           </div>
 
@@ -89,8 +88,8 @@ export default function Footer() {
               ))}
             </ul>
             <p className="text-muted-foreground mt-8 text-sm">
-              &copy; {new Date().getFullYear()} {publicAppConfig.app.owner}. All
-              rights reserved.
+              &copy; {new Date().getFullYear()} {airdevPublicConfig.app.owner}.
+              All rights reserved.
             </p>
           </div>
         </div>

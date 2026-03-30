@@ -1,6 +1,6 @@
-/* "@airdev/next": "seeded" */
+/* "@airdev/next": "managed" */
 
-import { publicAppConfig } from '@/config/public';
+import { airdevPublicConfig } from '@/airdev/config/public';
 import { Blocks, Settings2, ShieldCheck, Sparkles, Wrench } from 'lucide-react';
 import Image from 'next/image';
 import Footer from './Footer';
@@ -57,13 +57,13 @@ export default function Landing() {
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-8">
           <div className="flex items-center gap-3">
             <Image
-              src={publicAppConfig.shell.assets.logoSrc}
-              alt={publicAppConfig.app.name}
+              src={airdevPublicConfig.shell.assets.logoSrc}
+              alt={airdevPublicConfig.app.name}
               width={36}
               height={36}
             />
             <span className="text-lg font-semibold tracking-tight">
-              {publicAppConfig.app.name}
+              {airdevPublicConfig.app.name}
             </span>
           </div>
           <GetStartedDialog />
