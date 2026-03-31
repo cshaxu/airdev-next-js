@@ -19,7 +19,8 @@
     "assets": { "logoSrc": "/logo.png", "iconSrc": "/favicon.ico" },
     "routes": {
       "homeHref": "/dashboard",
-      "disallowRobots": ["/api", "/admin", "/dashboard", "/settings"]
+      "disallowRobots": [],
+      "defaultSideNavCollapsedRoutes": ["/admin"]
     },
     "style": {
       "color": "blue",

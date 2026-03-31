@@ -13,7 +13,7 @@ export default function SettingsView() {
   const { SettingsContent } = clientComponentConfig;
   return (
     <div className="flex h-full flex-col overflow-hidden">
-      <HeaderBar items={vm.breadcrumbs} />
+      <HeaderBar items={[{ label: 'Settings' }]} />
       <div className="min-h-0 flex-1 overflow-hidden">
         <div className="size-full overflow-y-auto p-6">
           <div className="space-y-6">

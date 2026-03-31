@@ -20,8 +20,6 @@ type NavItem = {
   isActive: (pathname: string) => boolean;
 };
 
-const adminRegex = /^\/admin(?:\/.*)?$/;
-
 type SideNavLinkProps = {
   label: string;
   icon: React.ReactNode;
@@ -29,6 +27,10 @@ type SideNavLinkProps = {
   isFull: boolean;
   isActive: boolean;
 };
+
+function matchesCollapsedRoute(pathname: string, route: string) {
+  return pathname === route || pathname.startsWith(`${route}/`);
+}
 
 function SideNavLink({ label, icon, to, isFull, isActive }: SideNavLinkProps) {
   return (
@@ -54,18 +56,26 @@ function SideNavLink({ label, icon, to, isFull, isActive }: SideNavLinkProps) {
 export default function SideNavBar() {
   const pathname = usePathname();
   const lastPathRef = useRef(pathname);
+  const defaultSideNavCollapsedRoutes =
+    airdevPublicConfig.shell.routes.defaultSideNavCollapsedRoutes;
 
   const { navItems } = clientComponentConfig.NavContent() as {
     navItems: NavItem[];
   };
 
-  const shouldCollapse = Boolean(pathname.match(adminRegex));
+  const shouldCollapse = defaultSideNavCollapsedRoutes.some((route) =>
+    matchesCollapsedRoute(pathname, route)
+  );
   const [isCollapsed, setIsCollapsed] = useState(shouldCollapse);
 
-  // Keep the collapsed state in sync when routing into or out of admin pages.
+  // Keep the collapsed state in sync when routing into or out of configured collapsed pages.
   useEffect(() => {
-    const wasCollapsePage = Boolean(lastPathRef.current.match(adminRegex));
-    const isCollapsePage = Boolean(pathname.match(adminRegex));
+    const wasCollapsePage = defaultSideNavCollapsedRoutes.some((route) =>
+      matchesCollapsedRoute(lastPathRef.current, route)
+    );
+    const isCollapsePage = defaultSideNavCollapsedRoutes.some((route) =>
+      matchesCollapsedRoute(pathname, route)
+    );
 
     // Only adjust the state when entering or leaving a collapsed page.
     if (wasCollapsePage !== isCollapsePage) {
@@ -73,7 +83,7 @@ export default function SideNavBar() {
     }
 
     lastPathRef.current = pathname;
-  }, [pathname]);
+  }, [defaultSideNavCollapsedRoutes, pathname]);
 
   return (
     <PixelResizablePanel

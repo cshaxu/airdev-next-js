@@ -1,6 +1,11 @@
 /* "@airdev/next": "managed" */
 
-import { ADMIN_HREF, AUTH_HREF, SETTINGS_HREF } from '@/airdev/common/constant';
+import {
+  ADMIN_HREF,
+  API_HREF,
+  AUTH_HREF,
+  SETTINGS_HREF,
+} from '@/airdev/common/constant';
 import { airdevPublicConfig } from '@/airdev/config/public';
 import { MetadataRoute } from 'next';
 
@@ -11,6 +16,7 @@ export function generateRootRobots(): MetadataRoute.Robots {
         userAgent: '*',
         disallow: [
           ADMIN_HREF,
+          API_HREF,
           AUTH_HREF,
           SETTINGS_HREF,
           airdevPublicConfig.shell.routes.homeHref,

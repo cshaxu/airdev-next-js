@@ -20,7 +20,7 @@ export default function AdminNav() {
   ];
 
   return (
-    <HeaderBar>
+    <HeaderBar items={[{ label: 'Admin' }]}>
       <div className="flex gap-1">
         {adminTabs.map((tab) => (
           <Link

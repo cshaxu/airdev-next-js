@@ -44,7 +44,11 @@ export type AirdevPublicConfigBase = {
   };
   defaults: { apiBatchSize: number; pageSize: number };
   shell: {
-    routes: { homeHref: string; disallowRobots: string[] };
+    routes: {
+      homeHref: string;
+      disallowRobots: string[];
+      defaultSideNavCollapsedRoutes: string[];
+    };
     assets: { logoSrc: string; iconSrc: string };
     style: { color: ShellStyleColor; font: ShellStyleFont };
     adminTabs: { href: string; label: string }[];

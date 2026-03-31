@@ -3,23 +3,14 @@
 'use client';
 
 import { ROOT_HREF } from '@/airdev/common/constant';
-import { airdevPublicConfig } from '@/airdev/config/public';
-import type { HeaderBarItem } from '@/airdev/frontend/components/shell/HeaderBar';
 import { useRequiredCurrentUser } from '@/airdev/frontend/hooks/data/user';
 import {
   useDeleteOneUser,
   useUpdateOneUser,
 } from '@/generated/tanstack-hooks/user-client';
 import { useQueryClient } from '@tanstack/react-query';
-import { Home } from 'lucide-react';
 import { signOut } from 'next-auth/react';
-import {
-  KeyboardEvent,
-  createElement,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
 export function useUserProfileSettingsController() {
@@ -31,15 +22,6 @@ export function useUserProfileSettingsController() {
   const nameInputRef = useRef<HTMLInputElement | null>(null);
   const { mutate: deleteUser, isPending: isDeleting } = useDeleteOneUser();
   const { mutate: updateUser, isPending: isUpdatingUser } = useUpdateOneUser();
-
-  const breadcrumbs: HeaderBarItem[] = [
-    {
-      label: '',
-      href: airdevPublicConfig.shell.routes.homeHref,
-      icon: createElement(Home, { className: 'size-4' }),
-    },
-    { label: 'Settings' },
-  ];
 
   useEffect(() => {
     if (!isEditingName) {
@@ -131,7 +113,6 @@ export function useUserProfileSettingsController() {
 
   return {
     currentUser,
-    breadcrumbs,
     deleteOpen,
     isEditingName,
     draftName,

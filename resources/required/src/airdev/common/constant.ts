@@ -5,6 +5,7 @@ export const MOBILE_FULLSCREEN_DATASET_KEY = 'mobileFullscreen';
 export const ADMIN_HREF = '/admin';
 export const ADMIN_API_HREF = '/admin/api';
 export const ADMIN_USERS_HREF = '/admin/users';
+export const API_HREF = '/api';
 export const AUTH_HREF = '/auth';
 export const AUTH_SIGNIN_HREF = '/auth/signin';
 export const AUTH_ERROR_HREF = '/auth/error';

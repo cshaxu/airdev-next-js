@@ -11,19 +11,10 @@ import {
   CardTitle,
 } from '@/airdev/frontend/components/ui/Card';
 import { useCurrentUser } from '@/airdev/frontend/stores/currentUserStore';
-import { ArrowRight, Home, Settings, Sparkles } from 'lucide-react';
+import { ArrowRight, Settings, Sparkles } from 'lucide-react';
 import Link from 'next/link';
-import HeaderBar, { type HeaderBarItem } from './HeaderBar';
+import HeaderBar from './HeaderBar';
 import Loading from './RootLoading';
-
-const breadcrumbs: HeaderBarItem[] = [
-  {
-    label: '',
-    href: '/dashboard',
-    icon: <Home className="size-4" />,
-  },
-  { label: 'Dashboard' },
-];
 
 export default function Dashboard() {
   const currentUser = useCurrentUser();
@@ -34,7 +25,7 @@ export default function Dashboard() {
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
-      <HeaderBar items={breadcrumbs} />
+      <HeaderBar items={[{ label: 'Dashboard' }]} />
       <div className="min-h-0 flex-1 overflow-y-auto p-6">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
           <section className="rounded-[28px] border border-[var(--shell-surface-border)] bg-linear-to-br from-[var(--shell-surface-hero-start)] via-[var(--shell-surface-hero-mid)] to-[var(--shell-surface-hero-end)] p-8 shadow-[var(--shell-hero-shadow)]">
