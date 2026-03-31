@@ -52,8 +52,12 @@
     --shell-tint-100: #e5e7eb;
     --shell-tint-100-80: #e5e7ebcc;
     --shell-tint-200: #d1d5db;
+    --shell-tint-300: #d7d9dd;
+    --shell-tint-400: #c7cad0;
+    --shell-tint-500: #b2b5be;
     --shell-tint-600: #4b5563;
     --shell-tint-700: #1f2937;
+    --shell-tint-800: #101113;
     --shell-glow-start: #d1d5db99;
     --shell-glow-end: #f3f4f680;
     --shell-shadow-tint: #e5e7eb99;
@@ -125,8 +129,12 @@
     --shell-tint-100: #1c1e22;
     --shell-tint-100-80: #1c1e22cc;
     --shell-tint-200: #2c3036;
+    --shell-tint-300: #363b43;
+    --shell-tint-400: #434952;
+    --shell-tint-500: #555d67;
     --shell-tint-600: #d8dbe1;
     --shell-tint-700: #eceef2;
+    --shell-tint-800: #f7f8fa;
     --shell-glow-start: #555d6799;
     --shell-glow-end: #15171a80;
     --shell-shadow-tint: #111214b3;
