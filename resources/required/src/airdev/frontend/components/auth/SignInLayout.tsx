@@ -28,12 +28,12 @@ export default function SignInLayout({ children }: ReactNodeProps) {
             />
           </div>
           <div className="flex w-full justify-end">
-            <Sparkles className="size-6 text-white" />
+            <Sparkles className="size-6 text-[var(--shell-auth-foreground)]" />
           </div>
-          <h1 className="text-2xl font-medium text-white sm:text-3xl">
+          <h1 className="text-2xl font-medium text-[var(--shell-auth-foreground)] sm:text-3xl">
             Welcome to {airdevPublicConfig.app.name}
           </h1>
-          <p className="text-sm leading-6 text-white sm:text-base">
+          <p className="text-sm leading-6 text-[var(--shell-auth-foreground)] sm:text-base">
             {airdevPublicConfig.app.welcomeText}
           </p>
         </div>

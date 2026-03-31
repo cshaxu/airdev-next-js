@@ -13,7 +13,7 @@ export const inputVariants = cva(
     'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:border-ring',
     'disabled:cursor-not-allowed disabled:opacity-50',
     'file:border-0 file:bg-transparent file:text-sm file:font-medium',
-    'transition-colors hover:border-neutral-400 dark:hover:border-neutral-500'
+    'transition-colors hover:border-[var(--input-hover-border)]'
   ),
   {
     variants: {

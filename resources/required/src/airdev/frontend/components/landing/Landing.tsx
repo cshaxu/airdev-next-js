@@ -105,14 +105,14 @@ export default function Landing() {
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-900/80 dark:bg-emerald-950/40">
-                  <p className="text-sm text-emerald-700 dark:text-emerald-300">
+                <div className="rounded-2xl border border-[var(--status-kept-border)] bg-[var(--status-kept-bg)] p-4">
+                  <p className="text-sm text-[var(--status-kept-foreground)]">
                     Kept
                   </p>
                   <p className="text-xl font-semibold">Framework Scaffolding</p>
                 </div>
-                <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/80 dark:bg-amber-950/40">
-                  <p className="text-sm text-amber-700 dark:text-amber-300">
+                <div className="rounded-2xl border border-[var(--status-removed-border)] bg-[var(--status-removed-bg)] p-4">
+                  <p className="text-sm text-[var(--status-removed-foreground)]">
                     Removed
                   </p>
                   <p className="text-xl font-semibold">

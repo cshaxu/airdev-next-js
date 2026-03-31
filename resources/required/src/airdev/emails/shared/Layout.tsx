@@ -1,5 +1,6 @@
 /* "@airdev/next": "managed" */
 
+import { EMAIL_THEME } from '@/airdev/common/theme';
 import { airdevPublicConfig } from '@/airdev/config/public';
 import { ReactNodeProps } from '@/airdev/frontend/types/props';
 import {
@@ -22,7 +23,7 @@ export default function Layout({ preview, isBroadcast, children }: Payload) {
         <style>
           {`
               .body {
-                background-color: #ffffff;
+                background-color: ${EMAIL_THEME.background};
               }
           `}
         </style>
@@ -32,8 +33,11 @@ export default function Layout({ preview, isBroadcast, children }: Payload) {
         config={{ theme: { extend: { fontSize: { base: ['1rem', '1.75'] } } } }}
       >
         <Body
-          className="body px-2 py-10 text-neutral-900"
-          style={{ fontFamily: '"Open Sans", Helvetica, Arial, sans-serif' }}
+          className="body px-2 py-10"
+          style={{
+            color: EMAIL_THEME.foreground,
+            fontFamily: '"Open Sans", Helvetica, Arial, sans-serif',
+          }}
         >
           {children}
           <Container className="mt-10">
@@ -48,16 +52,18 @@ export default function Layout({ preview, isBroadcast, children }: Payload) {
               <Text className="text-center">
                 <Link
                   href={`${airdevPublicConfig.service.baseUrl}/notification-settings`}
-                  className="text-neutral-500 underline"
+                  className="underline"
+                  style={{ color: EMAIL_THEME.link }}
                 >
                   Notification Settings
                 </Link>
               </Text>
             )}
-            <Text className="text-center text-neutral-500">
+            <Text className="text-center" style={{ color: EMAIL_THEME.muted }}>
               © {new Date().getFullYear()}{' '}
               <Link
-                className="text-neutral-500 underline"
+                className="underline"
+                style={{ color: EMAIL_THEME.link }}
                 href={airdevPublicConfig.service.baseUrl}
               >
                 {airdevPublicConfig.app.owner}

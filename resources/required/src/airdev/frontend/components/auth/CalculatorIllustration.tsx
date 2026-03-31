@@ -11,7 +11,7 @@ export default function CalculatorIllustration() {
         width="72"
         height="96"
         rx="14"
-        fill="#ffffff"
+        fill="var(--shell-illustration-surface)"
         fillOpacity="0.9"
       />
       <rect
@@ -32,7 +32,13 @@ export default function CalculatorIllustration() {
         <rect x="28" y="84" width="12" height="12" rx="4" />
         <rect x="46" y="84" width="30" height="12" rx="4" />
       </g>
-      <circle cx="96" cy="24" r="10" fill="#FACC15" fillOpacity="0.9" />
+      <circle
+        cx="96"
+        cy="24"
+        r="10"
+        fill="var(--shell-illustration-highlight)"
+        fillOpacity="0.9"
+      />
       <path
         d="M96 18v12M90 24h12"
         stroke="var(--shell-illustration-ink)"

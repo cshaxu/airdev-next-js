@@ -1,5 +1,6 @@
 /* "@airdev/next": "managed" */
 
+import { GOOGLE_BRAND_COLORS } from '@/airdev/common/theme';
 import { cn } from '@/airdev/frontend/utils/cn';
 
 type Props = { className?: string };
@@ -21,18 +22,26 @@ export default function GoogleLogo({ className = '' }: Props) {
         <use xlinkHref="#A" />
       </clipPath>
       <g transform="matrix(.727273 0 0 .727273 -.954545 -1.45455)">
-        <path d="M0 37V11l17 13z" clipPath="url(#B)" fill="#fbbc05" />
+        <path
+          d="M0 37V11l17 13z"
+          clipPath="url(#B)"
+          fill={GOOGLE_BRAND_COLORS.yellow}
+        />
         <path
           d="M0 11l17 13 7-6.1L48 14V0H0z"
           clipPath="url(#B)"
-          fill="#ea4335"
+          fill={GOOGLE_BRAND_COLORS.red}
         />
         <path
           d="M0 37l30-23 7.9 1L48 0v48H0z"
           clipPath="url(#B)"
-          fill="#34a853"
+          fill={GOOGLE_BRAND_COLORS.green}
         />
-        <path d="M48 48L17 24l-4-3 35-10z" clipPath="url(#B)" fill="#4285f4" />
+        <path
+          d="M48 48L17 24l-4-3 35-10z"
+          clipPath="url(#B)"
+          fill={GOOGLE_BRAND_COLORS.blue}
+        />
       </g>
     </svg>
   );

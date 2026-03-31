@@ -33,7 +33,7 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --color-nav-bg: var(--blue-bg);
+  --color-nav-bg: var(--accent-bg);
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
@@ -56,12 +56,12 @@
   :root {
     interpolate-size: allow-keywords;
     --shell-font-family: 'Segoe UI', sans-serif;
-    --blue-1: #fcfdff;
-    --nav-icon: var(--blue-primary);
-    --nav-text: var(--blue-dark);
-    --nav-bg: var(--blue-bg);
-    --nav-hover: var(--blue-hover);
-    --nav-separator: var(--blue-separator);
+    --accent-1: #fcfdff;
+    --nav-icon: var(--accent-primary);
+    --nav-text: var(--accent-dark);
+    --nav-bg: var(--accent-bg);
+    --nav-hover: var(--accent-hover);
+    --nav-separator: var(--accent-separator);
   }
 
   * {
@@ -148,12 +148,14 @@
     @apply text-[var(--color-primary)] dark:text-[var(--color-primary-foreground)];
   }
 
+  .text-accent-dark,
   .text-blue-dark {
-    @apply text-[var(--blue-dark)];
+    @apply text-[var(--accent-dark)];
   }
 
+  .text-accent-dark-75,
   .text-blue-dark-75 {
-    @apply text-[var(--blue-dark-75)];
+    @apply text-[var(--accent-dark-75)];
   }
 
   .text-secondary {
@@ -170,7 +172,7 @@
 
   /* Existing Components */
   .section-title {
-    @apply text-xl font-bold text-[var(--blue-dark)];
+    @apply text-xl font-bold text-[var(--accent-dark)];
   }
 
   .link-primary {

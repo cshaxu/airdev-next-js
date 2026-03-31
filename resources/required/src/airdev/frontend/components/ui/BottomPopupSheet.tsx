@@ -56,7 +56,10 @@ const BottomPopupSheetContent = React.forwardRef<
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay
           data-slot="bottom-popup-sheet-overlay"
-          className={cn('fixed inset-0 z-50 bg-black/50', overlayClassName)}
+          className={cn(
+            'fixed inset-0 z-50 bg-[var(--overlay-backdrop)]',
+            overlayClassName
+          )}
           style={overlayStyle}
         />
         <DialogPrimitive.Content

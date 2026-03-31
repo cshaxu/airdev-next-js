@@ -10,14 +10,14 @@ export const buttonVariants = cva(
         default:
           'bg-[var(--button-default-bg)] text-[var(--button-default-foreground)] hover:bg-[var(--button-default-hover)] disabled:bg-[var(--button-default-disabled)] disabled:text-[var(--button-default-disabled-foreground)]',
         destructive:
-          'bg-destructive text-destructive-foreground hover:bg-destructive/90 disabled:bg-destructive/50 disabled:text-destructive-foreground/50',
+          'bg-[var(--button-destructive-bg)] text-[var(--button-destructive-foreground)] hover:bg-[var(--button-destructive-hover)] disabled:bg-[var(--button-destructive-disabled)] disabled:text-[var(--button-destructive-disabled-foreground)]',
         outline:
-          'border border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground disabled:text-accent-foreground/50',
+          'border bg-[var(--button-outline-bg)] border-[var(--button-outline-border)] text-[var(--button-outline-foreground)] hover:bg-[var(--button-outline-hover)] hover:text-[var(--button-outline-hover-foreground)] disabled:text-[var(--button-outline-disabled-foreground)]',
         secondary:
-          'bg-secondary text-secondary-foreground hover:bg-secondary/80 disabled:bg-secondary/50 disabled:text-secondary-foreground/50',
+          'bg-[var(--button-secondary-bg)] text-[var(--button-secondary-foreground)] hover:bg-[var(--button-secondary-hover)] disabled:bg-[var(--button-secondary-disabled)] disabled:text-[var(--button-secondary-disabled-foreground)]',
         ghost:
-          'text-foreground hover:bg-accent hover:text-accent-foreground disabled:text-accent-foreground/50',
-        link: 'text-primary underline-offset-4 hover:underline disabled:text-primary/50',
+          'text-[var(--button-ghost-foreground)] hover:bg-[var(--button-ghost-hover)] hover:text-[var(--button-ghost-hover-foreground)] disabled:text-[var(--button-ghost-disabled-foreground)]',
+        link: 'text-[var(--button-link-foreground)] underline-offset-4 hover:text-[var(--button-link-hover-foreground)] hover:underline disabled:text-[var(--button-link-disabled-foreground)]',
       },
       size: {
         default: 'h-9 px-4 py-2 text-sm font-medium',

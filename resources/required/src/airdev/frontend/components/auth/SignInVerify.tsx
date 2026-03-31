@@ -84,7 +84,7 @@ export default function SignInVerify({ email }: Props) {
 
   return (
     <div className="flex flex-col gap-y-5 sm:gap-y-6">
-      <p className="text-center text-xl font-bold text-[var(--blue-dark-75)] sm:text-2xl">
+      <p className="text-muted-foreground text-center text-xl font-bold sm:text-2xl">
         Check your email for a verification code
       </p>
       <Form {...form}>

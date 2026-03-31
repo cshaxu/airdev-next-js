@@ -25,14 +25,81 @@
     --popover-foreground: var(--color-neutral-950);
 
     /* Primary */
-    --primary: var(--blue-primary);
-    --primary-hover: var(--blue-7);
-    --primary-foreground: var(--blue-contrast);
+    --primary: var(--accent-primary);
+    --primary-hover: var(--accent-7);
+    --primary-foreground: var(--accent-contrast);
     --button-default-bg: var(--primary);
-    --button-default-hover: var(--primary-hover);
+    --button-default-hover: color-mix(in srgb, var(--primary) 75%, white);
     --button-default-foreground: var(--color-white);
     --button-default-disabled: var(--primary-disabled);
     --button-default-disabled-foreground: rgb(255 255 255 / 0.9);
+    --button-destructive-bg: var(--destructive);
+    --button-destructive-hover: color-mix(
+      in srgb,
+      var(--destructive) 90%,
+      black
+    );
+    --button-destructive-foreground: var(--destructive-foreground);
+    --button-destructive-disabled: color-mix(
+      in srgb,
+      var(--destructive) 55%,
+      transparent
+    );
+    --button-destructive-disabled-foreground: color-mix(
+      in srgb,
+      var(--destructive-foreground) 55%,
+      transparent
+    );
+    --button-outline-border: var(--shell-tint-200);
+    --button-outline-bg: var(--background);
+    --button-outline-foreground: var(--accent-dark);
+    --button-outline-hover: var(--shell-tint-100);
+    --button-outline-hover-foreground: var(--accent-dark);
+    --button-outline-disabled-foreground: var(--accent-dark-50);
+    --button-secondary-bg: var(--shell-tint-100);
+    --button-secondary-foreground: var(--accent-dark);
+    --button-secondary-hover: var(--shell-tint-200);
+    --button-secondary-disabled: var(--shell-tint-100);
+    --button-secondary-disabled-foreground: var(--accent-dark-50);
+    --button-ghost-foreground: var(--accent-dark);
+    --button-ghost-hover: var(--shell-tint-100);
+    --button-ghost-hover-foreground: var(--accent-dark);
+    --button-ghost-disabled-foreground: var(--accent-dark-50);
+    --button-link-foreground: var(--shell-link);
+    --button-link-hover-foreground: var(--shell-link-hover);
+    --button-link-disabled-foreground: var(--accent-dark-50);
+    --shell-auth-foreground: var(--color-white);
+    --status-kept-border: var(--color-emerald-200);
+    --status-kept-bg: var(--color-emerald-50);
+    --status-kept-foreground: var(--color-emerald-700);
+    --status-removed-border: var(--color-amber-200);
+    --status-removed-bg: var(--color-amber-50);
+    --status-removed-foreground: var(--color-amber-700);
+    --cookie-banner-bg: var(--background);
+    --cookie-banner-border: var(--border);
+    --cookie-banner-foreground: var(--foreground);
+    --cookie-banner-muted: var(--muted-foreground);
+    --overlay-backdrop: rgb(0 0 0 / 0.5);
+    --overlay-backdrop-strong: rgb(0 0 0 / 0.6);
+    --destructive-outline-border: var(--color-red-200);
+    --destructive-outline-foreground: var(--color-red-600);
+    --destructive-outline-hover: var(--color-red-50);
+    --destructive-outline-hover-foreground: var(--color-red-700);
+    --input-hover-border: var(--shell-tint-200);
+    --shell-illustration-contrast: var(--color-white);
+    --shell-illustration-contrast-soft: var(--color-white);
+    --shell-illustration-surface: var(--color-white);
+    --shell-illustration-highlight: var(--yellow-1);
+    --shell-surface-hero-start: var(--accent-1);
+    --shell-surface-hero-mid: var(--accent-2);
+    --shell-surface-hero-end: var(--accent-3);
+    --shell-surface-raised: var(--accent-surface);
+    --shell-surface-subtle: var(--accent-bg);
+    --shell-surface-border: var(--accent-separator);
+    --shell-foreground-strong: var(--accent-12);
+    --shell-foreground-muted: var(--accent-dark-75);
+    --shell-badge-bg: var(--accent-surface);
+    --shell-badge-foreground: var(--accent-9);
 
     /* Secondary, Muted, Accent */
     --secondary: var(--color-neutral-100);
@@ -47,7 +114,7 @@
     --destructive-foreground: var(--color-neutral-50);
 
     /* Border, Input, Ring */
-    --border: var(--blue-separator);
+    --border: var(--accent-separator);
     --input: var(--color-neutral-200);
     --ring: var(--color-neutral-950);
 
@@ -71,9 +138,9 @@
     --popover-foreground: var(--color-neutral-50); /* same as foreground */
 
     /* Primary */
-    --primary: var(--blue-primary);
-    --primary-hover: var(--blue-7);
-    --primary-foreground: var(--blue-contrast);
+    --primary: var(--accent-primary);
+    --primary-hover: var(--accent-7);
+    --primary-foreground: var(--accent-contrast);
 
     /* Secondary, Muted, Accent */
     --secondary: var(--color-neutral-800); /* was: 217.2 32.6% 17.5% */
@@ -111,9 +178,107 @@
     --popover-foreground: var(--color-neutral-50);
 
     /* Primary */
-    --primary: var(--blue-primary);
-    --primary-hover: var(--blue-7);
-    --primary-foreground: var(--blue-contrast);
+    --primary: var(--accent-primary);
+    --primary-hover: var(--accent-7);
+    --primary-foreground: var(--accent-contrast);
+    --button-default-bg: var(--accent-8);
+    --button-default-hover: var(--accent-7);
+    --button-default-foreground: var(--accent-12);
+    --button-default-disabled: var(--accent-6);
+    --button-default-disabled-foreground: var(--accent-dark-75);
+    --button-destructive-bg: var(--destructive);
+    --button-destructive-hover: color-mix(
+      in srgb,
+      var(--destructive) 86%,
+      black
+    );
+    --button-destructive-foreground: var(--destructive-foreground);
+    --button-destructive-disabled: color-mix(
+      in srgb,
+      var(--destructive) 45%,
+      transparent
+    );
+    --button-destructive-disabled-foreground: color-mix(
+      in srgb,
+      var(--destructive-foreground) 65%,
+      transparent
+    );
+    --button-outline-border: var(--shell-tint-200);
+    --button-outline-bg: var(--background);
+    --button-outline-foreground: var(--accent-dark);
+    --button-outline-hover: var(--shell-tint-100);
+    --button-outline-hover-foreground: var(--accent-dark);
+    --button-outline-disabled-foreground: var(--accent-dark-50);
+    --button-secondary-bg: var(--shell-tint-100);
+    --button-secondary-foreground: var(--accent-dark);
+    --button-secondary-hover: var(--shell-tint-200);
+    --button-secondary-disabled: color-mix(
+      in srgb,
+      var(--shell-tint-100) 72%,
+      transparent
+    );
+    --button-secondary-disabled-foreground: var(--accent-dark-50);
+    --button-ghost-foreground: var(--accent-dark);
+    --button-ghost-hover: color-mix(
+      in srgb,
+      var(--shell-tint-100) 88%,
+      transparent
+    );
+    --button-ghost-hover-foreground: var(--accent-dark);
+    --button-ghost-disabled-foreground: var(--accent-dark-50);
+    --button-link-foreground: var(--shell-link);
+    --button-link-hover-foreground: var(--shell-link-hover);
+    --button-link-disabled-foreground: var(--accent-dark-50);
+    --shell-auth-foreground: var(--accent-12);
+    --status-kept-border: color-mix(
+      in srgb,
+      var(--color-emerald-900) 80%,
+      transparent
+    );
+    --status-kept-bg: color-mix(
+      in srgb,
+      var(--color-emerald-950) 40%,
+      transparent
+    );
+    --status-kept-foreground: var(--color-emerald-300);
+    --status-removed-border: color-mix(
+      in srgb,
+      var(--color-amber-900) 80%,
+      transparent
+    );
+    --status-removed-bg: color-mix(
+      in srgb,
+      var(--color-amber-950) 40%,
+      transparent
+    );
+    --status-removed-foreground: var(--color-amber-300);
+    --cookie-banner-bg: color-mix(
+      in srgb,
+      var(--background) 86%,
+      var(--shell-tint-100)
+    );
+    --cookie-banner-border: var(--shell-tint-200);
+    --cookie-banner-foreground: var(--accent-dark);
+    --cookie-banner-muted: var(--accent-dark-75);
+    --overlay-backdrop: rgb(0 0 0 / 0.6);
+    --overlay-backdrop-strong: rgb(0 0 0 / 0.72);
+    --destructive-outline-border: color-mix(
+      in srgb,
+      var(--color-red-900) 70%,
+      transparent
+    );
+    --destructive-outline-foreground: var(--color-red-400);
+    --destructive-outline-hover: color-mix(
+      in srgb,
+      var(--color-red-950) 40%,
+      transparent
+    );
+    --destructive-outline-hover-foreground: var(--color-red-400);
+    --input-hover-border: var(--shell-tint-600);
+    --shell-illustration-contrast: var(--accent-12);
+    --shell-illustration-contrast-soft: var(--accent-12);
+    --shell-illustration-surface: var(--accent-12);
+    --shell-illustration-highlight: var(--shell-tint-700);
 
     /* Secondary, Muted, Accent */
     --secondary: var(--color-neutral-800);
@@ -152,9 +317,9 @@
     --popover-foreground: var(--color-neutral-950);
 
     /* Primary */
-    --primary: var(--blue-primary);
-    --primary-hover: var(--blue-7);
-    --primary-foreground: var(--blue-contrast);
+    --primary: var(--accent-primary);
+    --primary-hover: var(--accent-7);
+    --primary-foreground: var(--accent-contrast);
 
     /* Secondary, Muted, Accent */
     --secondary: var(--color-neutral-100);
@@ -181,3 +346,4 @@
     --chart-5: hsl(27 87% 67%);
   }
 }
+

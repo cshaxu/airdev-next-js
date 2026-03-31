@@ -1,9 +1,13 @@
 /* "@airdev/next": "managed" */
 
+import { SHELL_MANIFEST_COLORS } from '@/airdev/common/theme';
 import { airdevPublicConfig } from '@/airdev/config/public';
 import type { MetadataRoute } from 'next';
 
 export function generateRootManifest(): MetadataRoute.Manifest {
+  const manifestColors =
+    SHELL_MANIFEST_COLORS[airdevPublicConfig.shell.style.color];
+
   return {
     name: airdevPublicConfig.app.name,
     short_name: airdevPublicConfig.app.name,
@@ -25,7 +29,7 @@ export function generateRootManifest(): MetadataRoute.Manifest {
         type: 'image/x-icon',
       },
     ],
-    theme_color: '#fff',
-    background_color: '#fff',
+    theme_color: manifestColors.theme,
+    background_color: manifestColors.background,
   };
 }

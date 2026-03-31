@@ -20,7 +20,7 @@ const retriever = async (query: DefaultSearchQuery) => {
     ? { OR: [{ name: { contains: q } }, { email: { contains: q } }] }
     : {};
   const many = await UserEntity.findMany(
-    { where, orderBy: { name: Prisma.SortOrder.asc } },
+    { where, orderBy: { createdAt: Prisma.SortOrder.desc } },
     context
   );
   return many.map((one) => ({ id: one.id }));

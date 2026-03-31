@@ -3,6 +3,7 @@
 'use client';
 
 import { ADMIN_HREF, ROOT_HREF, SETTINGS_HREF } from '@/airdev/common/constant';
+import { SHELL_PREVIEW_COLORS } from '@/airdev/common/theme';
 import {
   shellColorOptions,
   useShellColor,
@@ -75,17 +76,6 @@ type BottomNavProps = {
 };
 
 type Props = SidebarProps | BottomNavProps;
-
-const shellColorTextClassName: Record<string, string> = {
-  blue: 'text-sky-600',
-  black: 'text-neutral-900 dark:text-neutral-100',
-  green: 'text-emerald-600',
-  yellow: 'text-amber-600',
-  red: 'text-rose-600',
-  purple: 'text-violet-600',
-  pink: 'text-pink-600',
-  orange: 'text-orange-600',
-};
 
 function useUserInitials() {
   const { data: user } = useRequiredCurrentUser();
@@ -170,9 +160,24 @@ type AccountActionChild = {
   label: string;
   onClick: () => void | Promise<void>;
   isSelected?: boolean;
-  textClassName?: string;
   mobileHint?: string;
+  previewColor?: string;
+  closeBeforeClick?: boolean;
 };
+
+function ActionChildLabel({ item }: { item: AccountActionChild }) {
+  return (
+    <span className="flex items-center gap-2 font-medium">
+      {item.previewColor ? (
+        <span
+          className="border-border inline-block size-2.5 rounded-full border"
+          style={{ backgroundColor: item.previewColor }}
+        />
+      ) : null}
+      <span>{item.label}</span>
+    </span>
+  );
+}
 
 function AccountActionRow({
   action,
@@ -184,9 +189,9 @@ function AccountActionRow({
   onOpenChildren?: (action: AccountAction) => void;
 }) {
   const classes = cn(
-    'flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left transition-colors',
+    'flex w-full cursor-pointer items-center gap-3 rounded-2xl border px-4 py-3 text-left transition-colors',
     action.tone === 'danger'
-      ? 'border-border text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40'
+      ? 'border-[var(--destructive-outline-border)] text-[var(--destructive-outline-foreground)] hover:bg-[var(--destructive-outline-hover)] hover:text-[var(--destructive-outline-hover-foreground)]'
       : 'border-border hover:bg-muted/60'
   );
 
@@ -241,21 +246,27 @@ function MobileChildActionGrid({
             key={item.key}
             type="button"
             className={cn(
-              'rounded-2xl border px-3 py-2 text-left text-sm transition-colors',
+              'cursor-pointer rounded-2xl border px-3 py-2 text-left text-sm transition-colors',
               isActive
                 ? 'bg-muted border border-[var(--shell-tint-600)]'
                 : 'border-border hover:bg-muted/60'
             )}
             onClick={() => {
               void (async () => {
+                if (item.closeBeforeClick) {
+                  onDone?.();
+                  await new Promise((resolve) => {
+                    window.setTimeout(resolve, 260);
+                  });
+                }
                 await item.onClick();
-                onDone?.();
+                if (!item.closeBeforeClick) {
+                  onDone?.();
+                }
               })();
             }}
           >
-            <span className={cn('block font-medium', item.textClassName)}>
-              {item.label}
-            </span>
+            <ActionChildLabel item={item} />
             <span className="text-muted-foreground block text-xs">
               {isActive ? 'Selected' : item.mobileHint}
             </span>
@@ -277,7 +288,7 @@ function renderDesktopAccountAction(
 
     return (
       <DropdownMenuSub key={action.key}>
-        <DropdownMenuSubTrigger className="gap-4">
+        <DropdownMenuSubTrigger className="cursor-pointer gap-4">
           <span className="[&_svg]:size-4">{action.icon}</span>
           <span>{action.label}</span>
         </DropdownMenuSubTrigger>
@@ -287,6 +298,7 @@ function renderDesktopAccountAction(
               <DropdownMenuRadioItem
                 key={child.key}
                 value={child.key}
+                className="cursor-pointer"
                 onSelect={(event) => {
                   event.preventDefault();
                   void (async () => {
@@ -295,7 +307,7 @@ function renderDesktopAccountAction(
                   })();
                 }}
               >
-                <span className={child.textClassName}>{child.label}</span>
+                <ActionChildLabel item={child} />
               </DropdownMenuRadioItem>
             ))}
           </DropdownMenuRadioGroup>
@@ -306,7 +318,7 @@ function renderDesktopAccountAction(
 
   if (action.href) {
     return (
-      <DropdownMenuItem key={action.key} asChild>
+      <DropdownMenuItem key={action.key} className="cursor-pointer" asChild>
         <Link href={action.href} onClick={onDone}>
           {icon}
           <span>{action.label}</span>
@@ -321,7 +333,7 @@ function renderDesktopAccountAction(
       className={cn(
         'cursor-pointer',
         action.tone === 'danger' &&
-          'text-red-700 focus:text-red-700 dark:text-red-400 dark:focus:text-red-400'
+          'text-[var(--destructive-outline-foreground)] focus:text-[var(--destructive-outline-hover-foreground)]'
       )}
       onClick={() => {
         void action.onClick?.();
@@ -600,6 +612,7 @@ export default function UserButton(props: Props) {
           label: 'Light Mode',
           isSelected: activeThemeMode === 'light',
           mobileHint: 'Use light theme',
+          closeBeforeClick: true,
           onClick: () => setTheme('light'),
         },
         {
@@ -607,6 +620,7 @@ export default function UserButton(props: Props) {
           label: 'Dark Mode',
           isSelected: activeThemeMode === 'dark',
           mobileHint: 'Use dark theme',
+          closeBeforeClick: true,
           onClick: () => setTheme('dark'),
         },
         {
@@ -614,6 +628,7 @@ export default function UserButton(props: Props) {
           label: 'System Mode',
           isSelected: activeThemeMode === 'system',
           mobileHint: 'Follow device theme',
+          closeBeforeClick: true,
           onClick: () => setTheme('system'),
         },
       ],
@@ -636,7 +651,7 @@ export default function UserButton(props: Props) {
         key: option.value,
         label: option.label,
         isSelected: option.value === shellColor,
-        textClassName: shellColorTextClassName[option.value],
+        previewColor: SHELL_PREVIEW_COLORS[option.value],
         onClick: () => setShellColor(option.value),
       })),
       icon: <Palette className="size-5" />,

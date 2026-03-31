@@ -79,7 +79,7 @@ export default function EditUserProfileTile({
           <Button
             aria-label="Delete account"
             variant="outline"
-            className="size-9 min-w-9 gap-0 border-red-200 px-0 text-red-600 hover:bg-red-50 hover:text-red-700 min-[500px]:h-9 min-[500px]:w-auto min-[500px]:min-w-[96px] min-[500px]:gap-2 min-[500px]:px-4"
+            className="size-9 min-w-9 gap-0 border-[var(--destructive-outline-border)] px-0 text-[var(--destructive-outline-foreground)] hover:bg-[var(--destructive-outline-hover)] hover:text-[var(--destructive-outline-hover-foreground)] min-[500px]:h-9 min-[500px]:w-auto min-[500px]:min-w-[96px] min-[500px]:gap-2 min-[500px]:px-4"
             onClick={() => vm.setDeleteOpen(true)}
             disabled={vm.isDeleting || vm.isEditingName}
           >

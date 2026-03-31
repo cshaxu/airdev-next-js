@@ -3,6 +3,7 @@
 'use client';
 
 import { COOKIE_CONSENT_COOKIE_KEY } from '@/airdev/common/constant';
+import { Button } from '@/airdev/frontend/components/ui/Button';
 import { useEffect, useState } from 'react';
 
 export default function CookieBanner() {
@@ -31,23 +32,21 @@ export default function CookieBanner() {
   return (
     <div>
       {showCookieBanner ? (
-        <section className="fixed bottom-12 left-12 mx-auto max-w-md rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
-          <h2 className="font-semibold text-gray-800 dark:text-white">
-            🍪 Cookie Notice
-          </h2>
+        <section className="fixed bottom-12 left-12 mx-auto max-w-md rounded-2xl border border-[var(--cookie-banner-border)] bg-[var(--cookie-banner-bg)] p-4 text-[var(--cookie-banner-foreground)]">
+          <h2 className="font-semibold">🍪 Cookie Notice</h2>
 
-          <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">
+          <p className="mt-4 text-sm text-[var(--cookie-banner-muted)]">
             We use essential cookies to ensure that we give you the best
             experience on our website.
           </p>
 
           <div className="mt-4 flex shrink-0 items-center justify-between gap-x-4">
-            <button
+            <Button
               onClick={addCookie}
-              className="bg-primary hover:bg-primary-hover rounded-[12px] px-4 py-2.5 text-xs font-medium text-white transition-colors duration-300 focus:outline-none"
+              className="rounded-[12px] px-4 py-2.5 text-xs font-medium"
             >
               Accept
-            </button>
+            </Button>
           </div>
         </section>
       ) : null}

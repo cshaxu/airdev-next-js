@@ -1,5 +1,6 @@
 /* "@airdev/next": "managed" */
 
+import { EMAIL_THEME } from '@/airdev/common/theme';
 import { airdevPublicConfig } from '@/airdev/config/public';
 import { Heading, Row, Section, Text } from '@react-email/components';
 import Container from './shared/Container';
@@ -25,7 +26,10 @@ export default function VerificationCode({ subject, code }: Props) {
               is your {airdevPublicConfig.app.name} sign-in code. This code
               expires in 15 minutes.
             </Text>
-            <Text className="text-sm font-medium tracking-tight text-neutral-500">
+            <Text
+              className="text-sm font-medium tracking-tight"
+              style={{ color: EMAIL_THEME.muted }}
+            >
               Ignore this email if you didn&lsquo;t attempt to sign in.
             </Text>
           </Row>

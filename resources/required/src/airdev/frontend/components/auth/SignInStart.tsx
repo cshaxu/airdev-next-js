@@ -52,7 +52,7 @@ export default function SignInStart({ setEmail }: Props) {
 
   return (
     <div className="flex flex-col gap-5 sm:gap-6">
-      <h3 className="text-center text-xl font-bold text-[var(--blue-dark-75)] sm:text-2xl">
+      <h3 className="text-muted-foreground text-center text-xl font-bold sm:text-2xl">
         Welcome to {airdevPublicConfig.app.name}
       </h3>
       <Button

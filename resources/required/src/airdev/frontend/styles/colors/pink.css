@@ -2,45 +2,45 @@
 
 @layer base {
   :root[data-shell-color='pink'] {
-    --blue-1: #fffafd;
-    --blue-2: #fff4fa;
-    --blue-3: #ffe8f4;
-    --blue-4: #ffd9ed;
-    --blue-5: #fbc9e4;
-    --blue-6: #efb5d5;
-    --blue-7: #de98c0;
-    --blue-8: #c86ea4;
-    --blue-9: #b43c82;
-    --blue-10: #9f2f72;
-    --blue-11: #ba3d85;
-    --blue-12: #561d3e;
-    --blue-inactive: #b43c8266; /* 40% opacity */
+    --accent-1: #fffafd;
+    --accent-2: #fff4fa;
+    --accent-3: #ffe8f4;
+    --accent-4: #ffd9ed;
+    --accent-5: #fbc9e4;
+    --accent-6: #efb5d5;
+    --accent-7: #de98c0;
+    --accent-8: #c86ea4;
+    --accent-9: #b43c82;
+    --accent-10: #9f2f72;
+    --accent-11: #ba3d85;
+    --accent-12: #561d3e;
+    --accent-inactive: #b43c8266; /* 40% opacity */
 
-    --blue-a1: #ff009904;
-    --blue-a2: #ff00a40b;
-    --blue-a3: #f9009d17;
-    --blue-a4: #f6009b26;
-    --blue-a5: #e6009036;
-    --blue-a6: #d100864a;
-    --blue-a7: #bf007b67;
-    --blue-a8: #b100758f;
-    --blue-a9: #9e0069c3;
-    --blue-a10: #8b005ecf;
-    --blue-a11: #a00069c2;
-    --blue-a12: #48002ee2;
+    --accent-a1: #ff009904;
+    --accent-a2: #ff00a40b;
+    --accent-a3: #f9009d17;
+    --accent-a4: #f6009b26;
+    --accent-a5: #e6009036;
+    --accent-a6: #d100864a;
+    --accent-a7: #bf007b67;
+    --accent-a8: #b100758f;
+    --accent-a9: #9e0069c3;
+    --accent-a10: #8b005ecf;
+    --accent-a11: #a00069c2;
+    --accent-a12: #48002ee2;
 
-    --blue-contrast: #fff;
-    --blue-surface: #fff1f8cc;
-    --blue-indicator: #b43c82;
-    --blue-track: #b43c82;
+    --accent-contrast: #fff;
+    --accent-surface: #fff1f8cc;
+    --accent-indicator: #b43c82;
+    --accent-track: #b43c82;
 
-    --blue-primary: #ec4899;
-    --blue-dark: #5a3148;
-    --blue-dark-50: #5a314880; /* 50% opacity */
-    --blue-dark-75: #5a3148bf; /* 75% opacity */
-    --blue-bg: #fff8fc;
-    --blue-hover: #ffe9f5;
-    --blue-separator: #f8e0ef;
+    --accent-primary: #ec4899;
+    --accent-dark: #5a3148;
+    --accent-dark-50: #5a314880; /* 50% opacity */
+    --accent-dark-75: #5a3148bf; /* 75% opacity */
+    --accent-bg: #fff8fc;
+    --accent-hover: #ffe9f5;
+    --accent-separator: #f8e0ef;
 
     --primary-disabled: #f9a8d4;
     --shell-link: #db2777;
@@ -72,44 +72,44 @@
 
   :root.dark[data-shell-color='pink'],
   :root.dark-theme[data-shell-color='pink'] {
-    --blue-1: #190f15;
-    --blue-2: #24131d;
-    --blue-3: #381629;
-    --blue-4: #4d1b37;
-    --blue-5: #632247;
-    --blue-6: #7a2d58;
-    --blue-7: #943a6c;
-    --blue-8: #b04982;
-    --blue-9: #ff7fb8;
-    --blue-10: #f76ba9;
-    --blue-11: #ffafd3;
-    --blue-12: #ffddea;
+    --accent-1: #190f15;
+    --accent-2: #24131d;
+    --accent-3: #381629;
+    --accent-4: #4d1b37;
+    --accent-5: #632247;
+    --accent-6: #7a2d58;
+    --accent-7: #943a6c;
+    --accent-8: #b04982;
+    --accent-9: #ff7fb8;
+    --accent-10: #f76ba9;
+    --accent-11: #ffafd3;
+    --accent-12: #ffddea;
 
-    --blue-a1: #ff008009;
-    --blue-a2: #ff2a8b14;
-    --blue-a3: #ff40972b;
-    --blue-a4: #ff4a9f43;
-    --blue-a5: #ff56a35a;
-    --blue-a6: #ff67ac72;
-    --blue-a7: #ff79b38c;
-    --blue-a8: #ff88bba9;
-    --blue-a9: #ff87b8ff;
-    --blue-a10: #ff74adf8;
-    --blue-a11: #ffb3d6ff;
-    --blue-a12: #ffe1edff;
+    --accent-a1: #ff008009;
+    --accent-a2: #ff2a8b14;
+    --accent-a3: #ff40972b;
+    --accent-a4: #ff4a9f43;
+    --accent-a5: #ff56a35a;
+    --accent-a6: #ff67ac72;
+    --accent-a7: #ff79b38c;
+    --accent-a8: #ff88bba9;
+    --accent-a9: #ff87b8ff;
+    --accent-a10: #ff74adf8;
+    --accent-a11: #ffb3d6ff;
+    --accent-a12: #ffe1edff;
 
-    --blue-contrast: #340f23;
-    --blue-surface: #4b173680;
-    --blue-indicator: #ff7fb8;
-    --blue-track: #ff7fb8;
+    --accent-contrast: #340f23;
+    --accent-surface: #4b173680;
+    --accent-indicator: #ff7fb8;
+    --accent-track: #ff7fb8;
 
-    --blue-primary: #ff7fb8;
-    --blue-dark: #ffddea;
-    --blue-dark-50: #ffddea80; /* 50% opacity */
-    --blue-dark-75: #ffddeabf; /* 75% opacity */
-    --blue-bg: #20131a;
-    --blue-hover: #341825;
-    --blue-separator: #4f2038;
+    --accent-primary: #ff7fb8;
+    --accent-dark: #ffddea;
+    --accent-dark-50: #ffddea80; /* 50% opacity */
+    --accent-dark-75: #ffddeabf; /* 75% opacity */
+    --accent-bg: #20131a;
+    --accent-hover: #341825;
+    --accent-separator: #4f2038;
 
     --primary-disabled: #943a6c;
     --shell-link: #ffafd3;
@@ -134,3 +134,4 @@
     --shell-illustration-ink: #ffddea;
   }
 }
+

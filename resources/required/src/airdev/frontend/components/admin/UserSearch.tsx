@@ -161,7 +161,9 @@ export default function UserSearch() {
               </Avatar>
               <div className="flex-1">
                 <p className="text-sm font-medium">{user.name ?? '-'}</p>
-                <p className="text-muted-foreground text-xs">{user.email}</p>
+                <p className="text-muted-foreground text-xs">
+                  {user.email} - {user.createdAt.toLocaleString()}
+                </p>
               </div>
               <Button
                 size="sm"
