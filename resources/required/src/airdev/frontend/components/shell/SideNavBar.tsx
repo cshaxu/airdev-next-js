@@ -29,7 +29,16 @@ type SideNavLinkProps = {
 };
 
 function matchesCollapsedRoute(pathname: string, route: string) {
-  return pathname === route || pathname.startsWith(`${route}/`);
+  const normalizedPathname =
+    pathname !== '/' ? pathname.replace(/\/+$/, '') : pathname;
+
+  if (route.endsWith('/')) {
+    return normalizedPathname.startsWith(route.slice(0, -1) + '/');
+  }
+
+  return (
+    normalizedPathname === route || normalizedPathname.startsWith(`${route}/`)
+  );
 }
 
 function SideNavLink({ label, icon, to, isFull, isActive }: SideNavLinkProps) {
