@@ -33,7 +33,7 @@ export default function CookieBanner() {
       {showCookieBanner ? (
         <section className="fixed bottom-12 left-12 mx-auto max-w-md rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
           <h2 className="font-semibold text-gray-800 dark:text-white">
-            ðŸª Cookie Notice
+            🍪 Cookie Notice
           </h2>
 
           <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">
