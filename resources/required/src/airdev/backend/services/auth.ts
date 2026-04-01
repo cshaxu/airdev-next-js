@@ -2,6 +2,8 @@
 
 import { HEADER_CURRENT_USER_ID_KEY } from '@/airdev/common/constant';
 import { BecomeBody } from '@/airdev/common/types/context';
+import { airdevPrivateConfig } from '@/airdev/config/private';
+import { airdevPublicConfig } from '@/airdev/config/public';
 import { CommonResponse } from '@airent/api';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -13,11 +15,24 @@ async function become(
     { code: 200, data: { userId } },
     { status: 200 }
   );
+  const isServiceLocal =
+    airdevPublicConfig.service.serviceEnvironment === 'local';
   // become user
   if (userId === null) {
-    response.cookies.delete(HEADER_CURRENT_USER_ID_KEY);
+    response.cookies.delete({
+      name: HEADER_CURRENT_USER_ID_KEY,
+      path: '/',
+    });
   } else {
-    response.cookies.set(HEADER_CURRENT_USER_ID_KEY, userId);
+    response.cookies.set({
+      name: HEADER_CURRENT_USER_ID_KEY,
+      value: userId,
+      httpOnly: true,
+      maxAge: airdevPrivateConfig.nextauth.sessionMaxAge,
+      path: '/',
+      sameSite: isServiceLocal ? 'lax' : 'none',
+      secure: !isServiceLocal,
+    });
   }
   return response;
 }
