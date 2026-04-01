@@ -45,11 +45,35 @@ export async function getS3Object(
 ): Promise<GetObjectCommandOutput> {
   const payload = { Bucket: airdevPublicConfig.aws.s3Bucket, Key: key };
   if (isDataLocal) {
-    return await fetch(`${LOCAL_AWS_S3_BASE_URL}/get-object`, {
+    const response = await fetch(`${LOCAL_AWS_S3_BASE_URL}/get-object`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
-    }).then((res) => res.json());
+    });
+
+    if (!response.ok) {
+      throw createHttpError.BadGateway(
+        `Failed to fetch S3 object "${key}" (${response.status})`
+      );
+    }
+
+    const contentType = response.headers.get('content-type') ?? '';
+    if (contentType.includes('application/json')) {
+      return await response.json();
+    }
+
+    const body = Buffer.from(await response.arrayBuffer());
+    const contentLengthHeader = response.headers.get('content-length');
+    const contentLength = contentLengthHeader
+      ? Number.parseInt(contentLengthHeader, 10)
+      : body.length;
+
+    return {
+      $metadata: {},
+      Body: body as unknown as GetObjectCommandOutput['Body'],
+      ContentType: contentType || undefined,
+      ContentLength: Number.isFinite(contentLength) ? contentLength : undefined,
+    };
   }
   const s3Client = new S3Client(AWS_CLIENT_CONFIG);
   const command = new GetObjectCommand(payload);
