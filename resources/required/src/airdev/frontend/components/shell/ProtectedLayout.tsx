@@ -15,13 +15,13 @@ export default function ProtectedLayout({ children }: ReactNodeProps) {
     <>
       <CurrentUserProvider />
       <ProtectedRouteRedirect />
-      <div className="flex h-screen flex-col overflow-hidden">
-        <main className="h-full flex-1 overflow-hidden">
-          <div className="flex h-full">
-            <div className="hidden h-full md:block [@media(orientation:portrait)]:hidden">
+      <div className="bg-background fixed inset-0 flex flex-col overflow-hidden">
+        <main className="min-h-0 flex-1 overflow-hidden">
+          <div className="flex h-full min-h-0">
+            <div className="hidden md:block [@media(orientation:portrait)]:hidden">
               <SideNavBar />
             </div>
-            <div className="protected-mobile-main h-full min-w-0 flex-1 overflow-hidden pb-16 md:pb-0 [@media(orientation:portrait)]:pb-16">
+            <div className="protected-mobile-main min-h-0 min-w-0 flex-1 overflow-hidden pb-16 md:pb-0 [@media(orientation:portrait)]:pb-16">
               {children}
             </div>
           </div>

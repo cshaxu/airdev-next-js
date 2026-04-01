@@ -77,7 +77,6 @@ export default function SideNavBar() {
   );
   const [isCollapsed, setIsCollapsed] = useState(shouldCollapse);
 
-  // Keep the collapsed state in sync when routing into or out of configured collapsed pages.
   useEffect(() => {
     const wasCollapsePage = defaultSideNavCollapsedRoutes.some((route) =>
       matchesCollapsedRoute(lastPathRef.current, route)
@@ -86,7 +85,6 @@ export default function SideNavBar() {
       matchesCollapsedRoute(pathname, route)
     );
 
-    // Only adjust the state when entering or leaving a collapsed page.
     if (wasCollapsePage !== isCollapsePage) {
       setIsCollapsed(isCollapsePage);
     }
@@ -103,10 +101,10 @@ export default function SideNavBar() {
       isCollapsed={isCollapsed}
       onCollapseChange={setIsCollapsed}
     >
-      <div className="nav-bg flex h-full flex-col gap-4 overflow-y-auto px-2 py-4">
+      <div className="nav-bg flex h-full min-h-0 flex-col gap-4 overflow-hidden px-2 py-4">
         <div
           className={cn(
-            'flex items-center',
+            'flex flex-shrink-0 items-center',
             !isCollapsed ? 'gap-2' : 'justify-center'
           )}
         >
@@ -124,9 +122,9 @@ export default function SideNavBar() {
           )}
         </div>
 
-        <div className="nav-separator mx-4 h-px" />
+        <div className="nav-separator mx-4 h-px flex-shrink-0" />
 
-        <nav className="flex flex-col gap-1">
+        <nav className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto">
           {navItems.map((item: NavItem) => (
             <SideNavLink
               key={item.to}
@@ -139,9 +137,9 @@ export default function SideNavBar() {
           ))}
         </nav>
 
-        <div className="flex-1" />
-
-        <UserButton mode="sidebar" isFull={!isCollapsed} />
+        <div className="flex-shrink-0 pt-2">
+          <UserButton mode="sidebar" isFull={!isCollapsed} />
+        </div>
       </div>
     </PixelResizablePanel>
   );
