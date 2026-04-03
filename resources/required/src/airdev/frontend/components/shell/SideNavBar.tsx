@@ -7,10 +7,10 @@ import { buttonVariants } from '@/airdev/frontend/components/ui/Button';
 import { PixelResizablePanel } from '@/airdev/frontend/components/ui/PixelResizable';
 import { cn } from '@/airdev/frontend/utils/cn';
 import { clientComponentConfig } from '@/config/component';
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import AppearanceDialog from './AppearanceDialog';
 import UserButton from './UserButton';
 
 type NavItem = {
@@ -108,18 +108,16 @@ export default function SideNavBar() {
             !isCollapsed ? 'gap-2' : 'justify-center'
           )}
         >
-          <Image
-            src={airdevPublicConfig.shell.assets.logoSrc}
-            alt="Logo"
-            width={40}
-            height={40}
-            className="size-10"
+          <AppearanceDialog
+            className={cn(
+              'nav-icon w-full px-1 py-1 hover:bg-[var(--nav-hover)]',
+              !isCollapsed ? 'gap-2' : 'justify-center'
+            )}
+            labelClassName="nav-icon text-xl font-bold"
+            logoClassName="size-10"
+            showLabel={!isCollapsed}
+            logoSize={40}
           />
-          {!isCollapsed && (
-            <span className="nav-icon text-xl font-bold">
-              {airdevPublicConfig.app.name}
-            </span>
-          )}
         </div>
 
         <div className="nav-separator mx-4 h-px flex-shrink-0" />

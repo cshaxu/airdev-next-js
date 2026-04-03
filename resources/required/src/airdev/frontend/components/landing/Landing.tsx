@@ -1,8 +1,7 @@
 /* "@airdev/next": "managed" */
 
-import { airdevPublicConfig } from '@/airdev/config/public';
+import AppearanceDialog from '@/airdev/frontend/components/shell/AppearanceDialog';
 import { Blocks, Settings2, ShieldCheck, Sparkles, Wrench } from 'lucide-react';
-import Image from 'next/image';
 import Footer from './Footer';
 import GetStartedDialog from './GetStartedDialog';
 
@@ -55,17 +54,11 @@ export default function Landing() {
     <div className="to-background text-foreground flex h-screen flex-col overflow-y-auto bg-gradient-to-b from-[var(--shell-page-start)] via-[var(--shell-page-mid)]">
       <header className="bg-background/80 sticky top-0 z-20 border-b border-[var(--shell-tint-100-80)] backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-8">
-          <div className="flex items-center gap-3">
-            <Image
-              src={airdevPublicConfig.shell.assets.logoSrc}
-              alt={airdevPublicConfig.app.name}
-              width={36}
-              height={36}
-            />
-            <span className="text-lg font-semibold tracking-tight">
-              {airdevPublicConfig.app.name}
-            </span>
-          </div>
+          <AppearanceDialog
+            className="gap-3 px-1 py-1 hover:opacity-90"
+            labelClassName="text-lg font-semibold tracking-tight"
+            logoSize={36}
+          />
           <GetStartedDialog />
         </div>
       </header>

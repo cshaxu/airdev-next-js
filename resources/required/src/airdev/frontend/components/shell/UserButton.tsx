@@ -3,11 +3,6 @@
 'use client';
 
 import { ADMIN_HREF, ROOT_HREF, SETTINGS_HREF } from '@/airdev/common/constant';
-import { SHELL_PREVIEW_COLORS } from '@/airdev/common/theme';
-import {
-  shellColorOptions,
-  useShellColor,
-} from '@/airdev/frontend/components/ThemeProvider';
 import {
   Avatar,
   AvatarFallback,
@@ -47,17 +42,8 @@ import {
   Cog6ToothIcon,
   EllipsisVerticalIcon,
 } from '@heroicons/react/24/outline';
-import {
-  ArrowLeft,
-  LogOut,
-  Monitor,
-  Moon,
-  Palette,
-  Sun,
-  Wrench,
-} from 'lucide-react';
+import { ArrowLeft, LogOut, Palette, Wrench } from 'lucide-react';
 import { signOut } from 'next-auth/react';
-import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import {
   ReactNode,
@@ -67,6 +53,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import AppearanceDialog from './AppearanceDialog';
 
 type SidebarProps = { mode: 'sidebar'; isFull: boolean };
 
@@ -200,7 +187,6 @@ function AccountActionRow({
       <Link href={action.href} className={classes} onClick={onDone}>
         <span className="shrink-0">{action.icon}</span>
         <span className="flex-1 text-sm font-medium">{action.label}</span>
-        <ChevronRightIcon className="size-4 shrink-0 opacity-60" />
       </Link>
     );
   }
@@ -350,8 +336,6 @@ function renderDesktopAccountAction(
 
 export default function UserButton(props: Props) {
   const { user, initials } = useUserInitials();
-  const { shellColor, setShellColor } = useShellColor();
-  const { theme, setTheme } = useTheme();
   const became = useBecameUser();
   const setBecameUser = useSetBecameUser();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -359,7 +343,7 @@ export default function UserButton(props: Props) {
     string | null
   >(null);
   const [desktopOpen, setDesktopOpen] = useState(false);
-  const [isThemeMounted, setIsThemeMounted] = useState(false);
+  const [appearanceOpen, setAppearanceOpen] = useState(false);
   const [sheetOffset, setSheetOffset] = useState(0);
   const [sheetHeight, setSheetHeight] = useState(0);
   const [isDraggingSheet, setIsDraggingSheet] = useState(false);
@@ -368,6 +352,7 @@ export default function UserButton(props: Props) {
   const dragStartOffsetRef = useRef(0);
   const activePointerIdRef = useRef<number | null>(null);
   const settleTimeoutRef = useRef<number | null>(null);
+  const appearanceTimeoutRef = useRef<number | null>(null);
 
   const handleSignOut = async () => {
     await signOut({ callbackUrl: ROOT_HREF });
@@ -379,12 +364,17 @@ export default function UserButton(props: Props) {
     window.location.reload();
   };
 
-  const activeThemeMode = isThemeMounted ? (theme ?? 'light') : 'light';
-
   const clearSettleTimeout = () => {
     if (settleTimeoutRef.current !== null) {
       window.clearTimeout(settleTimeoutRef.current);
       settleTimeoutRef.current = null;
+    }
+  };
+
+  const clearAppearanceTimeout = () => {
+    if (appearanceTimeoutRef.current !== null) {
+      window.clearTimeout(appearanceTimeoutRef.current);
+      appearanceTimeoutRef.current = null;
     }
   };
 
@@ -457,13 +447,10 @@ export default function UserButton(props: Props) {
   useEffect(
     () => () => {
       clearSettleTimeout();
+      clearAppearanceTimeout();
     },
     []
   );
-
-  useEffect(() => {
-    setIsThemeMounted(true);
-  }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -583,6 +570,19 @@ export default function UserButton(props: Props) {
     animateSheetTo(0);
   };
 
+  const openAppearanceDialog = (delayMs: number = 0) => {
+    clearAppearanceTimeout();
+    if (delayMs <= 0) {
+      setAppearanceOpen(true);
+      return;
+    }
+
+    appearanceTimeoutRef.current = window.setTimeout(() => {
+      appearanceTimeoutRef.current = null;
+      setAppearanceOpen(true);
+    }, delayMs);
+  };
+
   const accountActions: AccountAction[] = [
     ...(user.isAdmin
       ? [
@@ -595,67 +595,83 @@ export default function UserButton(props: Props) {
         ]
       : []),
     {
+      key: 'appearance',
+      label: 'Appearance',
+      icon: <Palette className="size-5" />,
+      closeOnClick: false,
+      onClick: () => {
+        if (props.mode === 'bottom-nav') {
+          closeMobileSheet();
+          openAppearanceDialog(280);
+          return;
+        }
+
+        forceCloseDesktopMenu();
+        openAppearanceDialog();
+      },
+    },
+    {
       key: 'settings',
       label: 'Settings',
       href: SETTINGS_HREF,
       icon: <Cog6ToothIcon className="size-5" />,
     },
-    {
-      key: 'mode',
-      label: 'Mode',
-      showsChevron: true,
-      childrenDescription: 'Choose light, dark, or system mode',
-      childrenVariant: 'option-grid',
-      children: [
-        {
-          key: 'light',
-          label: 'Light Mode',
-          isSelected: activeThemeMode === 'light',
-          mobileHint: 'Use light theme',
-          closeBeforeClick: true,
-          onClick: () => setTheme('light'),
-        },
-        {
-          key: 'dark',
-          label: 'Dark Mode',
-          isSelected: activeThemeMode === 'dark',
-          mobileHint: 'Use dark theme',
-          closeBeforeClick: true,
-          onClick: () => setTheme('dark'),
-        },
-        {
-          key: 'system',
-          label: 'System Mode',
-          isSelected: activeThemeMode === 'system',
-          mobileHint: 'Follow device theme',
-          closeBeforeClick: true,
-          onClick: () => setTheme('system'),
-        },
-      ],
-      icon:
-        activeThemeMode === 'dark' ? (
-          <Moon className="size-5" />
-        ) : activeThemeMode === 'system' ? (
-          <Monitor className="size-5" />
-        ) : (
-          <Sun className="size-5" />
-        ),
-    },
-    {
-      key: 'theme',
-      label: 'Theme',
-      showsChevron: true,
-      childrenDescription: 'Choose your shell color',
-      childrenVariant: 'option-grid',
-      children: shellColorOptions.map((option) => ({
-        key: option.value,
-        label: option.label,
-        isSelected: option.value === shellColor,
-        previewColor: SHELL_PREVIEW_COLORS[option.value],
-        onClick: () => setShellColor(option.value),
-      })),
-      icon: <Palette className="size-5" />,
-    },
+    // {
+    //   key: 'mode',
+    //   label: 'Mode',
+    //   showsChevron: true,
+    //   childrenDescription: 'Choose light, dark, or system mode',
+    //   childrenVariant: 'option-grid',
+    //   children: [
+    //     {
+    //       key: 'light',
+    //       label: 'Light Mode',
+    //       isSelected: activeThemeMode === 'light',
+    //       mobileHint: 'Use light theme',
+    //       closeBeforeClick: true,
+    //       onClick: () => setTheme('light'),
+    //     },
+    //     {
+    //       key: 'dark',
+    //       label: 'Dark Mode',
+    //       isSelected: activeThemeMode === 'dark',
+    //       mobileHint: 'Use dark theme',
+    //       closeBeforeClick: true,
+    //       onClick: () => setTheme('dark'),
+    //     },
+    //     {
+    //       key: 'system',
+    //       label: 'System Mode',
+    //       isSelected: activeThemeMode === 'system',
+    //       mobileHint: 'Follow device theme',
+    //       closeBeforeClick: true,
+    //       onClick: () => setTheme('system'),
+    //     },
+    //   ],
+    //   icon:
+    //     activeThemeMode === 'dark' ? (
+    //       <Moon className="size-5" />
+    //     ) : activeThemeMode === 'system' ? (
+    //       <Monitor className="size-5" />
+    //     ) : (
+    //       <Sun className="size-5" />
+    //     ),
+    // },
+    // {
+    //   key: 'theme',
+    //   label: 'Theme',
+    //   showsChevron: true,
+    //   childrenDescription: 'Choose your shell color',
+    //   childrenVariant: 'option-grid',
+    //   children: shellColorOptions.map((option) => ({
+    //     key: option.value,
+    //     label: option.label,
+    //     isSelected: option.value === shellColor,
+    //     previewColor: SHELL_PREVIEW_COLORS[option.value],
+    //     onClick: () => setShellColor(option.value),
+    //   })),
+    //   icon: <Palette className="size-5" />,
+    // },
     became
       ? {
           key: 'revert',
@@ -698,108 +714,115 @@ export default function UserButton(props: Props) {
     );
 
     return (
-      <BottomPopupSheet
-        open={mobileOpen}
-        onOpenChange={(open) => {
-          if (open) {
-            openMobileSheet();
-            return;
-          }
-          closeMobileSheet();
-        }}
-      >
-        <BottomPopupSheetTrigger asChild>{trigger}</BottomPopupSheetTrigger>
-        <BottomPopupSheetContent
-          ref={sheetContentRef}
-          className="max-h-[88dvh] min-h-0 overflow-hidden rounded-t-3xl px-0"
-          onRequestClose={closeMobileSheet}
-          overlayStyle={{
-            opacity: overlayOpacity,
-            transition: isDraggingSheet
-              ? 'none'
-              : 'opacity 260ms cubic-bezier(0.4, 0, 1, 1)',
-          }}
-          style={{
-            transform: `translateY(${sheetOffset}px)`,
-            transition: isDraggingSheet
-              ? 'none'
-              : 'transform 260ms cubic-bezier(0.4, 0, 1, 1)',
+      <>
+        <AppearanceDialog
+          open={appearanceOpen}
+          onOpenChange={setAppearanceOpen}
+          showTrigger={false}
+        />
+        <BottomPopupSheet
+          open={mobileOpen}
+          onOpenChange={(open) => {
+            if (open) {
+              openMobileSheet();
+              return;
+            }
+            closeMobileSheet();
           }}
         >
-          <BottomPopupSheetHeader
-            className="touch-none px-4 pt-5 pb-3"
-            onPointerDown={handleSheetPointerDown}
-            onPointerMove={handleSheetPointerMove}
-            onPointerUp={handleSheetPointerEnd}
-            onPointerCancel={handleSheetPointerEnd}
+          <BottomPopupSheetTrigger asChild>{trigger}</BottomPopupSheetTrigger>
+          <BottomPopupSheetContent
+            ref={sheetContentRef}
+            className="max-h-[88dvh] min-h-0 overflow-hidden rounded-t-3xl px-0"
+            onRequestClose={closeMobileSheet}
+            overlayStyle={{
+              opacity: overlayOpacity,
+              transition: isDraggingSheet
+                ? 'none'
+                : 'opacity 260ms cubic-bezier(0.4, 0, 1, 1)',
+            }}
+            style={{
+              transform: `translateY(${sheetOffset}px)`,
+              transition: isDraggingSheet
+                ? 'none'
+                : 'transform 260ms cubic-bezier(0.4, 0, 1, 1)',
+            }}
           >
-            <div className="bg-muted mx-auto mb-3 h-1.5 w-12 rounded-full" />
-            {activeMobileChildAction ? (
-              <div className="relative flex min-h-11 items-center justify-center">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="iconSm"
-                  className="absolute top-1/2 left-0 -translate-y-1/2"
-                  onPointerDown={(event) => event.stopPropagation()}
-                  onClick={() => setMobileChildActionKey(null)}
-                >
-                  <ArrowLeft className="size-4" />
-                  <span className="sr-only">Back to account menu</span>
-                </Button>
-                <div className="px-8 text-center">
-                  <BottomPopupSheetTitle>
-                    {activeMobileChildAction.label}
-                  </BottomPopupSheetTitle>
-                  {activeMobileChildAction.childrenDescription && (
-                    <BottomPopupSheetDescription>
-                      {activeMobileChildAction.childrenDescription}
+            <BottomPopupSheetHeader
+              className="touch-none px-4 pt-5 pb-3"
+              onPointerDown={handleSheetPointerDown}
+              onPointerMove={handleSheetPointerMove}
+              onPointerUp={handleSheetPointerEnd}
+              onPointerCancel={handleSheetPointerEnd}
+            >
+              <div className="bg-muted mx-auto mb-3 h-1.5 w-12 rounded-full" />
+              {activeMobileChildAction ? (
+                <div className="relative flex min-h-11 items-center justify-center">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="iconSm"
+                    className="absolute top-1/2 left-0 -translate-y-1/2"
+                    onPointerDown={(event) => event.stopPropagation()}
+                    onClick={() => setMobileChildActionKey(null)}
+                  >
+                    <ArrowLeft className="size-4" />
+                    <span className="sr-only">Back to account menu</span>
+                  </Button>
+                  <div className="px-8 text-center">
+                    <BottomPopupSheetTitle>
+                      {activeMobileChildAction.label}
+                    </BottomPopupSheetTitle>
+                    {activeMobileChildAction.childrenDescription && (
+                      <BottomPopupSheetDescription>
+                        {activeMobileChildAction.childrenDescription}
+                      </BottomPopupSheetDescription>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <Avatar className="size-11">
+                    <AvatarImage
+                      src={user.imageUrl ?? undefined}
+                      alt={user.name ?? 'User'}
+                    />
+                    <AvatarFallback>{initials}</AvatarFallback>
+                  </Avatar>
+                  <div className="min-w-0">
+                    <BottomPopupSheetTitle className="truncate">
+                      {user.name}
+                    </BottomPopupSheetTitle>
+                    <BottomPopupSheetDescription className="truncate">
+                      {user.email}
                     </BottomPopupSheetDescription>
-                  )}
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div className="flex items-center gap-3">
-                <Avatar className="size-11">
-                  <AvatarImage
-                    src={user.imageUrl ?? undefined}
-                    alt={user.name ?? 'User'}
-                  />
-                  <AvatarFallback>{initials}</AvatarFallback>
-                </Avatar>
-                <div className="min-w-0">
-                  <BottomPopupSheetTitle className="truncate">
-                    {user.name}
-                  </BottomPopupSheetTitle>
-                  <BottomPopupSheetDescription className="truncate">
-                    {user.email}
-                  </BottomPopupSheetDescription>
-                </div>
-              </div>
-            )}
-          </BottomPopupSheetHeader>
-          <div className="space-y-3 px-4 pb-4">
-            {activeMobileChildAction?.children &&
-            activeMobileChildAction.childrenVariant === 'option-grid' ? (
-              <MobileChildActionGrid
-                items={activeMobileChildAction.children}
-                onDone={closeMobileSheet}
-              />
-            ) : (
-              accountActions.map((action) => (
-                <AccountActionRow
-                  key={action.key}
-                  action={action}
+              )}
+            </BottomPopupSheetHeader>
+            <div className="space-y-3 px-4 pb-4">
+              {activeMobileChildAction?.children &&
+              activeMobileChildAction.childrenVariant === 'option-grid' ? (
+                <MobileChildActionGrid
+                  items={activeMobileChildAction.children}
                   onDone={closeMobileSheet}
-                  onOpenChildren={(nextAction) =>
-                    setMobileChildActionKey(nextAction.key)
-                  }
                 />
-              ))
-            )}
-          </div>
-        </BottomPopupSheetContent>
-      </BottomPopupSheet>
+              ) : (
+                accountActions.map((action) => (
+                  <AccountActionRow
+                    key={action.key}
+                    action={action}
+                    onDone={closeMobileSheet}
+                    onOpenChildren={(nextAction) =>
+                      setMobileChildActionKey(nextAction.key)
+                    }
+                  />
+                ))
+              )}
+            </div>
+          </BottomPopupSheetContent>
+        </BottomPopupSheet>
+      </>
     );
   }
 
@@ -812,25 +835,32 @@ export default function UserButton(props: Props) {
   );
 
   return (
-    <DropdownMenu open={desktopOpen} onOpenChange={setDesktopOpen}>
-      <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
-      <DropdownMenuContent
-        className="w-56"
-        side="right"
-        align="end"
-        alignOffset={0}
-        sideOffset={sideOffset}
-      >
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        {standardActions.map((action) =>
-          renderDesktopAccountAction(action, forceCloseDesktopMenu)
-        )}
-        {dangerActions.length > 0 && <DropdownMenuSeparator />}
-        {dangerActions.map((action) =>
-          renderDesktopAccountAction(action, forceCloseDesktopMenu)
-        )}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <AppearanceDialog
+        open={appearanceOpen}
+        onOpenChange={setAppearanceOpen}
+        showTrigger={false}
+      />
+      <DropdownMenu open={desktopOpen} onOpenChange={setDesktopOpen}>
+        <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
+        <DropdownMenuContent
+          className="w-56"
+          side="right"
+          align="end"
+          alignOffset={0}
+          sideOffset={sideOffset}
+        >
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {standardActions.map((action) =>
+            renderDesktopAccountAction(action, forceCloseDesktopMenu)
+          )}
+          {dangerActions.length > 0 && <DropdownMenuSeparator />}
+          {dangerActions.map((action) =>
+            renderDesktopAccountAction(action, forceCloseDesktopMenu)
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
   );
 }
