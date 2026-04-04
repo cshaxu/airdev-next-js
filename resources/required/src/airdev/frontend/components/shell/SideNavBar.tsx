@@ -52,7 +52,7 @@ function SideNavLink({ label, icon, to, isFull, isActive }: SideNavLinkProps) {
         'nav-text',
         'hover:bg-[var(--nav-hover)]',
         isActive && 'nav-active',
-        isFull ? 'justify-start' : 'justify-center'
+        isFull ? 'w-full justify-start' : 'size-9 justify-center self-center'
       )}
       title={isFull ? undefined : label}
     >
@@ -110,13 +110,15 @@ export default function SideNavBar() {
         >
           <AppearanceDialog
             className={cn(
-              'nav-icon w-full px-1 py-1 hover:bg-[var(--nav-hover)]',
-              !isCollapsed ? 'gap-2' : 'justify-center'
+              'nav-icon hover:bg-[var(--nav-hover)]',
+              !isCollapsed
+                ? 'w-full gap-2 px-1 py-1'
+                : 'size-9 self-center justify-center rounded-2xl p-0.5'
             )}
             labelClassName="nav-icon text-xl font-bold"
-            logoClassName="size-10"
+            logoClassName={isCollapsed ? 'size-8' : 'size-10'}
             showLabel={!isCollapsed}
-            logoSize={40}
+            logoSize={isCollapsed ? 32 : 40}
           />
         </div>
 

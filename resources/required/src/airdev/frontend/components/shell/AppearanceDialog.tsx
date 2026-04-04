@@ -80,7 +80,10 @@ export default function AppearanceDialog({
                 alt={airdevPublicConfig.app.name}
                 width={logoSize}
                 height={logoSize}
-                className={logoClassName}
+                className={cn(
+                  'aspect-square shrink-0 object-contain',
+                  logoClassName
+                )}
               />
               {showLabel ? (
                 <span className={labelClassName}>

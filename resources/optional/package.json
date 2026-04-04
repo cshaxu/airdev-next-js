@@ -30,10 +30,10 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.41",
-    "@airdev/next": "github:cshaxu/airdev-next-js#4bb3a02094d538a4c459cf6239d6d7a9f951c2d5",
+    "@airdev/next": "github:cshaxu/airdev-next-js#e379fc82b00648d154da5299dcc9cafc0af660f6",
     "@airent/api": "github:cshaxu/airent-api-js#ee8cea6f134851f3bff4f8b41db04101a765f3b1",
-    "@airent/api-next": "github:cshaxu/airent-api-next-js#5d7ce750b0aae44feac78996992db211bddc9b8e",
-    "@airent/api-next-tanstack": "github:cshaxu/airent-api-next-tanstack-js#0760a88210376c9725186929596b249194724344",
+    "@airent/api-next": "github:cshaxu/airent-api-next-js#922b48e532c87d9bba891617e6b350c6c4b1256b",
+    "@airent/api-next-tanstack": "github:cshaxu/airent-api-next-tanstack-js#44fd660152fe1921abbfc3a9879b4f4b33af446d",
     "@airent/prisma": "github:cshaxu/airent-prisma-js#0e3216698f7d917a2608da0f494570f59dc120af",
     "@aws-sdk/client-s3": "^3.1013.0",
     "@aws-sdk/client-textract": "^3.1013.0",
