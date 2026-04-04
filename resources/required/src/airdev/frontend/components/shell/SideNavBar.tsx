@@ -113,7 +113,7 @@ export default function SideNavBar() {
               'nav-icon hover:bg-[var(--nav-hover)]',
               !isCollapsed
                 ? 'w-full gap-2 px-1 py-1'
-                : 'size-9 self-center justify-center rounded-2xl p-0.5'
+                : 'size-9 justify-center self-center rounded-2xl p-0.5'
             )}
             labelClassName="nav-icon text-xl font-bold"
             logoClassName={isCollapsed ? 'size-8' : 'size-10'}
