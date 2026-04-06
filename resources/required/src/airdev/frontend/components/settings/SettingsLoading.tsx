@@ -1,12 +1,12 @@
 /* "@airdev/next": "managed" */
 
-import HeaderBar from '@/airdev/frontend/components/shell/HeaderBar';
+import HeaderBarWithHome from '@/airdev/frontend/components/shell/HeaderBarWithHome';
 import { Skeleton } from '@/airdev/frontend/components/ui/Skeleton';
 
 export default function SettingsLoading() {
   return (
     <div className="flex h-full flex-col overflow-hidden">
-      <HeaderBar isLoading />
+      <HeaderBarWithHome isLoading />
       <div className="min-h-0 flex-1 overflow-hidden">
         <div className="size-full overflow-y-auto p-6">
           <div className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-4">

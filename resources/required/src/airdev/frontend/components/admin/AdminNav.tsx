@@ -4,7 +4,7 @@
 
 import { ADMIN_API_HREF, ADMIN_USERS_HREF } from '@/airdev/common/constant';
 import { airdevPublicConfig } from '@/airdev/config/public';
-import HeaderBar from '@/airdev/frontend/components/shell/HeaderBar';
+import HeaderBarWithHome from '@/airdev/frontend/components/shell/HeaderBarWithHome';
 import type { BreadcrumbItem } from '@/airdev/frontend/components/ui/ResponsiveBreadcrumb';
 import { cn } from '@/airdev/frontend/utils/cn';
 import { usePathname } from 'next/navigation';
@@ -34,5 +34,5 @@ export default function AdminNav() {
     ),
   }));
 
-  return <HeaderBar items={[{ label: 'Admin' }]} tabs={tabs} />;
+  return <HeaderBarWithHome items={[{ label: 'Admin' }]} tabs={tabs} />;
 }

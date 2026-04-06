@@ -2,8 +2,8 @@
 
 'use client';
 
-import DeleteDialog from '@/airdev/frontend/components/shell/DeleteDialog';
-import HeaderBar from '@/airdev/frontend/components/shell/HeaderBar';
+import HeaderBarWithHome from '@/airdev/frontend/components/shell/HeaderBarWithHome';
+import DeleteDialog from '@/airdev/frontend/components/ui/DeleteDialog';
 import { clientComponentConfig } from '@/config/component';
 import EditUserProfileTile from './EditUserProfileTile';
 import { useUserProfileSettingsController } from './useUserProfileSettingsController';
@@ -13,7 +13,7 @@ export default function SettingsView() {
   const { SettingsContent } = clientComponentConfig;
   return (
     <div className="flex h-full flex-col overflow-hidden">
-      <HeaderBar items={[{ label: 'Settings' }]} />
+      <HeaderBarWithHome items={[{ label: 'Settings' }]} />
       <div className="min-h-0 flex-1 overflow-hidden">
         <div className="size-full overflow-y-auto p-6">
           <div className="space-y-6">

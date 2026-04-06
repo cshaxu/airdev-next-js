@@ -2,6 +2,8 @@
 
 'use client';
 
+import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,10 +13,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/airdev/frontend/components/ui/AlertDialog';
-import { Input } from '@/airdev/frontend/components/ui/Input';
-import { Loader2 } from 'lucide-react';
-import { useState } from 'react';
+} from './AlertDialog';
+import { Input } from './Input';
 
 type Props = {
   title: string;

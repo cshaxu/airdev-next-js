@@ -3,6 +3,7 @@
 'use client';
 
 import { airdevPublicConfig } from '@/airdev/config/public';
+import AppearanceDialog from '@/airdev/frontend/components/shell/AppearanceDialog';
 import { buttonVariants } from '@/airdev/frontend/components/ui/Button';
 import { PixelResizablePanel } from '@/airdev/frontend/components/ui/PixelResizable';
 import { cn } from '@/airdev/frontend/utils/cn';
@@ -10,7 +11,6 @@ import { clientComponentConfig } from '@/config/component';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import AppearanceDialog from './AppearanceDialog';
 import UserButton from './UserButton';
 
 type NavItem = {

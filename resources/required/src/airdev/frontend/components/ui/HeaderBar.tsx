@@ -2,23 +2,22 @@
 
 'use client';
 
-import { airdevPublicConfig } from '@/airdev/config/public';
+import { Menu } from 'lucide-react';
+import Link from 'next/link';
+import * as React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/airdev/frontend/components/ui/DropdownMenu';
+} from './DropdownMenu';
 import {
   type BreadcrumbItem,
   ResponsiveBreadcrumb,
-} from '@/airdev/frontend/components/ui/ResponsiveBreadcrumb';
-import TranslateButton from '@/airdev/frontend/components/ui/TranslateButton';
-import { Home, Menu } from 'lucide-react';
-import Link from 'next/link';
-import * as React from 'react';
-import { createElement, useEffect, useMemo, useRef, useState } from 'react';
+} from './ResponsiveBreadcrumb';
+import TranslateButton from './TranslateButton';
 
 const MIN_BREADCRUMB_WIDTH = 50;
 const MIN_CENTER_GAP = 20;
@@ -53,16 +52,6 @@ export default function HeaderBar({
   const hasTabs = (tabs?.length ?? 0) > 0;
   const hasCenteredChildren = !hasTabs && !!children;
   const shouldShowVisibleTabs = hasTabs && !shouldShowCollapsedMenu;
-  const fullItems = useMemo<BreadcrumbItem[]>(
-    () => [
-      {
-        label: createElement(Home, { className: 'size-4' }),
-        href: airdevPublicConfig.shell.routes.homeHref,
-      },
-      ...(items ?? []),
-    ],
-    [items]
-  );
 
   useEffect(() => {
     if (!hasTabs) {
@@ -109,7 +98,7 @@ export default function HeaderBar({
       observer.disconnect();
       cancelAnimationFrame(frameId);
     };
-  }, [fullItems, hasTabs, tabs]);
+  }, [hasTabs, tabs]);
 
   if (isLoading) {
     return (
@@ -139,9 +128,9 @@ export default function HeaderBar({
         )}
 
         {shouldShowCollapsedMenu ? (
-          <HeaderCollapsedMenu items={fullItems} tabs={tabs} />
+          <HeaderCollapsedMenu items={items} tabs={tabs} />
         ) : (
-          fullItems.length > 0 && (
+          !!items?.length && (
             <div
               className="min-w-0 flex-1"
               style={
@@ -150,7 +139,7 @@ export default function HeaderBar({
                   : undefined
               }
             >
-              <ResponsiveBreadcrumb items={fullItems} />
+              <ResponsiveBreadcrumb items={items} />
             </div>
           )
         )}
@@ -241,9 +230,10 @@ function HeaderCollapsedMenu({
   items,
   tabs,
 }: {
-  items: BreadcrumbItem[];
+  items?: BreadcrumbItem[];
   tabs?: BreadcrumbItem[];
 }) {
+  const hasItems = (items?.length ?? 0) > 0;
   const hasTabs = (tabs?.length ?? 0) > 0;
 
   return (
@@ -252,14 +242,14 @@ function HeaderCollapsedMenu({
         <Menu className="size-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
-        {items.map((item, index) => (
+        {items?.map((item, index) => (
           <HeaderMenuEntry
             key={getHeaderItemKey(item, index)}
             item={item}
             fallbackLabel="Home"
           />
         ))}
-        {hasTabs ? <DropdownMenuSeparator /> : null}
+        {hasItems && hasTabs ? <DropdownMenuSeparator /> : null}
         {tabs?.map((item, index) => (
           <HeaderMenuEntry key={getHeaderItemKey(item, index)} item={item} />
         ))}

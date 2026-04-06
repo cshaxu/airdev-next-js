@@ -20,7 +20,7 @@ export default async function AdminLayout({ children }: ReactNodeProps) {
     <div className="flex h-full flex-col overflow-hidden">
       <AdminNav />
       <div className="min-h-0 flex-1 overflow-hidden">
-        <div className="size-full overflow-y-auto p-6">{children}</div>
+        <div className="size-full overflow-auto p-6">{children}</div>
       </div>
     </div>
   );

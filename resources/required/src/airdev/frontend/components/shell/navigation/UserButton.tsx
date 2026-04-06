@@ -3,6 +3,7 @@
 'use client';
 
 import { ADMIN_HREF, ROOT_HREF, SETTINGS_HREF } from '@/airdev/common/constant';
+import AppearanceDialog from '@/airdev/frontend/components/shell/AppearanceDialog';
 import {
   Avatar,
   AvatarFallback,
@@ -53,7 +54,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import AppearanceDialog from './AppearanceDialog';
 
 type SidebarProps = { mode: 'sidebar'; isFull: boolean };
 

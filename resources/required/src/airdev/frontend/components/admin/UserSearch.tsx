@@ -84,9 +84,9 @@ export default function UserSearch() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="min-w-0 space-y-6">
       {became && (
-        <div className="flex items-center gap-3 rounded-lg border p-4">
+        <div className="flex min-w-0 items-center gap-3 rounded-lg border p-4">
           <Avatar className="size-10">
             {became.imageUrl ? (
               <AvatarImage src={became.imageUrl} alt={became.name} />
@@ -107,7 +107,7 @@ export default function UserSearch() {
         </div>
       )}
 
-      <div className="flex w-full gap-2">
+      <div className="flex w-full min-w-0 gap-2">
         <Input
           placeholder="Filter by name or email..."
           value={inputQ}
@@ -129,15 +129,17 @@ export default function UserSearch() {
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
-              className="flex items-center gap-3 rounded-lg border p-3"
+              className="flex w-fit min-w-full flex-nowrap items-center gap-3 rounded-lg border p-3"
             >
               <Skeleton className="size-9 rounded-full" />
-              <div className="flex-1 space-y-2">
+              <div className="min-w-[50px] flex-1 basis-0 space-y-2">
                 <Skeleton className="h-4 w-32" />
                 <Skeleton className="h-3 w-48" />
               </div>
-              <Skeleton className="size-9 rounded-md" />
-              <Skeleton className="size-9 rounded-md" />
+              <div className="ml-auto flex shrink-0 items-center gap-2">
+                <Skeleton className="size-9 rounded-md" />
+                <Skeleton className="size-9 rounded-md" />
+              </div>
             </div>
           ))}
         </div>
@@ -148,7 +150,7 @@ export default function UserSearch() {
           {users.map((user: CurrentUser) => (
             <div
               key={user.id}
-              className="flex items-center gap-3 rounded-lg border p-3"
+              className="flex w-fit min-w-full flex-nowrap items-center gap-3 rounded-lg border p-3"
             >
               <Avatar className="size-9">
                 {user.imageUrl ? (
@@ -159,39 +161,43 @@ export default function UserSearch() {
                   </AvatarFallback>
                 )}
               </Avatar>
-              <div className="flex-1">
-                <p className="text-sm font-medium">{user.name ?? '-'}</p>
-                <p className="text-muted-foreground text-xs">
+              <div className="min-w-[50px] flex-1">
+                <p className="text-sm font-medium break-words">
+                  {user.name ?? '-'}
+                </p>
+                <p className="text-muted-foreground text-xs break-words">
                   {user.email} - {user.createdAt.toLocaleString()}
                 </p>
               </div>
-              <Button
-                size="sm"
-                variant={became?.id === user.id ? 'default' : 'outline'}
-                onClick={() => handleBecome(user)}
-                disabled={became?.id === user.id}
-                title={became?.id === user.id ? 'Active' : 'Become'}
-              >
-                {became?.id === user.id ? (
-                  <Drama className="size-4" />
-                ) : (
-                  <Smile className="size-4" />
-                )}
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => void handleToggleAdmin(user)}
-                isLoading={isUpdatingUser && adminTargetUserId === user.id}
-                disabled={isUpdatingUser && adminTargetUserId === user.id}
-                title={user.isAdmin ? 'Remove Admin' : 'Set Admin'}
-              >
-                {user.isAdmin ? (
-                  <UserKey className="size-4" />
-                ) : (
-                  <User className="size-4" />
-                )}
-              </Button>
+              <div className="ml-auto flex shrink-0 items-center gap-2">
+                <Button
+                  size="sm"
+                  variant={became?.id === user.id ? 'default' : 'outline'}
+                  onClick={() => handleBecome(user)}
+                  disabled={became?.id === user.id}
+                  title={became?.id === user.id ? 'Active' : 'Become'}
+                >
+                  {became?.id === user.id ? (
+                    <Drama className="size-4" />
+                  ) : (
+                    <Smile className="size-4" />
+                  )}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => void handleToggleAdmin(user)}
+                  isLoading={isUpdatingUser && adminTargetUserId === user.id}
+                  disabled={isUpdatingUser && adminTargetUserId === user.id}
+                  title={user.isAdmin ? 'Remove Admin' : 'Set Admin'}
+                >
+                  {user.isAdmin ? (
+                    <UserKey className="size-4" />
+                  ) : (
+                    <User className="size-4" />
+                  )}
+                </Button>
+              </div>
             </div>
           ))}
         </div>

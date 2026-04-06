@@ -2,9 +2,9 @@
 
 import CurrentUserProvider from '@/airdev/frontend/providers/CurrentUserProvider';
 import { ReactNodeProps } from '@/airdev/frontend/types/props';
-import BottomNavBar from './BottomNavBar';
+import BottomNavBar from './navigation/BottomNavBar';
+import SideNavBar from './navigation/SideNavBar';
 import ProtectedRouteRedirect from './ProtectedRouteRedirect';
-import SideNavBar from './SideNavBar';
 
 export function generateProtectedLayoutMetadata() {
   return { robots: { index: false, follow: false, nocache: true } };
