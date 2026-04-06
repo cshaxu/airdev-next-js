@@ -19,7 +19,7 @@ import {
 } from './ResponsiveBreadcrumb';
 import TranslateButton from './TranslateButton';
 
-const MIN_BREADCRUMB_WIDTH = 50;
+const MIN_BREADCRUMB_WIDTH = 30;
 const MIN_CENTER_GAP = 20;
 const HEADER_SHELL_CLASS =
   'header-bg dark:bg-background/80 relative h-12 w-full items-center px-6 backdrop-blur-lg';
@@ -78,9 +78,12 @@ export default function HeaderBar({
         Math.floor(centerLeft - containerRect.left - MIN_CENTER_GAP),
         0
       );
+      const nextShouldCollapse =
+        measure.scrollWidth > container.clientWidth ||
+        nextBreadcrumbMaxWidth < MIN_BREADCRUMB_WIDTH;
 
       setBreadcrumbMaxWidth(nextBreadcrumbMaxWidth);
-      setShouldShowCollapsedMenu(nextBreadcrumbMaxWidth < MIN_BREADCRUMB_WIDTH);
+      setShouldShowCollapsedMenu(nextShouldCollapse);
     };
 
     const scheduleUpdate = () => {
@@ -98,7 +101,7 @@ export default function HeaderBar({
       observer.disconnect();
       cancelAnimationFrame(frameId);
     };
-  }, [hasTabs, tabs]);
+  }, [hasTabs, items, tabs]);
 
   if (isLoading) {
     return (
@@ -123,7 +126,11 @@ export default function HeaderBar({
       >
         {hasTabs && (
           <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-0">
-            <HeaderCenterMeasure ref={centerMeasureRef} tabs={tabs} />
+            <HeaderCenterMeasure
+              ref={centerMeasureRef}
+              items={items}
+              tabs={tabs}
+            />
           </div>
         )}
 
@@ -214,11 +221,27 @@ function HeaderTabItems({ tabs }: { tabs?: BreadcrumbItem[] }) {
 const HeaderCenterMeasure = React.forwardRef<
   HTMLDivElement,
   {
+    items?: BreadcrumbItem[];
     tabs?: BreadcrumbItem[];
   }
->(function HeaderCenterMeasure({ tabs }, ref) {
+>(function HeaderCenterMeasure({ items, tabs }, ref) {
   return (
-    <div ref={ref} className="inline-flex items-center whitespace-nowrap">
+    <div ref={ref} className="inline-flex items-center gap-4 whitespace-nowrap">
+      {!!items?.length && (
+        <div className="inline-flex items-center gap-2 text-sm font-medium whitespace-nowrap">
+          {items.map((item, index) => (
+            <div
+              key={getHeaderItemKey(item, index)}
+              className="inline-flex items-center gap-2"
+            >
+              {index > 0 ? (
+                <span className="text-muted-foreground/50">/</span>
+              ) : null}
+              {item.label ? <span>{item.label}</span> : null}
+            </div>
+          ))}
+        </div>
+      )}
       <div className="flex gap-1">
         <HeaderTabItems tabs={tabs} />
       </div>
