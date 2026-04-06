@@ -1,6 +1,7 @@
 /* "@airdev/next": "managed" */
 
 import { logError } from '@/airdev/common/utils/logging';
+import { cn } from '@/airdev/frontend/utils/cn';
 import { measureElementWidth } from '@/airdev/frontend/utils/element';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -27,9 +28,8 @@ const ELLIPSIS_ITEM: BreadcrumbItem = { label: '', href: '' };
 
 // Types
 export type BreadcrumbItem = {
-  label: string;
+  label: React.ReactNode;
   href?: string;
-  icon?: React.ReactNode;
 };
 
 type Props = {
@@ -176,7 +176,7 @@ export function ResponsiveBreadcrumb({ items, className, renderItem }: Props) {
             const isEllipsis = item === ELLIPSIS_ITEM;
 
             return (
-              <React.Fragment key={item.label || index}>
+              <React.Fragment key={getItemKey(item, index)}>
                 <BreadcrumbItem
                   data-item-index={index}
                   className="whitespace-nowrap"
@@ -195,17 +195,17 @@ export function ResponsiveBreadcrumb({ items, className, renderItem }: Props) {
                             {hiddenItem.href ? (
                               <BreadcrumbLink
                                 href={hiddenItem.href}
-                                className="text-muted-foreground hover:text-foreground w-full cursor-pointer truncate"
+                                className="text-muted-foreground w-full cursor-pointer truncate"
                               >
                                 {renderItem
                                   ? renderItem(hiddenItem)
-                                  : hiddenItem.label}
+                                  : renderLabel(hiddenItem.label)}
                               </BreadcrumbLink>
                             ) : (
-                              <span className="text-muted-foreground w-full truncate">
+                              <span className="text-muted-foreground w-full cursor-pointer truncate">
                                 {renderItem
                                   ? renderItem(hiddenItem)
-                                  : hiddenItem.label}
+                                  : renderLabel(hiddenItem.label)}
                               </span>
                             )}
                           </DropdownMenuItem>
@@ -213,17 +213,26 @@ export function ResponsiveBreadcrumb({ items, className, renderItem }: Props) {
                       </DropdownMenuContent>
                     </DropdownMenu>
                   ) : (
-                    <div className="truncate">
+                    <div
+                      className={cn(
+                        'cursor-pointer truncate',
+                        isPureTextLabel(item.label) ? 'mt-1' : ''
+                      )}
+                    >
                       {isLast ? (
-                        <BreadcrumbPage className="truncate">
-                          {renderItem ? renderItem(item) : item.label}
+                        <BreadcrumbPage>
+                          {renderItem
+                            ? renderItem(item)
+                            : renderLabel(item.label)}
                         </BreadcrumbPage>
                       ) : (
                         <BreadcrumbLink
                           href={item.href}
-                          className="text-muted-foreground hover:text-foreground truncate"
+                          className="text-muted-foreground"
                         >
-                          {renderItem ? renderItem(item) : item.label}
+                          {renderItem
+                            ? renderItem(item)
+                            : renderLabel(item.label)}
                         </BreadcrumbLink>
                       )}
                     </div>
@@ -334,15 +343,17 @@ const createItemElement = (item: BreadcrumbItem) => {
     'text-muted-foreground hover:text-foreground truncate inline-flex items-center text-sm font-medium';
   linkElement.style.lineHeight = '1.25rem'; // 20px, 与实际渲染一致
 
-  // 如果有图标，添加图标占位符
-  if (item.icon) {
+  const { text, hasNonTextNode } = analyzeLabel(item.label);
+
+  // 如果标签包含非文本节点（例如图标），添加一个占位符用于宽度估算
+  if (hasNonTextNode) {
     const iconPlaceholder = document.createElement('span');
     iconPlaceholder.className = 'size-4';
     linkElement.appendChild(iconPlaceholder);
   }
 
   // 添加文本内容（不需要额外的 span 包装）
-  linkElement.appendChild(document.createTextNode(item.label || ''));
+  linkElement.appendChild(document.createTextNode(text));
 
   contentContainer.appendChild(linkElement);
   itemContainer.appendChild(contentContainer);
@@ -357,6 +368,51 @@ const createItemElement = (item: BreadcrumbItem) => {
   void style.margin;
 
   return itemContainer;
+};
+
+const getItemKey = (item: BreadcrumbItem, index: number) => {
+  if (typeof item.label === 'string' || typeof item.label === 'number') {
+    return `${String(item.label)}-${item.href ?? index}`;
+  }
+  return item.href ?? index;
+};
+
+const renderLabel = (label: React.ReactNode) => {
+  if (isPureTextLabel(label)) {
+    return <span className="text-muted-foreground">{label}</span>;
+  }
+  return label;
+};
+
+const isPureTextLabel = (label: React.ReactNode): label is string | number =>
+  typeof label === 'string' || typeof label === 'number';
+
+const analyzeLabel = (
+  label: React.ReactNode
+): { text: string; hasNonTextNode: boolean } => {
+  if (label === null || label === undefined || typeof label === 'boolean') {
+    return { text: '', hasNonTextNode: false };
+  }
+
+  if (typeof label === 'string' || typeof label === 'number') {
+    return { text: String(label), hasNonTextNode: false };
+  }
+
+  if (Array.isArray(label)) {
+    return label.reduce(
+      (acc, child) => {
+        const childResult = analyzeLabel(child);
+        return {
+          text: `${acc.text}${childResult.text}`,
+          hasNonTextNode: acc.hasNonTextNode || childResult.hasNonTextNode,
+        };
+      },
+      { text: '', hasNonTextNode: false }
+    );
+  }
+
+  // React element / portal / fragment etc.
+  return { text: '', hasNonTextNode: true };
 };
 
 type CollapseResult = {

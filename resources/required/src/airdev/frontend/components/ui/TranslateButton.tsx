@@ -2,9 +2,9 @@
 
 'use client';
 
-import { Button } from '@/airdev/frontend/components/ui/Button';
 import { Globe } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { Button } from './Button';
 
 declare global {
   interface Window {
