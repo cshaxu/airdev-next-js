@@ -1,15 +1,14 @@
 /* "@airdev/next": "managed" */
 
-import {
-  CurrentUser,
-  CurrentUserFieldRequest,
-} from '@/airdev/common/types/context';
+import { CurrentUserFieldRequest } from '@/airdev/common/types/context';
 import UserServerApiClient from '@/generated/server-clients/user';
+import { createCurrentUserQueryOptions } from './user-base';
 
-export const currentUserServerQueryOptions = {
-  queryKey: ['currentUser'],
-  queryFn: () =>
-    UserServerApiClient.getOneSafe({ id: 'me' }, CurrentUserFieldRequest).then(
-      (page: { user: CurrentUser | null }) => page.user
-    ),
-};
+const getNullableCurrentUser = () =>
+  UserServerApiClient.getOneSafe({ id: 'me' }, CurrentUserFieldRequest).then(
+    (page) => page.user
+  );
+
+export const currentUserServerQueryOptions = createCurrentUserQueryOptions(
+  getNullableCurrentUser
+);

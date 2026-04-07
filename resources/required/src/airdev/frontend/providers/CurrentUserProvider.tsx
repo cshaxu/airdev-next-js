@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useNullableCurrentUser } from '@/airdev/frontend/hooks/data/user';
+import { useNullableCurrentUser } from '@/airdev/frontend/hooks/data/user-client';
 import {
   useBecameUser,
   useSetBecameUser,

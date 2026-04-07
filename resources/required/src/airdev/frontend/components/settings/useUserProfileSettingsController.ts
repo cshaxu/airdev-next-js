@@ -3,7 +3,8 @@
 'use client';
 
 import { ROOT_HREF } from '@/airdev/common/constant';
-import { useRequiredCurrentUser } from '@/airdev/frontend/hooks/data/user';
+import { currentUserQueryKey } from '@/airdev/frontend/hooks/data/user-base';
+import { useRequiredCurrentUser } from '@/airdev/frontend/hooks/data/user-client';
 import {
   useDeleteOneUser,
   useUpdateOneUser,
@@ -78,7 +79,7 @@ export function useUserProfileSettingsController() {
       },
       {
         onSuccess: (updatedUser) => {
-          queryClient.setQueryData(['currentUser'], updatedUser);
+          queryClient.setQueryData(currentUserQueryKey, updatedUser);
           setDraftName(updatedUser.name ?? nextName);
           setIsEditingName(false);
           toast.success('Name updated');

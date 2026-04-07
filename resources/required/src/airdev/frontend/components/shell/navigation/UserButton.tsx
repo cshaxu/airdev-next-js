@@ -31,7 +31,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/airdev/frontend/components/ui/DropdownMenu';
-import { useRequiredCurrentUser } from '@/airdev/frontend/hooks/data/user';
+import { useRequiredCurrentUser } from '@/airdev/frontend/hooks/data/user-client';
 import AirdevBackendApiClient from '@/airdev/frontend/sdks/backend';
 import {
   useBecameUser,

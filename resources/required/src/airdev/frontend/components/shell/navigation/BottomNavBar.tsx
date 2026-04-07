@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useRequiredCurrentUser } from '@/airdev/frontend/hooks/data/user';
+import { useRequiredCurrentUser } from '@/airdev/frontend/hooks/data/user-client';
 import { cn } from '@/airdev/frontend/utils/cn';
 import { clientComponentConfig } from '@/config/component';
 import Link from 'next/link';

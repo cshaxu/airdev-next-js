@@ -3,7 +3,7 @@
 'use client';
 
 import { ROOT_HREF } from '@/airdev/common/constant';
-import { useNullableCurrentUser } from '@/airdev/frontend/hooks/data/user';
+import { useNullableCurrentUser } from '@/airdev/frontend/hooks/data/user-client';
 import { useSetUser } from '@/airdev/frontend/stores/currentUserStore';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
