@@ -2,6 +2,7 @@
 
 'use client';
 
+import { MOBILE_FULLSCREEN_DATASET_KEY } from '@/airdev/common/constant';
 import { cn } from '@/airdev/frontend/utils/cn';
 import * as React from 'react';
 import { BottomBar } from './BottomBar';
@@ -22,6 +23,7 @@ type FlowStepViewProps = React.HTMLAttributes<HTMLDivElement> & {
   contentClassName?: string;
   contentInnerClassName?: string;
   bottom?: BottomShellProps;
+  mobileFullscreen?: boolean;
 };
 
 export default function FlowStepView({
@@ -29,10 +31,25 @@ export default function FlowStepView({
   contentClassName,
   contentInnerClassName,
   bottom,
+  mobileFullscreen = false,
   className,
   children,
   ...props
 }: FlowStepViewProps) {
+  React.useEffect(() => {
+    if (!mobileFullscreen) {
+      return;
+    }
+
+    document.body.dataset[MOBILE_FULLSCREEN_DATASET_KEY] = 'true';
+    document.documentElement.dataset[MOBILE_FULLSCREEN_DATASET_KEY] = 'true';
+
+    return () => {
+      delete document.body.dataset[MOBILE_FULLSCREEN_DATASET_KEY];
+      delete document.documentElement.dataset[MOBILE_FULLSCREEN_DATASET_KEY];
+    };
+  }, [mobileFullscreen]);
+
   return (
     <div
       className={cn(
