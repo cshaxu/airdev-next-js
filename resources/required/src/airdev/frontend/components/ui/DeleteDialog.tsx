@@ -7,6 +7,7 @@ import { useState } from 'react';
 import {
   AlertDialog,
   AlertDialogAction,
+  AlertDialogBody,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -35,11 +36,9 @@ export default function DeleteDialog({
   onOpenChange,
   onConfirm,
 }: Props) {
-  // states
   const [confirmName, setConfirmName] = useState('');
   const isConfirmValid = isDangerous ? confirmName === name : true;
 
-  // handlers
   const handleConfirm = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (!isConfirmValid) {
@@ -66,6 +65,8 @@ export default function DeleteDialog({
           <AlertDialogTitle className="text-foreground">
             Delete {title}
           </AlertDialogTitle>
+        </AlertDialogHeader>
+        <AlertDialogBody>
           <AlertDialogDescription asChild>
             <div className="text-muted-foreground space-y-4 text-left">
               <p>
@@ -96,7 +97,7 @@ export default function DeleteDialog({
               )}
             </div>
           </AlertDialogDescription>
-        </AlertDialogHeader>
+        </AlertDialogBody>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
           <AlertDialogAction

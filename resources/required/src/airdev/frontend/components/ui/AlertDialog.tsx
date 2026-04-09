@@ -37,7 +37,7 @@ const AlertDialogContent = React.forwardRef<
     <AlertDialogPrimitive.Content
       ref={ref}
       className={cn(
-        'bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] border-input fixed top-[50%] left-[50%] z-50 grid w-[calc(100vw-40px)] max-w-sm translate-x-[-50%] translate-y-[-50%] gap-6 rounded-3xl border p-6 duration-200',
+        'bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] border-input fixed top-[50%] left-[50%] z-50 flex max-h-[calc(100dvh-40px)] min-h-0 w-[calc(100vw-40px)] max-w-sm translate-x-[-50%] translate-y-[-50%] flex-col gap-6 overflow-hidden rounded-3xl border p-6 duration-200',
         className
       )}
       {...props}
@@ -51,11 +51,19 @@ const AlertDialogHeader = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn('flex flex-col space-y-4 text-center', className)}
+    className={cn('flex shrink-0 flex-col space-y-4 text-center', className)}
     {...props}
   />
 );
 AlertDialogHeader.displayName = 'AlertDialogHeader';
+
+const AlertDialogBody = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn('min-h-0 flex-1 overflow-y-auto', className)} {...props} />
+);
+AlertDialogBody.displayName = 'AlertDialogBody';
 
 const AlertDialogFooter = ({
   className,
@@ -63,7 +71,7 @@ const AlertDialogFooter = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2',
+      'flex shrink-0 flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2',
       className
     )}
     {...props}
@@ -127,6 +135,7 @@ AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName;
 export {
   AlertDialog,
   AlertDialogAction,
+  AlertDialogBody,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,

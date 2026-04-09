@@ -10,6 +10,7 @@ import {
 } from '@/airdev/frontend/components/ThemeProvider';
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -104,7 +105,7 @@ export default function AppearanceDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="px-6 pb-6">
+        <DialogBody className="px-6 pb-6">
           <div className="grid grid-cols-3 gap-2">
             {modeOptions.map((option) => {
               const isActive = activeThemeMode === option.value;
@@ -163,7 +164,7 @@ export default function AppearanceDialog({
               );
             })}
           </div>
-        </div>
+        </DialogBody>
       </DialogContent>
     </Dialog>
   );

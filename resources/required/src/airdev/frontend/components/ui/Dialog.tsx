@@ -1,4 +1,4 @@
-﻿/* "@airdev/next": "managed" */
+/* "@airdev/next": "managed" */
 
 'use client';
 

@@ -1,4 +1,4 @@
-﻿/* "@airdev/next": "managed" */
+/* "@airdev/next": "managed" */
 
 'use client';
 
@@ -7,6 +7,7 @@ import GoogleLogo from '@/airdev/frontend/components/GoogleLogo';
 import { Button } from '@/airdev/frontend/components/ui/Button';
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -71,28 +72,30 @@ export default function GetStartedDialog({
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
 
-        <Button
-          variant="outline"
-          size="lg"
-          className="h-12 rounded-2xl"
-          onClick={() => signIn('google', { callbackUrl })}
-        >
-          <GoogleLogo className="mr-2 size-5" />
-          Continue with Google
-        </Button>
+        <DialogBody className="flex flex-col gap-4">
+          <Button
+            variant="outline"
+            size="lg"
+            className="h-12 rounded-2xl"
+            onClick={() => signIn('google', { callbackUrl })}
+          >
+            <GoogleLogo className="mr-2 size-5" />
+            Continue with Google
+          </Button>
 
-        <small className="text-muted-foreground text-center text-xs leading-5">
-          Powered by {airdevPublicConfig.app.ownerShort}. By signing in, you
-          agree to the{' '}
-          <Link href="/terms" className="underline">
-            Terms of Service
-          </Link>{' '}
-          and{' '}
-          <Link href="/privacy" className="underline">
-            Privacy Policy
-          </Link>
-          .
-        </small>
+          <small className="text-muted-foreground text-center text-xs leading-5">
+            Powered by {airdevPublicConfig.app.ownerShort}. By signing in, you
+            agree to the{' '}
+            <Link href="/terms" className="underline">
+              Terms of Service
+            </Link>{' '}
+            and{' '}
+            <Link href="/privacy" className="underline">
+              Privacy Policy
+            </Link>
+            .
+          </small>
+        </DialogBody>
       </DialogContent>
     </Dialog>
   );
