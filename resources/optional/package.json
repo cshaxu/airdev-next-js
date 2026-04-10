@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.41",
-    "@airdev/next": "github:cshaxu/airdev-next-js#c856dd974e7f47a4266b25a28eaac295d0ea4d10",
+    "@airdev/next": "github:cshaxu/airdev-next-js#abde679f473011be6696939b76fbfac75568b58a",
     "@airent/api": "github:cshaxu/airent-api-js#ee8cea6f134851f3bff4f8b41db04101a765f3b1",
     "@airent/api-next": "github:cshaxu/airent-api-next-js#922b48e532c87d9bba891617e6b350c6c4b1256b",
     "@airent/api-next-tanstack": "github:cshaxu/airent-api-next-tanstack-js#44fd660152fe1921abbfc3a9879b4f4b33af446d",

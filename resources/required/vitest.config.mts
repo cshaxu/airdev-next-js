@@ -14,5 +14,9 @@ export default defineConfig({
     tsconfigRaw: { compilerOptions: { jsx: 'react-jsx' } },
   },
   resolve: { alias: { '@': path.resolve(rootDir, 'src') } },
-  test: { environment: 'node', include: ['src/**/*.test.ts'], pool: 'threads' },
+  test: {
+    environment: 'node',
+    include: ['test/**/*.test.ts'],
+    pool: 'threads',
+  },
 });
