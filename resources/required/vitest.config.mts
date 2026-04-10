@@ -16,7 +16,8 @@ export default defineConfig({
   resolve: { alias: { '@': path.resolve(rootDir, 'src') } },
   test: {
     environment: 'node',
-    include: ['test/**/*.test.ts'],
+    globals: true,
+    include: ['test/**/*.test.ts', 'test/**/*.test.tsx'],
     pool: 'threads',
   },
 });

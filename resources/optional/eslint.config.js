@@ -30,6 +30,8 @@ module.exports = [
       'src/app/api/inngest/route.ts',
       'src/app/api/jobs/**/*.ts',
       'src/app/api/webhooks/**/*.ts',
+      'test/**/*.ts',
+      'test/**/*.tsx',
     ],
   },
   ...require('eslint-config-next/core-web-vitals'),
