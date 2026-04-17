@@ -1,6 +1,7 @@
 /* "@airdev/next": "managed" */
 
 import { SystemScheduledJobEntity } from '@/airdev/backend/entities/system-scheduled-job';
+import { batchExecuteByPageParam } from '@/airdev/backend/utils/data';
 import {
   SystemScheduledJobExecution,
   SystemScheduledJobResult,
@@ -27,6 +28,34 @@ async function createOne(
     { data: { type, data, runsAt } },
     context
   );
+}
+
+async function executeAll(
+  context: Context
+): Promise<{ success: number; fail: number }> {
+  const where = { runsAt: { lte: context.time }, completedAt: null };
+  const loader = (pageParam: string | undefined, take: number) =>
+    SystemScheduledJobEntity.findMany(
+      {
+        where: { ...where, ...(pageParam && { id: { gt: pageParam } }) },
+        orderBy: { id: Prisma.SortOrder.asc },
+        take,
+      },
+      context
+    );
+  const batchExecutor = async (many: SystemScheduledJobEntity[]) => {
+    const promises = many.map((one) => executeOne(one, context));
+    return await Promise.all(promises);
+  };
+  const results = await batchExecuteByPageParam(
+    loader,
+    batchExecutor,
+    (one) => one.id,
+    100
+  );
+  const success = results.filter((one) => one.completedAt !== null).length;
+  const fail = results.filter((one) => one.completedAt === null).length;
+  return { success, fail };
 }
 
 async function executeOne(
@@ -130,6 +159,6 @@ async function executeOneInternal(
   }
 }
 
-const SystemScheduledJobService = { createOne, executeOne, rescheduleOne };
+const SystemScheduledJobService = { createOne, executeAll, rescheduleOne };
 
 export default SystemScheduledJobService;

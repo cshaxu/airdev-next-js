@@ -51,7 +51,7 @@ export const scheduleMyScheduledJobEvent = (
   data: MyScheduledJobParams,
   runsAt: Date,
   context: Context
-) => ScheduledJobService.createOne(MyScheduledJobEvent, data, runsAt, rc);
+) => ScheduledJobService.createOne(MyScheduledJobEvent, data, runsAt, context);
 ```
 
 ## 3. Trigger your scheduled job
@@ -62,7 +62,7 @@ In your application code, simply call the function `scheduleMyScheduledJobEvent`
 await scheduleMyScheduledJobEvent(
   { myParamItem: 'myValue' },
   addDays(new Date(), 100),
-  rc
+  context
 );
 ```
 

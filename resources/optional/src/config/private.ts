@@ -2,7 +2,7 @@
 
 import type {
   AirdevPrivateConfig,
-  DatabaseBackupPolicy,
+  DatabaseBackupRetention,
   EnvironmentBase,
 } from '@/airdev/common/types/config';
 import { decrypt } from 'databag';
@@ -31,7 +31,11 @@ const { admin, email } = PrivateConfigJson;
 
 const database = {
   ...PrivateConfigJson.database,
-  backupPolicy: PrivateConfigJson.database.backupPolicy as DatabaseBackupPolicy,
+  backup: {
+    ...PrivateConfigJson.database.backup,
+    retention: PrivateConfigJson.database.backup
+      .retention as DatabaseBackupRetention,
+  },
   url: environmentalDataCredentials.databaseUrl,
 };
 

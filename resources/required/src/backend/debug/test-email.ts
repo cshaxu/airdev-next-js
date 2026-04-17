@@ -15,7 +15,7 @@ export const parser = parseBodyWith(Params);
 
 export async function executor(
   params: Params,
-  _rc: Context
+  _context: Context
 ): Promise<CommonResponse> {
   const { code, email } = params;
   await AuthDelivery.sendEmail(code, email);

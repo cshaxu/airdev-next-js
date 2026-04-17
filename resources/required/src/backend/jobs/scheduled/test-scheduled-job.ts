@@ -12,7 +12,7 @@ export type Params = { text: string };
 
 export async function executor(
   params: Params,
-  _rc: Context
+  _context: Context
 ): Promise<SystemScheduledJobResult> {
   return { status: SystemScheduledJobStatus.COMPLETED, result: params };
 }

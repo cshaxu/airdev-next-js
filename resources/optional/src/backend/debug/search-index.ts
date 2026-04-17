@@ -57,7 +57,7 @@ async function processIndex<
   searchService: S,
   manyGetter: (
     _params: { where: { id: { in: string[] } } },
-    _rc: Context
+    _context: Context
   ) => Promise<E[]>,
   context: Context
 ): Promise<{ reset: boolean; indexAll: boolean; count: number }> {

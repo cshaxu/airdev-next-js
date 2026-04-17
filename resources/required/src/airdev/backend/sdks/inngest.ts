@@ -42,8 +42,8 @@ export const createFunction = (
     async ({ event, step }) => {
       const fn = async () => {
         try {
-          const rc = await mockContext();
-          return await executor(event.data, rc);
+          const context = await mockContext();
+          return await executor(event.data, context);
         } catch (error) {
           const normalizedError = normalizeError(error);
           logError(normalizedError, { event });

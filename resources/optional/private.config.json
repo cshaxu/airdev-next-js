@@ -2,9 +2,9 @@
   "@airdev/next": "seeded",
   "admin": { "emails": ["cshaxu@gmail.com"] },
   "database": {
+    "backup": { "csv": true, "retention": "latest" },
     "batchSize": 1000,
-    "delaySeconds": 5,
-    "backupPolicy": "latest"
+    "delaySeconds": 5
   },
   "email": { "noReplySender": "nanoindies@gmail.com" },
   "nextauth": { "sessionMaxAge": 2592000 },

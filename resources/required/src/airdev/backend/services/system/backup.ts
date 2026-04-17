@@ -13,8 +13,8 @@ import { Client } from 'pg';
 const BACKUP_ROOT_PATH = 'db-exports';
 
 export async function backupToS3(time: Date): Promise<CommonResponse> {
-  const { backupPolicy } = airdevPrivateConfig.database;
-  if (backupPolicy === 'none') {
+  const { csv, retention } = airdevPrivateConfig.database.backup;
+  if (retention === 'none') {
     return {
       code: 200,
       result: { backup: null, restore: null, exports: null, drop: null },
@@ -93,59 +93,61 @@ export async function backupToS3(time: Date): Promise<CommonResponse> {
       logInfo({ name: 'backupToS3.backup', snapshotId, backup });
     }
 
-    const restoreStatement = `RESTORE DATABASE ${databaseName} FROM '${restoreSubdirectory}' IN '${s3BackupUri}?${awsParamsString}' WITH new_db_name='${restoredDatabaseName}';`;
-    restore = await querySafe('restore', logParams, client, restoreStatement);
-    if (hasQueryError(restore)) {
-      return {
-        code: 500,
-        result: { backup, restore, exports, drop },
-        error: restore.error,
-      };
-    } else {
-      logInfo({ name: 'backupToS3.restore', snapshotId, restore });
-    }
-
-    try {
-      exports = await exportTables(
-        awsCredentialsString,
-        s3CsvPath,
-        s3CsvUri,
-        restoredDatabaseName,
-        logParams,
-        client
-      );
-      const exportFailure = (exports as any[]).find(hasQueryError);
-      if (exportFailure) {
+    if (csv) {
+      const restoreStatement = `RESTORE DATABASE ${databaseName} FROM '${restoreSubdirectory}' IN '${s3BackupUri}?${awsParamsString}' WITH new_db_name='${restoredDatabaseName}';`;
+      restore = await querySafe('restore', logParams, client, restoreStatement);
+      if (hasQueryError(restore)) {
         return {
           code: 500,
           result: { backup, restore, exports, drop },
-          error: exportFailure.error,
+          error: restore.error,
         };
       } else {
-        logInfo({ name: 'backupToS3.exports', snapshotId, exports });
+        logInfo({ name: 'backupToS3.restore', snapshotId, restore });
       }
-    } catch (error) {
-      const redactedError = redactError(error);
-      return {
-        code: 500,
-        result: { backup, restore, exports, drop },
-        error: redactedError,
-      };
-    } finally {
-      const dropStatement = `DROP DATABASE IF EXISTS ${restoredDatabaseName};`;
-      drop = await querySafe('drop', logParams, client, dropStatement);
-      if (hasQueryError(drop)) {
+
+      try {
+        exports = await exportTables(
+          awsCredentialsString,
+          s3CsvPath,
+          s3CsvUri,
+          restoredDatabaseName,
+          logParams,
+          client
+        );
+        const exportFailure = (exports as any[]).find(hasQueryError);
+        if (exportFailure) {
+          return {
+            code: 500,
+            result: { backup, restore, exports, drop },
+            error: exportFailure.error,
+          };
+        } else {
+          logInfo({ name: 'backupToS3.exports', snapshotId, exports });
+        }
+      } catch (error) {
+        const redactedError = redactError(error);
         return {
           code: 500,
           result: { backup, restore, exports, drop },
-          error: drop.error,
+          error: redactedError,
         };
-      } else {
-        logInfo({ name: 'backupToS3.drop', snapshotId, drop });
+      } finally {
+        const dropStatement = `DROP DATABASE IF EXISTS ${restoredDatabaseName};`;
+        drop = await querySafe('drop', logParams, client, dropStatement);
+        if (hasQueryError(drop)) {
+          return {
+            code: 500,
+            result: { backup, restore, exports, drop },
+            error: drop.error,
+          };
+        } else {
+          logInfo({ name: 'backupToS3.drop', snapshotId, drop });
+        }
       }
     }
 
-    if (backupPolicy === 'latest') {
+    if (retention === 'latest') {
       cleanups = await deleteOtherSnapshots(snapshotId);
       logInfo({ name: 'backupToS3.cleanups', snapshotId, cleanups });
     }

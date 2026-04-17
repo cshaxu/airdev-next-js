@@ -7,7 +7,7 @@ import { pick } from 'lodash-es';
 export const airdevPrivateConfig: AirdevPrivateConfigBase = {
   ...pick(privateAppConfig, ['admin', 'aws', 'email', 'google', 'postmark']),
   database: pick(privateAppConfig.database, [
-    'backupPolicy',
+    'backup',
     'batchSize',
     'delaySeconds',
     'url',

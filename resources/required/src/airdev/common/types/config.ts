@@ -57,12 +57,12 @@ export type AirdevPublicConfigBase = {
   posthog: { apiToken: string; apiHost: string };
 };
 
-export type DatabaseBackupPolicy = 'none' | 'history' | 'latest';
+export type DatabaseBackupRetention = 'none' | 'history' | 'latest';
 
 export type AirdevPrivateConfigBase = {
   admin: { emails: string[] };
   database: {
-    backupPolicy: DatabaseBackupPolicy;
+    backup: { csv: boolean; retention: DatabaseBackupRetention };
     batchSize: number;
     delaySeconds: number;
     url: string;
