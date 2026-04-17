@@ -175,44 +175,60 @@ async function exportTables(
   client: Client
 ): Promise<any> {
   const tables = Object.entries(prismaModels);
-  const exportStatements = tables.map(
-    (table) =>
-      `EXPORT INTO CSV '${s3CsvUri}?${awsCredentialsString}' WITH nullas='null' FROM TABLE ${restoredDatabase}."${table[0]}";`
-  );
-  const exportFunctions = exportStatements.map((e, i) => async () => {
-    const table = tables[i];
-    const tableName = table[0];
-    const tableFields = table[1];
-    const exportResult = await querySafe(
-      `export.${table}`,
+  const exportPromises = tables.map((table) =>
+    exportOneTable(
+      table[0],
+      table[1],
+      awsCredentialsString,
+      s3CsvPath,
+      s3CsvUri,
+      restoredDatabase,
       logParams,
-      client,
-      e
-    );
-    if (hasQueryError(exportResult)) {
-      return exportResult;
-    }
-    const { response } = exportResult;
+      client
+    )
+  );
+  return await Promise.all(exportPromises);
+}
 
-    const filenames = ((response.rows ?? []) as any[]).map(
-      (row) => row.filename as string
-    );
-    const renameFunctions = filenames.map(
-      (filename, index) => () =>
-        renameS3Object(
-          `${s3CsvPath}/${filename}`,
-          `${s3CsvPath}/${tableName}/${index}.csv`
-        )
-    );
-    await sequential(renameFunctions);
+async function exportOneTable(
+  tableName: string,
+  tableFields: string[],
+  awsCredentialsString: string,
+  s3CsvPath: string,
+  s3CsvUri: string,
+  restoredDatabase: string,
+  logParams: any,
+  client: Client
+): Promise<any> {
+  const exportStatement = `EXPORT INTO CSV '${s3CsvUri}?${awsCredentialsString}' WITH nullas='null' FROM TABLE ${restoredDatabase}."${tableName}";`;
+  const exportResult = await querySafe(
+    `export.${tableName}`,
+    logParams,
+    client,
+    exportStatement
+  );
+  if (hasQueryError(exportResult)) {
+    return exportResult;
+  }
+  const { response } = exportResult;
 
-    await AwsSdk.uploadS3Object(
-      `${s3CsvPath}/${tableName}/schema.csv`,
-      Buffer.from(tableFields.join(','), 'utf-8')
-    );
-    return response;
-  });
-  return await Promise.all(exportFunctions);
+  const filenames = ((response.rows ?? []) as any[]).map(
+    (row) => row.filename as string
+  );
+  const renameFunctions = filenames.map(
+    (filename, index) => () =>
+      renameS3Object(
+        `${s3CsvPath}/${filename}`,
+        `${s3CsvPath}/${tableName}/${index}.csv`
+      )
+  );
+  await sequential(renameFunctions);
+
+  await AwsSdk.uploadS3Object(
+    `${s3CsvPath}/${tableName}/schema.csv`,
+    Buffer.from(tableFields.join(','), 'utf-8')
+  );
+  return response;
 }
 
 async function querySafe(
