@@ -108,6 +108,7 @@ module.exports = [
               'Disallow importing from outside of src/airdev, except for component config',
             includedFiles: ['src/airdev/**/*.ts', 'src/airdev/**/*.tsx'],
             excludedFiles: [
+              'src/airdev/config/edge.ts',
               'src/airdev/config/private.ts',
               'src/airdev/config/public.ts',
             ],
@@ -126,7 +127,7 @@ module.exports = [
             excludedFiles: [
               'src/config/public.ts',
               'src/config/private.ts',
-              'src/airdev/config/edge.ts',
+              'src/config/edge.ts',
             ],
           },
           {
@@ -138,10 +139,7 @@ module.exports = [
           {
             name: 'process.env.NEXT_PUBLIC_',
             description: 'Move it to src/config/public.ts.',
-            includedFiles: [
-              'src/config/private.ts',
-              'src/airdev/config/edge.ts',
-            ],
+            includedFiles: ['src/config/private.ts', 'src/config/edge.ts'],
           },
           {
             name: 'prisma.',
