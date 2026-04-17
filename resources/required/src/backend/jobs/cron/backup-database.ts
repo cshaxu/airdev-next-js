@@ -6,7 +6,7 @@ import { Context } from '@/airdev/framework/context';
 
 export const maxDuration = 60;
 
-export const schedule = '5 0 * * *';
+export const schedule = '1 0 * * *';
 
 export const executor = (context: Context) =>
   backupToS3(toStartTime(toDs(context.time)));
