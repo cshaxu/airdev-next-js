@@ -7,7 +7,7 @@ import { SystemScheduledJobEntity } from '@/backend/entities/system-scheduled-jo
 import { CommonResponse } from '@airent/api';
 import { Prisma } from '@prisma/client';
 
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 export const schedule = '5 0 * * *';
 

@@ -4,7 +4,7 @@ import { backupToS3 } from '@/airdev/backend/services/backup';
 import { toDs, toStartTime } from '@/airdev/common/utils/date';
 import { Context } from '@/airdev/framework/context';
 
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 export const schedule = '1 0 * * *';
 

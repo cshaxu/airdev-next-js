@@ -212,7 +212,7 @@ async function exportTables(
     );
     return response;
   });
-  return await sequential(exportFunctions);
+  return await Promise.all(exportFunctions);
 }
 
 async function querySafe(

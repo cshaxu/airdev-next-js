@@ -4,7 +4,7 @@ import SystemRequestCacheService from '@/airdev/backend/services/data/system-req
 import { Context } from '@/airdev/framework/context';
 import { CommonResponse } from '@airent/api';
 
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 export const schedule = '10 0 * * *';
 
