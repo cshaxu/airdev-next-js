@@ -2,6 +2,7 @@
 
 import type {
   AirdevPrivateConfig,
+  DatabaseBackupPolicy,
   EnvironmentBase,
 } from '@/airdev/common/types/config';
 import { decrypt } from 'databag';
@@ -14,7 +15,11 @@ import { publicAppConfig } from './public';
 // so localhost can be resolved correctly
 dns.setDefaultResultOrder('ipv4first');
 
+// env vars, do not move
+
 const DATABAG_PASSWORD = process.env.BAREBONE_NEXT_DATABAG_PASSWORD!;
+const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET!;
+
 const dataEnvironment = publicAppConfig.service
   .dataEnvironment as EnvironmentBase;
 
@@ -26,13 +31,11 @@ const { admin, email } = PrivateConfigJson;
 
 const database = {
   ...PrivateConfigJson.database,
+  backupPolicy: PrivateConfigJson.database.backupPolicy as DatabaseBackupPolicy,
   url: environmentalDataCredentials.databaseUrl,
 };
 
-const nextauth = {
-  ...PrivateConfigJson.nextauth,
-  secret: process.env.NEXTAUTH_SECRET!,
-};
+const nextauth = { ...PrivateConfigJson.nextauth, secret: NEXTAUTH_SECRET };
 
 const aws = { ...environmentalDataCredentials.aws, ...PrivateConfigJson.aws };
 

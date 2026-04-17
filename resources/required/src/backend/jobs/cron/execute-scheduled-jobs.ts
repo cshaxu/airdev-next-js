@@ -9,7 +9,7 @@ import { Prisma } from '@prisma/client';
 
 export const maxDuration = 60;
 
-export const schedule = '0 0 * * *';
+export const schedule = '5 0 * * *';
 
 export async function executor(context: Context): Promise<CommonResponse> {
   const where = { runsAt: { lte: context.time }, completedAt: null };

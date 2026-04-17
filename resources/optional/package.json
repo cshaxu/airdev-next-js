@@ -4,7 +4,6 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "airdev-next": "node ./node_modules/@airdev/next/scripts/generate.mjs",
     "airent": "rm -rf node_modules/.airent/schemas && airent-prisma generate && rm -rf src/generated && rm -rf src/app/api/data && airent && airent-api-next generate",
     "email": "email dev --dir src/emails --port 3600",
     "format": "prettier --check --ignore-path .gitignore .",
@@ -20,7 +19,7 @@
     "dev-https": "npm run pre-dev && NEXT_PUBLIC_LOCAL_HTTPS=true next dev --experimental-https",
     "pre-build": "prisma generate && npm run --silent airent",
     "compile": "npm run lint && next build",
-    "build": "npm run airdev-next && npm run pre-build && npm run compile && npm run post-build",
+    "build": "npm run pre-build && npm run compile && npm run post-build",
     "post-build": "node -e \"if (process.env.VERCEL && !process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA) process.exit(1)\""
   },
   "overrides": {
@@ -30,7 +29,6 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.41",
-    "@airdev/next": "github:cshaxu/airdev-next-js#79852d91ec40be25a0b5de3d09b4d4d99b3370c8",
     "@airent/api": "github:cshaxu/airent-api-js#ee8cea6f134851f3bff4f8b41db04101a765f3b1",
     "@airent/api-next": "github:cshaxu/airent-api-next-js#922b48e532c87d9bba891617e6b350c6c4b1256b",
     "@airent/api-next-tanstack": "github:cshaxu/airent-api-next-tanstack-js#44fd660152fe1921abbfc3a9879b4f4b33af446d",

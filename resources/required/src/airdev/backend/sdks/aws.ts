@@ -4,12 +4,18 @@ import { airdevPrivateConfig } from '@/airdev/config/private';
 import { airdevPublicConfig } from '@/airdev/config/public';
 import { logInfo, wait } from '@airent/api';
 import {
+  CopyObjectCommand,
+  CopyObjectCommandOutput,
   DeleteObjectCommand,
   DeleteObjectCommandOutput,
+  DeleteObjectsCommand,
+  DeleteObjectsCommandOutput,
   GetObjectCommand,
   GetObjectCommandOutput,
   HeadObjectCommand,
   HeadObjectCommandOutput,
+  ListObjectsV2Command,
+  ListObjectsV2CommandOutput,
   PutObjectCommand,
   PutObjectCommandOutput,
   S3Client,
@@ -39,6 +45,65 @@ const LOCAL_AWS_S3_BASE_URL = `${LOCAL_AWS_BASE_URL}/s3`;
 const LOCAL_AWS_TEXTRACT_BASE_URL = `${LOCAL_AWS_BASE_URL}/textract`;
 
 const isDataLocal = airdevPublicConfig.service.dataEnvironment === 'local';
+
+/** S3 Presigned */
+
+export async function createS3PresignedPost(
+  key: string,
+  expiresInSeconds: number = 15 * 60 // 15 minutes
+): Promise<PresignedPost> {
+  const payload = { Bucket: airdevPublicConfig.aws.s3Bucket, Key: key };
+  if (isDataLocal) {
+    return await fetch(`${LOCAL_AWS_S3_BASE_URL}/create-presigned-post`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).then((res) => res.json());
+  } else {
+    const s3Client = new S3Client(AWS_CLIENT_CONFIG);
+    const options = {
+      ...payload,
+      Fields: { key },
+      Conditions: [
+        // ['starts-with', '$Content-Type', 'image/'],
+        ['content-length-range', 0, 100_000_000] as Conditions,
+      ],
+      Expires: expiresInSeconds,
+    };
+    return await createPresignedPost(s3Client, options);
+  }
+}
+
+export async function createS3PresignedUrl(
+  key: string,
+  fileName: string,
+  isPreview: boolean,
+  fileMimeType: string | undefined,
+  expiresInSeconds: number = 15 * 60
+): Promise<string> {
+  const payload = { Bucket: airdevPublicConfig.aws.s3Bucket, Key: key };
+  if (isDataLocal) {
+    return await fetch(`${LOCAL_AWS_S3_BASE_URL}/create-presigned-url`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).then((res) => res.text());
+  } else {
+    const s3Client = new S3Client(AWS_CLIENT_CONFIG);
+    const ResponseContentDisposition = `${isPreview ? 'inline' : 'attachment'}; filename="${fileName}"`;
+    const options = {
+      ...payload,
+      ResponseContentDisposition,
+      ...(fileMimeType !== undefined && { ResponseContentType: fileMimeType }),
+    };
+    const command = new GetObjectCommand(options);
+    return await getSignedUrl(s3Client, command, {
+      expiresIn: expiresInSeconds,
+    });
+  }
+}
+
+/** S3 Object */
 
 export async function getS3Object(
   key: string
@@ -130,12 +195,18 @@ export async function getS3ObjectBytes(
 
 export async function uploadS3Object(
   key: string,
-  file: File
+  body: File | Buffer
 ): Promise<PutObjectCommandOutput> {
   if (isDataLocal) {
     const formData = new FormData();
     formData.append('Bucket', airdevPublicConfig.aws.s3Bucket);
     formData.append('Key', key);
+    const file =
+      body instanceof File
+        ? body
+        : new File([new Uint8Array(body)], key, {
+            type: 'application/octet-stream',
+          });
     formData.append('file', file);
     return await fetch(`${LOCAL_AWS_S3_BASE_URL}/put-object`, {
       method: 'POST',
@@ -146,8 +217,30 @@ export async function uploadS3Object(
     const command = new PutObjectCommand({
       Bucket: airdevPublicConfig.aws.s3Bucket,
       Key: key,
-      Body: file,
+      Body: body,
     });
+    return await s3Client.send(command);
+  }
+}
+
+export async function copyS3Object(
+  srcKey: string,
+  destKey: string
+): Promise<CopyObjectCommandOutput> {
+  const payload = {
+    Bucket: airdevPublicConfig.aws.s3Bucket,
+    CopySource: `${airdevPublicConfig.aws.s3Bucket}/${srcKey}`,
+    Key: destKey,
+  };
+  if (isDataLocal) {
+    return await fetch(`${LOCAL_AWS_S3_BASE_URL}/copy-object`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).then((res) => res.json());
+  } else {
+    const s3Client = new S3Client(AWS_CLIENT_CONFIG);
+    const command = new CopyObjectCommand(payload);
     return await s3Client.send(command);
   }
 }
@@ -169,60 +262,55 @@ export async function deleteS3Object(
   }
 }
 
-export async function createS3PresignedPost(
-  key: string,
-  expiresInSeconds: number = 15 * 60 // 15 minutes
-): Promise<PresignedPost> {
-  const payload = { Bucket: airdevPublicConfig.aws.s3Bucket, Key: key };
+export async function listS3ObjectKeys(prefix: string): Promise<string[]> {
   if (isDataLocal) {
-    return await fetch(`${LOCAL_AWS_S3_BASE_URL}/create-presigned-post`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    }).then((res) => res.json());
-  } else {
-    const s3Client = new S3Client(AWS_CLIENT_CONFIG);
-    const options = {
-      ...payload,
-      Fields: { key },
-      Conditions: [
-        // ['starts-with', '$Content-Type', 'image/'],
-        ['content-length-range', 0, 100_000_000] as Conditions,
-      ],
-      Expires: expiresInSeconds,
-    };
-    return await createPresignedPost(s3Client, options);
+    return [];
   }
+  const s3Client = new S3Client(AWS_CLIENT_CONFIG);
+  const keys: string[] = [];
+  let continuationToken: string | undefined = undefined;
+  do {
+    const listCommand = new ListObjectsV2Command({
+      Bucket: airdevPublicConfig.aws.s3Bucket,
+      Prefix: prefix,
+      ContinuationToken: continuationToken,
+    });
+    const listResponse: ListObjectsV2CommandOutput =
+      await s3Client.send(listCommand);
+    for (const content of listResponse.Contents ?? []) {
+      if (content.Key) {
+        keys.push(content.Key);
+      }
+    }
+    continuationToken = listResponse.IsTruncated
+      ? listResponse.NextContinuationToken
+      : undefined;
+  } while (continuationToken);
+  return keys;
 }
 
-export async function createS3PresignedUrl(
-  key: string,
-  fileName: string,
-  isPreview: boolean,
-  fileMimeType: string | undefined,
-  expiresInSeconds: number = 15 * 60
-): Promise<string> {
-  const payload = { Bucket: airdevPublicConfig.aws.s3Bucket, Key: key };
-  if (isDataLocal) {
-    return await fetch(`${LOCAL_AWS_S3_BASE_URL}/create-presigned-url`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    }).then((res) => res.text());
-  } else {
-    const s3Client = new S3Client(AWS_CLIENT_CONFIG);
-    const ResponseContentDisposition = `${isPreview ? 'inline' : 'attachment'}; filename="${fileName}"`;
-    const options = {
-      ...payload,
-      ResponseContentDisposition,
-      ...(fileMimeType !== undefined && { ResponseContentType: fileMimeType }),
-    };
-    const command = new GetObjectCommand(options);
-    return await getSignedUrl(s3Client, command, {
-      expiresIn: expiresInSeconds,
-    });
+export async function deleteS3Objects(
+  keys: string[]
+): Promise<DeleteObjectsCommandOutput | null> {
+  if (keys.length === 0) {
+    return null;
   }
+  if (isDataLocal) {
+    await Promise.all(keys.map((key) => deleteS3Object(key)));
+    return null;
+  }
+  const s3Client = new S3Client(AWS_CLIENT_CONFIG);
+  const command = new DeleteObjectsCommand({
+    Bucket: airdevPublicConfig.aws.s3Bucket,
+    Delete: {
+      Objects: keys.map((Key) => ({ Key })),
+      Quiet: true,
+    },
+  });
+  return await s3Client.send(command);
 }
+
+/** Textract */
 
 export async function startDocumentTextDetection(
   key: string

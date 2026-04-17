@@ -1,10 +1,14 @@
 {
   "@airdev/next": "seeded",
   "admin": { "emails": ["cshaxu@gmail.com"] },
-  "database": { "batchSize": 1000, "delaySeconds": 5 },
+  "database": {
+    "batchSize": 1000,
+    "delaySeconds": 5,
+    "backupPolicy": "latest"
+  },
   "email": { "noReplySender": "nanoindies@gmail.com" },
   "nextauth": { "sessionMaxAge": 2592000 },
-  "aws": { "s3Region": "us-east-1" },
+  "aws": { "s3Region": "us-west-1" },
   "openai": {
     "audioModel": "gpt-4o-audio-preview",
     "chatModel": "gpt-4o-mini",

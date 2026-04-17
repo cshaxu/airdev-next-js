@@ -6,7 +6,7 @@ import { CommonResponse } from '@airent/api';
 
 export const maxDuration = 60;
 
-export const schedule = '0 0 * * *';
+export const schedule = '10 0 * * *';
 
 export const executor = (context: Context) =>
   SystemRequestCacheService.deleteManyByTime(context.time).then(

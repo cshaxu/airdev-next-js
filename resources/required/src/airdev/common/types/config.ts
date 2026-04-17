@@ -57,9 +57,16 @@ export type AirdevPublicConfigBase = {
   posthog: { apiToken: string; apiHost: string };
 };
 
+export type DatabaseBackupPolicy = 'none' | 'history' | 'latest';
+
 export type AirdevPrivateConfigBase = {
   admin: { emails: string[] };
-  database: { batchSize: number; delaySeconds: number; url: string };
+  database: {
+    backupPolicy: DatabaseBackupPolicy;
+    batchSize: number;
+    delaySeconds: number;
+    url: string;
+  };
   email: { noReplySender: string };
   nextauth: { secret: string; sessionMaxAge: number };
   aws: { accessKeyId: string; secretAccessKey: string; s3Region: string };

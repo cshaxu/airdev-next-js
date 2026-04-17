@@ -1,5 +1,5 @@
 {
-  "@airdev/next": "seeded",
+  "@airdev/next": "managed",
   "type": "commonjs",
   "schemaPath": "node_modules/.airent/schemas",
   "entityPath": "src/backend/entities",
@@ -131,6 +131,11 @@
     {
       "name": "node_modules/@airent/api-next-tanstack/resources/server-cached-hooks-template.ts.ejs",
       "outputPath": "{generatedPath}/tanstack-hooks/{kababEntityName}-server-cached.ts",
+      "skippable": false
+    },
+    {
+      "name": "plugins/airent/prisma-models-template.ts.ejs",
+      "outputPath": "src/generated/prisma-models.ts",
       "skippable": false
     }
   ],
