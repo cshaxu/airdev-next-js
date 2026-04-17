@@ -30,8 +30,8 @@
   "dependencies": {
     "@ai-sdk/openai": "^3.0.41",
     "@airent/api": "github:cshaxu/airent-api-js#ee8cea6f134851f3bff4f8b41db04101a765f3b1",
-    "@airent/api-next": "github:cshaxu/airent-api-next-js#d13e12101fc6de8b96e833b4ac816e0f04a711e0",
-    "@airent/api-next-tanstack": "github:cshaxu/airent-api-next-tanstack-js#f6c370fa9a8674b3a86c5b719734b345b3a7727a",
+    "@airent/api-next": "github:cshaxu/airent-api-next-js#285af075c8366cb8ba440a8010e8c3191ec83817",
+    "@airent/api-next-tanstack": "github:cshaxu/airent-api-next-tanstack-js#4674dfe81a380840bd1aee8db7507d2f8641351b",
     "@airent/prisma": "github:cshaxu/airent-prisma-js#0e3216698f7d917a2608da0f494570f59dc120af",
     "@aws-sdk/client-s3": "^3.1013.0",
     "@aws-sdk/client-textract": "^3.1013.0",
