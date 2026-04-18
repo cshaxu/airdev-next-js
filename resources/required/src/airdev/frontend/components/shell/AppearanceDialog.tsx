@@ -5,10 +5,6 @@
 import { SHELL_PREVIEW_COLORS } from '@/airdev/common/theme';
 import { airdevPublicConfig } from '@/airdev/config/public';
 import {
-  shellColorOptions,
-  useShellColor,
-} from '@/airdev/frontend/components/ThemeProvider';
-import {
   Dialog,
   DialogBody,
   DialogContent,
@@ -17,6 +13,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/airdev/frontend/components/ui/Dialog';
+import {
+  shellColorOptions,
+  useShellColor,
+} from '@/airdev/frontend/providers/ThemeProvider';
 import { cn } from '@/airdev/frontend/utils/cn';
 import { Check, Monitor, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';

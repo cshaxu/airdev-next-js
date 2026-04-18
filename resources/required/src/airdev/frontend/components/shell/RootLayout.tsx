@@ -2,9 +2,9 @@
 
 import { airdevPublicConfig } from '@/airdev/config/public';
 import ErrorBoundary from '@/airdev/frontend/components/ErrorBoundary';
-import ReactQueryProvider from '@/airdev/frontend/components/ReactQueryProvider';
-import ThemeProvider from '@/airdev/frontend/components/ThemeProvider';
 import { Toaster } from '@/airdev/frontend/components/ui/Toaster';
+import ReactQueryProvider from '@/airdev/frontend/providers/ReactQueryProvider';
+import ThemeProvider from '@/airdev/frontend/providers/ThemeProvider';
 import '@/airdev/frontend/styles/globals.css';
 import { ReactNodeProps } from '@/airdev/frontend/types/props';
 import { pageTitle } from '@/airdev/frontend/utils/page';

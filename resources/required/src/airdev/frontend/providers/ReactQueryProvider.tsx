@@ -62,7 +62,12 @@ export default function ReactQueryProvider({ children }: ReactNodeProps) {
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      {isBrowser && <ReactQueryDevtools initialIsOpen={false} />}
+      {isBrowser && (
+        <ReactQueryDevtools
+          initialIsOpen={false}
+          buttonPosition="bottom-left"
+        />
+      )}
     </QueryClientProvider>
   );
 }
